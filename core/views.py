@@ -2,6 +2,7 @@ from django.shortcuts import render
 from core.models import Confess, Comment, ItemMetaData
 from core.serializers import ConfessSerializer,CommentSerializer,ItemMetaDataSerializer
 from rest_framework.response import Response
+from rest_framework import viewsets
 from rest_framework.views import APIView
 
 
@@ -13,10 +14,13 @@ class ConfessView(APIView):
 
 	def post(self, request, format=None):
 		serializer = ConfessSerializer(data=request.data)
-		metaserializer = ItemMetaDataSerializer(data=request.data)
-		if serializer.is_valid() and metaserializer.is_valid():
+		if serializer.is_valid():
 			serializer.save()
-			metaserializer.save()
-
 			return Response(serializer.data)
-		return Response(serializer.error_messages)
+		return Response(serializer.errors)
+
+
+# class ConfessView(viewsets.ModelViewSet):
+# 	serializer_class = ConfessSerializer
+# 	detail_serializer_class = ItemMetaDataSerializer
+# 	queryset = Confess.objects.all()
