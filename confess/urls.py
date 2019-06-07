@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from core.views import ConfessView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'confesses/', ConfessView.as_view()),
+
 ]
