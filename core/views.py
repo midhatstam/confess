@@ -13,7 +13,10 @@ class ConfessView(APIView):
 
 	def post(self, request, format=None):
 		serializer = ConfessSerializer(data=request.data)
-		if serializer.is_valid():
+		metaserializer = ItemMetaDataSerializer(data=request.data)
+		if serializer.is_valid() and metaserializer.is_valid():
 			serializer.save()
+			metaserializer.save()
+
 			return Response(serializer.data)
 		return Response(serializer.error_messages)
