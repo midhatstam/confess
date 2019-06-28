@@ -1,0 +1,355 @@
+{% load staticfiles %}
+{% load template_tags %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="Start your development with a Design System for Bootstrap 4.">
+	<meta name="author" content="Creative Tim">
+	<title>Argon Design System - Free Design System for Bootstrap 4</title>
+	<!-- Favicon -->
+	<link href="{% static 'img/brand/favicon.png' %}" rel="icon" type="image/png">
+	<!-- Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+	<!-- Icons -->
+	<link href="{% static 'vendor/nucleo/css/nucleo.css' %}" rel="stylesheet">
+	<link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+	<!-- Argon CSS -->
+	<link type="text/css" href="{% static 'css/argon.css' %}" rel="stylesheet">
+	<link type="text/css" href="{% static 'css/app.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+
+<header class="header-global">
+	<nav id="navbar-main" class="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light headroom">
+		<div class="container">
+			<a class="navbar-brand mr-lg-5" href="{% url 'home' %}">
+				<img src="{% static 'img/brand/white.png' %}">
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_global"
+					aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="navbar-collapse collapse" id="navbar_global">
+				<div class="navbar-collapse-header">
+					<div class="row">
+						<div class="col-6 collapse-brand">
+							<a href="{% url 'home' %}">
+								<img src="{% static 'img/brand/blue.png' %}">
+							</a>
+						</div>
+						<div class="col-6 collapse-close">
+							<button type="button" class="navbar-toggler" data-toggle="collapse"
+									data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false"
+									aria-label="Toggle navigation">
+								<span></span>
+								<span></span>
+							</button>
+						</div>
+					</div>
+				</div>
+				<ul class="navbar-nav navbar-nav-hover align-items-lg-center search-bar">
+					<li class="nav-item">
+						<div class="s129">
+							<form>
+								<div class="inner-form">
+									<div class="input-field">
+										<button class="btn-search" type="button">
+											{#											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"#}
+											{#												 viewBox="0 0 24 24">#}
+											{#												<path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>#}
+											{#											</svg>#}
+											<i class="fa fa-search" aria-hidden="true"></i>
+										</button>
+										<input id="search" type="text" placeholder="What are you looking for?"
+											   autocomplete="off"/>
+									</div>
+								</div>
+							</form>
+						</div>
+					</li>
+				</ul>
+				<ul class="navbar-nav align-items-lg-center ml-lg-auto">
+					<li class="nav-item">
+						<a class="nav-link nav-link-icon" href="https://www.facebook.com/creativetim" target="_blank"
+						   data-toggle="tooltip" title="Like us on Facebook">
+							<i class="fa fa-facebook-square"></i>
+							<span class="nav-link-inner--text d-lg-none">Facebook</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link nav-link-icon" href="https://www.instagram.com/creativetimofficial"
+						   target="_blank" data-toggle="tooltip" title="Follow us on Instagram">
+							<i class="fa fa-instagram"></i>
+							<span class="nav-link-inner--text d-lg-none">Instagram</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link nav-link-icon" href="https://twitter.com/creativetim" target="_blank"
+						   data-toggle="tooltip" title="Follow us on Twitter">
+							<i class="fa fa-twitter-square"></i>
+							<span class="nav-link-inner--text d-lg-none">Twitter</span>
+						</a>
+					</li>
+					<li class="nav-item d-none d-lg-block ml-lg-4">
+						<a class="btn btn-neutral btn-icon write-button">
+							<span class="btn-inner--icon">
+							  <i class="ni ni-send mr-2"></i>
+							</span>
+							<span class="nav-link-inner--text">Write</span>
+						</a>
+					</li>
+					<li class="nav-item d-none d-lg-block ml-lg-4 mt-auto">
+						<label class="custom-toggle">
+							<input type="checkbox">
+							<span class="custom-toggle-slider rounded-circle btn-dark border-light"></span>
+						</label>
+						<span class="clearfix"></span>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</header>
+<main>
+	<div class="position-relative">
+		<!-- shape Hero -->
+		<section class="section section-lg section-shaped pb-250">
+			<div class="shape shape-style-1 shape-default">
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+			</div>
+			<!-- SVG separator -->
+			{#						<div class="separator separator-bottom separator-skew">#}
+			{#							<svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1"#}
+			{#								 xmlns="http://www.w3.org/2000/svg">#}
+			{#								<polygon class="fill-white" points="2560 0 2560 100 0 100"></polygon>#}
+			{#							</svg>#}
+			{#						</div>#}
+		</section>
+		<!-- 1st Hero Variation -->
+	</div>
+
+	<section class="section section-lg pt-lg-0 mt--200">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 col-lg-9">
+					<div class="tab-content" id="myTabContent">
+						<div class="tab-pane fade show active" id="tabs-icons-text-1" role="tabpanel"
+							 aria-labelledby="tabs-icons-text-1-tab">
+							{% for confess in results %}
+								<div class="card shadow border-0">
+									<div class="card-body">
+										<h6 class="text-{{ confess.confess_class }} text-uppercase float-left">
+											#{{ confess.id }}</h6>
+										<h6 class="text-{{ confess.confess_class }} float-right">{{ confess.item_meta_data_date }}</h6>
+										<p class="description mt-5">{{ confess.confess_body }}</p>
+										<div class="confess-actions">
+											<div class="confess-actions-panel">
+												<button class="btn btn-{{ confess.confess_class }} mt-4 confess-buttons">
+												<span class="btn-inner--icon">
+													<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+												</span>
+													<span class="btn-inner--text">{% firstof confess.item_meta_data_like '0' %}</span>
+												</button>
+
+												<button style="cursor:pointer; display: block; flex-grow:1;"
+														class="btn btn-{{ confess.confess_class }} mt-4">
+												<span class="btn-inner--icon">
+													<i class="fa fa-thumbs-down" aria-hidden="true"></i>
+												</span>
+													<span class="btn-inner--text">{% firstof confess.item_meta_data_dislike '0' %}</span>
+												</button>
+
+												<button style="cursor:pointer; display: block; flex-grow:1;"
+														class="btn btn-{{ confess.confess_class }} mt-4">
+												<span class="btn-inner--icon">
+													<i class="fa fa-commenting-o" aria-hidden="true"></i>
+												</span>
+													<span class="btn-inner--text">{% get_commments_count confess.id %}</span>
+												</button>
+
+												<button style="cursor:pointer; display: block; flex-grow:1;"
+														class="btn btn-{{ confess.confess_class }} mt-4">
+													<span class="btn-inner--text">Read more</span>
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+							<nav aria-label="Page navigation example" style="display: flex;">
+								<ul class="pagination justify-content-center" style="margin: auto;">
+									{% if has_previous %}
+										<li class="page-item">
+
+											<a class="page-link" href="?page={{ previous }}" tabindex="-1">
+												<i class="fa fa-angle-left"></i>
+												<span class="sr-only">Previous</span>
+											</a>
+										</li>
+									{% else %}
+										<li class="page-item disabled">
+											<a class="page-link" href="" tabindex="-1">
+												<i class="fa fa-angle-left"></i>
+												<span class="sr-only">Previous</span>
+											</a>
+										</li>
+									{% endif %}
+
+									{% for page in page_range %}
+										{% if page == number %}
+											<li class="page-item active" style="cursor: not-allowed"><a
+													class="page-link" style="cursor: not-allowed;">{{ page }}</a></li>
+										{% else %}
+											<li class="page-item"><a class="page-link"
+																	 href="?page={{ page }}">{{ page }}</a></li>
+										{% endif %}
+									{% endfor %}
+									{% if has_next %}
+										<li class="page-item">
+											<a class="page-link" href="?page={{ next }}">
+												<i class="fa fa-angle-right"></i>
+												<span class="sr-only">Next</span>
+											</a>
+										</li>
+									{% else %}
+										<li class="page-item disabled">
+											<a class="page-link" href="">
+												<i class="fa fa-angle-right"></i>
+												<span class="sr-only">Next</span>
+											</a>
+										</li>
+									{% endif %}
+								</ul>
+							</nav>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12 col-lg-3">
+					<div class="card shadow border-0">
+						<div class="card-body">
+							<button type="button" class="btn btn-primary btn-lg btn-block">Admin ol!</button>
+							<hr>
+							<ul class="nav nav-pills nav-fill flex-column flex-sm-row" id="tabs-text"
+								role="tablist">
+								<li class="nav-item mb-2">
+									<button class="nav-link mb-sm-3 mb-md-0 {% if request.get_full_path == '/' %}active{% else %}{% endif %} btn-block"
+											id="tabs-text-1-tab"
+											data-toggle="tab"
+											href="#tabs-icons-text-1" role="tab" aria-controls="tabs-text-1"
+											aria-selected="true">Yeni
+									</button>
+								</li>
+								<li class="nav-item mb-2">
+									<button class="nav-link mb-sm-3 mb-md-0 {% if request.get_full_path == '/popular/' %}active{% else %}{% endif %} btn-block"
+											id="tabs-text-2-tab"
+											data-toggle="tab"
+											href="#tabs-icons-text-2" role="tab" aria-controls="tabs-text-2"
+											aria-selected="false">Popüler
+									</button>
+								</li>
+								<li class="nav-item mb-2">
+									<button class="nav-link mb-sm-3 mb-md-0 {% if request.get_full_path == '/best/' %}active{% else %}{% endif %} btn-block"
+											id="tabs-text-3-tab"
+											data-toggle="tab"
+											href="#tabs-icons-text-3" role="tab" aria-controls="tabs-text-3"
+											aria-selected="false">En iyi
+									</button>
+								</li>
+								<li class="nav-item mb-2">
+									<div class="dropdown btn-block">
+										<button href="#" class="nav-link mb-sm-3 mb-md-0 btn-block {% if request.get_full_path == '/by_comments/' or request.get_full_path == '/by_likes/' or request.get_full_path == '/by_dislikes/' %}active{% else %}{% endif %}"
+												data-toggle="dropdown"
+												id="navbarDropdownMenuLink2">
+											<i class="fa fa-sort" aria-hidden="true"></i> Sırala
+										</button>
+
+{#										<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">#}
+{#											<li>#}
+{#												<button class="dropdown-item mb-sm-3 mb-md-0"#}
+{#														id="tabs-text-4-tab"#}
+{#														data-toggle="tab"#}
+{#														href="#tabs-icons-text-4" role="tab" aria-controls="tabs-text-4"#}
+{#														aria-selected="false">Yorumlar sayısına göre#}
+{#												</button>#}
+{#											</li>#}
+{#											<li>#}
+{#												<button class="dropdown-item mb-sm-3 mb-md-0"#}
+{#														id="tabs-text-5-tab"#}
+{#														data-toggle="tab"#}
+{#														href="#tabs-icons-text-5" role="tab" aria-controls="tabs-text-5"#}
+{#														aria-selected="false">Onaylara göre#}
+{#												</button>#}
+{#											</li>#}
+{#											<li>#}
+{#												<button class="dropdown-item mb-sm-3 mb-md-0"#}
+{#														id="tabs-text-6-tab"#}
+{#														data-toggle="tab"#}
+{#														href="#tabs-icons-text-6" role="tab" aria-controls="tabs-text-6"#}
+{#														aria-selected="false">Kınamalara göre#}
+{#												</button>#}
+{#											</li>#}
+{#										</ul>#}
+
+										<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+											<li>
+												<button class="dropdown-item mb-sm-3 mb-md-0 {% if request.get_full_path == '/by_comments/' %}active{% else %}{% endif %}"
+														id="tabs-text-4-tab"
+														data-toggle="tab"
+														href="#tabs-icons-text-4" role="tab" aria-controls="tabs-text-4"
+														aria-selected="false"><i class="fa fa-commenting-o" aria-hidden="true"></i>sayısına göre
+												</button>
+											</li>
+											<li>
+												<button class="dropdown-item mb-sm-3 mb-md-0 {% if request.get_full_path == '/by_likes/' %}active{% else %}{% endif %}"
+														id="tabs-text-5-tab"
+														data-toggle="tab"
+														href="#tabs-icons-text-5" role="tab" aria-controls="tabs-text-5"
+														aria-selected="false"><i class="fa fa-thumbs-up" aria-hidden="true"></i>sayısına göre
+												</button>
+											</li>
+											<li>
+												<button class="dropdown-item mb-sm-3 mb-md-0 {% if request.get_full_path == '/by_dislikes/' %}active{% else %}{% endif %}"
+														id="tabs-text-6-tab"
+														data-toggle="tab"
+														href="#tabs-icons-text-6" role="tab" aria-controls="tabs-text-6"
+														aria-selected="false"><i class="fa fa-thumbs-down" aria-hidden="true"></i>sayısına göre
+												</button>
+											</li>
+										</ul>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- Core -->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/popper/popper.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/bootstrap.min.js' %}"></script>
+<script src="{% static 'vendor/headroom/headroom.min.js' %}"></script>
+<!-- Argon JS -->
+<script src="{% static 'js/argon.js' %}"></script>
+<script src="{% static 'js/app.js' %}"></script>
+
+</body>
+
+</html>

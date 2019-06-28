@@ -15,10 +15,22 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from core.views import ConfessView
+from core import views
 
 urlpatterns = [
+    url(r'^$', views.ConfessView.as_view({'get': 'list', 'post': 'create'}), name='home'),
+    url(r'^popular/$', views.ConfessPopularView.as_view({'get': 'list'})),
+    url(r'^best/$', views.ConfessBestView.as_view({'get': 'list'})),
+    url(r'^by_comments/$', views.ConfessMostCommentsView.as_view({'get': 'list'})),
+    url(r'^by_likes/$', views.ConfessMostLikeView.as_view({'get': 'list'})),
+    url(r'^by_dislikes/$', views.ConfessMostDislikeView.as_view({'get': 'list'})),
+    url(r'^api/confesses/$', views.ConfessApiView.as_view({'get': 'list', 'post': 'create'})),
+    url(r'^api/confesses/popular/$', views.ConfessApiPopularView.as_view({'get': 'list'})),
+    url(r'^api/confesses/best/$', views.ConfessApiBestView.as_view({'get': 'list'})),
+    url(r'^api/confesses/by_comments/$', views.ConfessApiMostCommentsView.as_view({'get': 'list'})),
+    url(r'^api/confesses/by_likes/$', views.ConfessApiMostLikeView.as_view({'get': 'list'})),
+    url(r'^api/confesses/by_dislikes/$', views.ConfessApiMostDislikeView.as_view({'get': 'list'})),
     url(r'^admin/', admin.site.urls),
-    url(r'confesses/', ConfessView.as_view()),
+    # url(r'^confesses/$', views.ConfessView.as_view()),
 
 ]

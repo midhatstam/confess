@@ -3,9 +3,11 @@ from core.models import Confess, Comment, ItemMetaData
 
 
 class ItemMetaDataSerializer(serializers.ModelSerializer):
+	item_meta_data_date = serializers.DateTimeField(format="%d.%m.%Y", read_only=True)
+	
 	class Meta:
 		model = ItemMetaData
-		exclude = ('item_meta_data_date', 'item_meta_data_like', 'item_meta_data_dislike',)
+		exclude = ('item_meta_data_like', 'item_meta_data_dislike',)
 		abstract = True
 
 
