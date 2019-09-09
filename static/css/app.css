@@ -124,3 +124,7 @@ ul > li {
 		height: 36px;
 	}
 }
+
+.new-card ~ .card {
+	opacity: 0.5;
+}

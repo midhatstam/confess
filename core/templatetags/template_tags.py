@@ -1,10 +1,26 @@
 from django import template
 
+from datetime import datetime, timedelta
+from django.utils.timesince import timesince
+
 from core.models import Comment
 
 register = template.Library()
 
 
 @register.simple_tag
-def get_commments_count(confess_id):
-	return Comment.objects.filter(comment_related=confess_id).count()
+def get_date(date):
+	now = datetime.now()
+	date_obj = datetime.strptime(date, '%d.%m.%Y')
+	
+	try:
+		difference = now - date_obj.replace(tzinfo=None)
+	except:
+		return date
+	
+	if difference <= timedelta(minutes=1):
+		return "just now"
+	elif difference >= timedelta(days=1):
+		return date_obj.strftime("%d %b %Y")
+	else:
+		return "%(time)s ago" % {'time': timesince(date_obj).split(', ')[0]}

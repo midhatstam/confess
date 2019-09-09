@@ -1,8 +1,6 @@
 import random
 
-from datetime import datetime, timedelta
 from django.db import models
-from django.utils.timesince import timesince
 
 
 # Create your models here.
@@ -18,22 +16,6 @@ class ItemMetaData(models.Model):
 	item_meta_data_like = models.IntegerField(blank=True, null=True)
 	item_meta_data_dislike = models.IntegerField(blank=True, null=True)
 	item_meta_data_date = models.DateTimeField(auto_now_add=True, blank=False, null=False)
-	
-	@property
-	def get_datetime(self):
-		now = datetime.now()
-		
-		try:
-			difference = now - self.item_meta_data_date.replace(tzinfo=None)
-		except:
-			return self.item_meta_data_date
-		
-		if difference <= timedelta(minutes=1):
-			return "just now"
-		elif difference >= timedelta(days=1):
-			return self.item_meta_data_date.strftime("%d %b %Y")
-		else:
-			return "%(time)s ago" % {'time': timesince(self.item_meta_data_date).split(', ')[0]}
 
 
 class Confess(ItemMetaData):
@@ -60,10 +42,6 @@ class Confess(ItemMetaData):
 	def __str__(self):
 		return str(self.id) + ' ' + self.confess_body[:10]
 	
-	@property
-	def comments(self):
-		return int(Comment.objects.filter(comment_related=self).count())
-	
 
 class Comment(ItemMetaData):
 	class Meta:
@@ -76,3 +54,33 @@ class Comment(ItemMetaData):
 		"Confess", related_name="comment_related_key", on_delete=models.CASCADE, blank=True, null=True)
 	comment_removed = models.BooleanField(default=0, blank=False, null=False)
 
+
+class ItemSessionData(models.Model):
+	class Meta:
+		db_table = "item_session_data"
+		abstract = True
+	
+	item_session_token = models.CharField(max_length=250, blank=False, null=False)
+	item_is_liked = models.BooleanField(default=1, blank=False, null=False)
+
+
+class ConfessSession(ItemSessionData):
+	class Meta:
+		db_table = 'confess_session'
+		unique_together = [
+			'confess_session_self', 'item_session_token'
+		]
+	
+	confess_session_self = models.ForeignKey(
+		'Confess', related_name='confess_session_self_key', on_delete=models.CASCADE, blank=True, null=True)
+
+
+class CommentSession(ItemSessionData):
+	class Meta:
+		db_table = 'comment_session'
+		unique_together = [
+			'comment_session_self', 'item_session_token'
+		]
+	
+	comment_session_self = models.ForeignKey(
+		'Comment', related_name='comment_session_self_key', on_delete=models.CASCADE, blank=True, null=True)

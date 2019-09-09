@@ -24,83 +24,141 @@ $('#tabs-text-6-tab').click(function () {
 
 $('.write-button').click(function () {
 	if ($('.new-card').length > 0) {
-		$('.new-card').fadeIn(500).fadeOut(100).fadeIn(500).fadeOut(100).fadeIn(500);
+		$('.new-card').fadeIn(500).fadeOut(100).fadeIn(500).fadeOut(100).fadeIn(500).delay(100);
 	}
 	else {
 		let parent_element = $('.tab-pane');
 
-		// let new_card = '' +
-		// 	'<div class="card shadow border-primary">' +
-		// 	'<div class="card-body">' +
-		// 	'<h6 class="text-primary text-uppercase float-left">' +
-		// 	'# <span class="id-field"></span></h6>' +
-		// 	'<h6 class="text-primary float-right"></h6>' +
-		// 	'<p class="description mt-5"></p>' +
-		// 	'<div class="confess-actions">' +
-		// 	'<div class="row">' +
-		// 	'<div class="col-md-9"></div>' +
-		// 	'<div class="col-md-3">' +
-		// 	'<button class="btn btn-light mt-4 confess-buttons btn-block">' +
-		// 	'<span class="btn-inner--icon">' +
-		// 	'<i class="fa fa-thumbs-up" aria-hidden="true"></i>' +
-		// 	'</span>' +
-		// 	'<span class="btn-inner--text"> SEND!</span>' +
-		// 	'</button>' +
-		// 	'</div>' +
-		// 	'</div>' +
-		// 	'</div>' +
-		// 	'</div>' +
-		// 	'</div>';
-		//
-		// parent_element.prepend(new_card);
+		let new_card = '' +
+			'<div class="card shadow border-primary new-card">' +
+			'<div class="card-body">' +
+			'<h6 class="text-primary text-uppercase float-left">' +
+			'#<span class="id-field"></span></h6>' +
+			'<h6 class="text-primary float-right date-field"></h6>' +
+			'<h4 class="mt-5" id="new-confession" contenteditable>Tıklayınız!</h4>' +
+			'<div class="confess-actions">' +
+			'<div class="row">' +
+			'<div class="col-md-9"></div>' +
+			'<div class="col-md-3">' +
+			'<button class="btn btn-light mt-4 confess-buttons btn-block" id="send-button">' +
+			'<span class="btn-inner--icon">' +
+			'<i class="fa fa-thumbs-up" aria-hidden="true"></i>' +
+			'</span>' +
+			'<span class="btn-inner--text"> SEND!</span>' +
+			'</button>' +
+			'</div>' +
+			'</div>' +
+			'</div>' +
+			'</div>' +
+			'</div>';
 
+		var html_card = $($.parseHTML(new_card));
+		html_card.hide().prependTo(parent_element).slideDown(200);
+
+
+		$('#new-confession').css("font", "1.2em Helvetica, Arial, sans-serif !important;").click(function () {
+			if ($(this).text() === "" || $(this).text() === 'Tıklayınız!') {
+				$(this).empty();
+			}
+		}).focusout(function () {
+				if ($(this).text() === "") {
+					$(this).html('Tıklayınız!');
+				}
+				else {
+
+				}
+			}
+		);
+
+		$("#send-button").click(function () {
+			var id = $('.id-field').text();
+			var body = $('#new-confession').text();
+			$.ajax({
+				url: '/api/confesses/',
+				type: 'POST',
+				data: {
+					'id': id,
+					'confess_body': body,
+				},
+				success: function (result) {
+					console.log('success');
+					$('.id-field').html(result.id);
+					$('.date-field').html("just now");
+					$("#send-button").remove();
+					$('#new-confession').removeAttr('contenteditable');
+				}
+			});
+		});
+	}
+});
+
+$('.confess-buttons').click(function () {
+	var this_element = $(this);
+	var id = this_element.parents('.card-body').children('.float-left').children('.id-field').text();
+	var like_button = this_element.parent().children('.like');
+	var dislike_button = this_element.parent().children('.dislike');
+	var data = {};
+	if (dislike_button.prop("disabled") === true) {
+		data = {
+			'like': '1',
+			'dislike': '0',
+			'id': id
+		}
+	}
+	else if (like_button.prop("disabled") === true) {
+		data = {
+			'like': '0',
+			'dislike': '1',
+			'id': id
+		}
+	}
+	else {
+
+	}
+	if ($(this).hasClass('like')) {
+		if (Object.keys(data).length === 0 && data.constructor === Object) {
+			data = {
+				'like': '1',
+				'id': id
+			}
+		}
 		$.ajax({
-			url: '/api/confesses/',
-			type: 'POST',
+			url: '/api/confesses/' + id + '/',
+			type: 'PUT',
+			data: data,
 			success: function (result) {
-				let new_card = '' +
-					'<div class="card shadow border-primary new-card">' +
-					'<div class="card-body">' +
-					'<h6 class="text-primary text-uppercase float-left">' +
-					'# ' + result.id + '<span class="id-field"></span></h6>' +
-					'<h6 class="text-primary float-right">' + result.item_meta_data_date + '</h6>' +
-					'<h4 class="mt-5" id="new_confession" contenteditable>Tıklayınız!</h4>' +
-					'<div class="confess-actions">' +
-					'<div class="row">' +
-					'<div class="col-md-9"></div>' +
-					'<div class="col-md-3">' +
-					'<button class="btn btn-light mt-4 confess-buttons btn-block">' +
-					'<span class="btn-inner--icon">' +
-					'<i class="fa fa-thumbs-up" aria-hidden="true"></i>' +
-					'</span>' +
-					'<span class="btn-inner--text"> SEND!</span>' +
-					'</button>' +
-					'</div>' +
-					'</div>' +
-					'</div>' +
-					'</div>' +
-					'</div>';
-
-				var html_card = $($.parseHTML(new_card));
-				html_card.hide().prependTo(parent_element).slideDown(200);
-
-
-				$('#new_confession').css("font", "1.2em Helvetica, Arial, sans-serif !important;").click(function () {
-					if ($(this).text() === "" || $(this).text() === 'Tıklayınız!') {
-						$(this).empty();
-					}
-				}).focusout(function () {
-						if ($(this).text() === "") {
-							$(this).html('Tıklayınız!');
-						}
-						else {
-
-						}
-					}
-				);
+				var like = this_element.find(".btn-inner--text");
+				like.html(result.item_meta_data_like);
+				var dislike = this_element.parent().children('.dislike').find(".btn-inner--text");
+				dislike.html(result.item_meta_data_dislike);
+				like.parent().prop("disabled", true);
+				if (dislike_button.prop("disabled") === true) {
+					dislike_button.prop("disabled", false);
+				}
 			}
 		});
 	}
-
-
+	else if ($(this).hasClass('dislike')) {
+		if (Object.keys(data).length === 0 && data.constructor === Object) {
+			data = {
+				'dislike': '1',
+				'id': id
+			}
+		}
+		$.ajax({
+			url: '/api/confesses/' + id + '/',
+			type: 'PUT',
+			data: data,
+			success: function (result) {
+				var dislike = this_element.find(".btn-inner--text");
+				dislike.html(result.item_meta_data_dislike);
+				var like = this_element.parent().children('.like').find(".btn-inner--text");
+				like.html(result.item_meta_data_like);
+				dislike.parent().prop("disabled", true);
+				if (like_button.prop("disabled") === true) {
+					like_button.prop("disabled", false);
+				}
+			}
+		});
+	}
 });

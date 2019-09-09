@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import Confess, Comment, ItemMetaData
+from core.models import Confess, Comment, ItemMetaData, ItemSessionData, ConfessSession, CommentSession
 
 
 class ItemMetaDataSerializer(serializers.ModelSerializer):
@@ -12,6 +12,8 @@ class ItemMetaDataSerializer(serializers.ModelSerializer):
 
 
 class ConfessSerializer(ItemMetaDataSerializer):
+	num_comments = serializers.IntegerField()
+	
 	class Meta:
 		model = Confess
 		fields = '__all__'
@@ -20,4 +22,22 @@ class ConfessSerializer(ItemMetaDataSerializer):
 class CommentSerializer(ItemMetaDataSerializer):
 	class Meta:
 		model = Comment
+		fields = '__all__'
+
+
+class ItemSessionDataSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = ItemSessionData
+		fields = '__all__'
+	
+
+class ConfessSessionSerializer(ItemMetaDataSerializer):
+	class Meta:
+		model = ConfessSession
+		fields = '__all__'
+
+
+class CommentSessionSerializer(ItemMetaDataSerializer):
+	class Meta:
+		model = CommentSession
 		fields = '__all__'

@@ -13,7 +13,8 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
+from django.conf import settings
 from django.contrib import admin
 from core import views
 
@@ -25,6 +26,7 @@ urlpatterns = [
     url(r'^by_likes/$', views.ConfessMostLikeView.as_view({'get': 'list'})),
     url(r'^by_dislikes/$', views.ConfessMostDislikeView.as_view({'get': 'list'})),
     url(r'^api/confesses/$', views.ConfessApiView.as_view({'get': 'list', 'post': 'create'})),
+    url(r'^api/confesses/(?P<id>[0-9]+)/$', views.ConfessApiView.as_view({'get': 'retrieve', 'put': 'patch'})),
     url(r'^api/confesses/popular/$', views.ConfessApiPopularView.as_view({'get': 'list'})),
     url(r'^api/confesses/best/$', views.ConfessApiBestView.as_view({'get': 'list'})),
     url(r'^api/confesses/by_comments/$', views.ConfessApiMostCommentsView.as_view({'get': 'list'})),
@@ -34,3 +36,10 @@ urlpatterns = [
     # url(r'^confesses/$', views.ConfessView.as_view()),
 
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+
+    ] + urlpatterns

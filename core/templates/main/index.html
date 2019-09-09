@@ -153,12 +153,12 @@
 								<div class="card shadow border-0">
 									<div class="card-body">
 										<h6 class="text-{{ confess.confess_class }} text-uppercase float-left">
-											#{{ confess.id }}</h6>
-										<h6 class="text-{{ confess.confess_class }} float-right">{{ confess.item_meta_data_date }}</h6>
+											#<span class="id-field">{{ confess.id }}</span></h6>
+										<h6 class="text-{{ confess.confess_class }} float-right">{% get_date confess.item_meta_data_date %}</h6>
 										<p class="description mt-5">{{ confess.confess_body }}</p>
 										<div class="confess-actions">
 											<div class="confess-actions-panel">
-												<button class="btn btn-{{ confess.confess_class }} mt-4 confess-buttons">
+												<button class="btn btn-{{ confess.confess_class }} mt-4 confess-buttons like">
 												<span class="btn-inner--icon">
 													<i class="fa fa-thumbs-up" aria-hidden="true"></i>
 												</span>
@@ -166,7 +166,7 @@
 												</button>
 
 												<button style="cursor:pointer; display: block; flex-grow:1;"
-														class="btn btn-{{ confess.confess_class }} mt-4">
+														class="btn btn-{{ confess.confess_class }} mt-4 confess-buttons dislike">
 												<span class="btn-inner--icon">
 													<i class="fa fa-thumbs-down" aria-hidden="true"></i>
 												</span>
@@ -178,7 +178,7 @@
 												<span class="btn-inner--icon">
 													<i class="fa fa-commenting-o" aria-hidden="true"></i>
 												</span>
-													<span class="btn-inner--text">{% get_commments_count confess.id %}</span>
+													<span class="btn-inner--text">{{ confess.num_comments }}</span>
 												</button>
 
 												<button style="cursor:pointer; display: block; flex-grow:1;"
@@ -271,38 +271,39 @@
 								</li>
 								<li class="nav-item mb-2">
 									<div class="dropdown btn-block">
-										<button href="#" class="nav-link mb-sm-3 mb-md-0 btn-block {% if request.get_full_path == '/by_comments/' or request.get_full_path == '/by_likes/' or request.get_full_path == '/by_dislikes/' %}active{% else %}{% endif %}"
+										<button href="#"
+												class="nav-link mb-sm-3 mb-md-0 btn-block {% if request.get_full_path == '/by_comments/' or request.get_full_path == '/by_likes/' or request.get_full_path == '/by_dislikes/' %}active{% else %}{% endif %}"
 												data-toggle="dropdown"
 												id="navbarDropdownMenuLink2">
 											<i class="fa fa-sort" aria-hidden="true"></i> Sırala
 										</button>
 
-{#										<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">#}
-{#											<li>#}
-{#												<button class="dropdown-item mb-sm-3 mb-md-0"#}
-{#														id="tabs-text-4-tab"#}
-{#														data-toggle="tab"#}
-{#														href="#tabs-icons-text-4" role="tab" aria-controls="tabs-text-4"#}
-{#														aria-selected="false">Yorumlar sayısına göre#}
-{#												</button>#}
-{#											</li>#}
-{#											<li>#}
-{#												<button class="dropdown-item mb-sm-3 mb-md-0"#}
-{#														id="tabs-text-5-tab"#}
-{#														data-toggle="tab"#}
-{#														href="#tabs-icons-text-5" role="tab" aria-controls="tabs-text-5"#}
-{#														aria-selected="false">Onaylara göre#}
-{#												</button>#}
-{#											</li>#}
-{#											<li>#}
-{#												<button class="dropdown-item mb-sm-3 mb-md-0"#}
-{#														id="tabs-text-6-tab"#}
-{#														data-toggle="tab"#}
-{#														href="#tabs-icons-text-6" role="tab" aria-controls="tabs-text-6"#}
-{#														aria-selected="false">Kınamalara göre#}
-{#												</button>#}
-{#											</li>#}
-{#										</ul>#}
+										{#										<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">#}
+										{#											<li>#}
+										{#												<button class="dropdown-item mb-sm-3 mb-md-0"#}
+										{#														id="tabs-text-4-tab"#}
+										{#														data-toggle="tab"#}
+										{#														href="#tabs-icons-text-4" role="tab" aria-controls="tabs-text-4"#}
+										{#														aria-selected="false">Yorumlar sayısına göre#}
+										{#												</button>#}
+										{#											</li>#}
+										{#											<li>#}
+										{#												<button class="dropdown-item mb-sm-3 mb-md-0"#}
+										{#														id="tabs-text-5-tab"#}
+										{#														data-toggle="tab"#}
+										{#														href="#tabs-icons-text-5" role="tab" aria-controls="tabs-text-5"#}
+										{#														aria-selected="false">Onaylara göre#}
+										{#												</button>#}
+										{#											</li>#}
+										{#											<li>#}
+										{#												<button class="dropdown-item mb-sm-3 mb-md-0"#}
+										{#														id="tabs-text-6-tab"#}
+										{#														data-toggle="tab"#}
+										{#														href="#tabs-icons-text-6" role="tab" aria-controls="tabs-text-6"#}
+										{#														aria-selected="false">Kınamalara göre#}
+										{#												</button>#}
+										{#											</li>#}
+										{#										</ul>#}
 
 										<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
 											<li>
@@ -310,7 +311,8 @@
 														id="tabs-text-4-tab"
 														data-toggle="tab"
 														href="#tabs-icons-text-4" role="tab" aria-controls="tabs-text-4"
-														aria-selected="false"><i class="fa fa-commenting-o" aria-hidden="true"></i>sayısına göre
+														aria-selected="false"><i class="fa fa-commenting-o"
+																				 aria-hidden="true"></i>sayısına göre
 												</button>
 											</li>
 											<li>
@@ -318,7 +320,8 @@
 														id="tabs-text-5-tab"
 														data-toggle="tab"
 														href="#tabs-icons-text-5" role="tab" aria-controls="tabs-text-5"
-														aria-selected="false"><i class="fa fa-thumbs-up" aria-hidden="true"></i>sayısına göre
+														aria-selected="false"><i class="fa fa-thumbs-up"
+																				 aria-hidden="true"></i>sayısına göre
 												</button>
 											</li>
 											<li>
@@ -326,7 +329,8 @@
 														id="tabs-text-6-tab"
 														data-toggle="tab"
 														href="#tabs-icons-text-6" role="tab" aria-controls="tabs-text-6"
-														aria-selected="false"><i class="fa fa-thumbs-down" aria-hidden="true"></i>sayısına göre
+														aria-selected="false"><i class="fa fa-thumbs-down"
+																				 aria-hidden="true"></i>sayısına göre
 												</button>
 											</li>
 										</ul>
