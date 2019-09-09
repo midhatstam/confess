@@ -4,18 +4,14 @@ import uuid
 
 from collections import OrderedDict
 
-from django.http import QueryDict
-
-from django.db.models import Count, Case, When, Prefetch, Value, IntegerField, BooleanField
+from django.db.models import Count
 
 from rest_framework.response import Response
 from rest_framework import viewsets, pagination, status
-from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
-from rest_framework import generics
+from rest_framework.renderers import TemplateHTMLRenderer
 
-from core.models import Confess, Comment, ItemMetaData, ItemSessionData, ConfessSession, CommentSession
-from core.serializers import ConfessSerializer, CommentSerializer, ItemMetaDataSerializer, ItemSessionDataSerializer, \
-	ConfessSessionSerializer, CommentSessionSerializer
+from core.models import Confess, Comment
+from core.serializers import ConfessSerializer
 
 
 class CustomPageNumber(pagination.PageNumberPagination):
@@ -58,126 +54,6 @@ class ConfessAPIMixin(viewsets.ModelViewSet):
 		self.perform_create(serializer)
 		headers = self.get_success_headers(serializer.data)
 		return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-	
-	def patch(self, request, *args, **kwargs):
-		partial = kwargs.pop('partial', True)
-		instance = self.get_object()
-		data = {}
-		if request.data.get('like') == "1":
-			if request.data.get('dislike') == "0":
-				if instance.item_meta_data_like is not None:
-					if ConfessSessionMixin.as_view({'put': 'create'})(request._request).status_code == 400:
-						return Response(status=status.HTTP_200_OK)
-					else:
-						data['item_meta_data_like'] = instance.item_meta_data_like + 1
-						if instance.item_meta_data_dislike is not None:
-							data['item_meta_data_dislike'] = instance.item_meta_data_dislike - 1
-				else:
-					if ConfessSessionMixin.as_view({'put': 'create'})(request._request).status_code == 400:
-						return Response(status=status.HTTP_200_OK)
-					else:
-						data['item_meta_data_like'] = 1
-						if instance.item_meta_data_dislike is not None:
-							data['item_meta_data_dislike'] = instance.item_meta_data_dislike - 1
-			else:
-				if instance.item_meta_data_like is not None:
-					if ConfessSessionMixin.as_view({'put': 'create'})(request._request).status_code == 400:
-						return Response(status=status.HTTP_200_OK)
-					else:
-						data['item_meta_data_like'] = instance.item_meta_data_like + 1
-				else:
-					if ConfessSessionMixin.as_view({'put': 'create'})(request._request).status_code == 400:
-						return Response(status=status.HTTP_200_OK)
-					else:
-						data['item_meta_data_like'] = 1
-		elif request.data.get('dislike') == "1":
-			if request.data.get('like') == "0":
-				if instance.item_meta_data_dislike is not None:
-					if ConfessSessionMixin.as_view({'put': 'create'})(request._request).status_code == 400:
-						return Response(status=status.HTTP_200_OK)
-					else:
-						data['item_meta_data_dislike'] = instance.item_meta_data_dislike + 1
-						if instance.item_meta_data_like is not None:
-							data['item_meta_data_like'] = instance.item_meta_data_like - 1
-				else:
-					if ConfessSessionMixin.as_view({'put': 'create'})(request._request).status_code == 400:
-						return Response(status=status.HTTP_200_OK)
-					else:
-						data['item_meta_data_dislike'] = 1
-						if instance.item_meta_data_like is not None:
-							data['item_meta_data_like'] = instance.item_meta_data_like - 1
-			else:
-				if instance.item_meta_data_dislike is not None:
-					if ConfessSessionMixin.as_view({'put': 'create'})(request._request).status_code == 400:
-						return Response(status=status.HTTP_200_OK)
-					else:
-						data['item_meta_data_dislike'] = instance.item_meta_data_dislike + 1
-				else:
-					if ConfessSessionMixin.as_view({'put': 'create'})(request._request).status_code == 400:
-						return Response(status=status.HTTP_200_OK)
-					else:
-						data['item_meta_data_dislike'] = 1
-		qdata = QueryDict('', mutable=True)
-		qdata.update(data)
-		serializer = self.get_serializer(instance, data=qdata, partial=partial)
-		serializer.is_valid(raise_exception=True)
-		self.perform_update(serializer)
-		return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
-class ConfessSessionMixin(viewsets.ModelViewSet):
-	serializer_class = ConfessSessionSerializer
-	lookup_field = 'id'
-	
-	def create(self, request, *args, **kwargs):
-		data = {}
-		data['item_session_token'] = request.COOKIES.get('session_token')
-		data['confess_session_self'] = int(request.POST.get('id'))
-		try:
-			like = request.POST.get('like')
-		except:
-			like = None
-		
-		try:
-			dislike = request.POST.get('dislike')
-		except:
-			dislike = None
-		
-		if like is not None:
-			if dislike is not None:
-				if like == "0":
-					data['item_is_liked'] = 0
-				else:
-					data['item_is_liked'] = 1
-			else:
-				data['item_is_liked'] = 1
-		else:
-			data['item_is_liked'] = 0
-		
-		qdata = QueryDict('', mutable=True)
-		qdata.update(data)
-		try:
-			current_session = ConfessSession.objects.get(
-				item_session_token=request.COOKIES.get('session_token'),
-				confess_session_self_id=int(request.POST.get('id')),
-			)
-		except:
-			current_session = None
-		
-		if current_session is not None:
-			if int(current_session.item_is_liked) == int(data['item_is_liked']):
-				return Response(status=status.HTTP_400_BAD_REQUEST)
-			else:
-				serializer = ConfessSessionSerializer(current_session, data=qdata)
-				serializer.is_valid(raise_exception=True)
-				self.perform_update(serializer)
-		else:
-			serializer = self.get_serializer(data=qdata)
-			# serializer = ConfessSessionSerializer(data=qdata)
-			serializer.is_valid(raise_exception=True)
-			self.perform_create(serializer)
-		headers = self.get_success_headers(serializer.data)
-		return Response(serializer.data, headers=headers)
 
 
 class ConfessHTMLMixin(ConfessAPIMixin):

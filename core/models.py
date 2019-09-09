@@ -53,34 +53,3 @@ class Comment(ItemMetaData):
 	comment_related = models.ForeignKey(
 		"Confess", related_name="comment_related_key", on_delete=models.CASCADE, blank=True, null=True)
 	comment_removed = models.BooleanField(default=0, blank=False, null=False)
-
-
-class ItemSessionData(models.Model):
-	class Meta:
-		db_table = "item_session_data"
-		abstract = True
-	
-	item_session_token = models.CharField(max_length=250, blank=False, null=False)
-	item_is_liked = models.BooleanField(default=1, blank=False, null=False)
-
-
-class ConfessSession(ItemSessionData):
-	class Meta:
-		db_table = 'confess_session'
-		unique_together = [
-			'confess_session_self', 'item_session_token'
-		]
-	
-	confess_session_self = models.ForeignKey(
-		'Confess', related_name='confess_session_self_key', on_delete=models.CASCADE, blank=True, null=True)
-
-
-class CommentSession(ItemSessionData):
-	class Meta:
-		db_table = 'comment_session'
-		unique_together = [
-			'comment_session_self', 'item_session_token'
-		]
-	
-	comment_session_self = models.ForeignKey(
-		'Comment', related_name='comment_session_self_key', on_delete=models.CASCADE, blank=True, null=True)

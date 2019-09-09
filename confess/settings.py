@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
 	'core',
+	'vote',
 	'rest_framework',
 	'debug_toolbar',
 	'django.contrib.admin',
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
+	'silk',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +51,7 @@ MIDDLEWARE = [
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 	'debug_toolbar.middleware.DebugToolbarMiddleware',
+	'silk.middleware.SilkyMiddleware',
 ]
 
 ROOT_URLCONF = 'confess.urls'
