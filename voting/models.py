@@ -20,11 +20,11 @@ class Vote(models.Model):
 	content_object = GenericForeignKey()
 	created_at = models.DateTimeField(auto_now_add=True, db_index=True, null=True)
 	updated_at = models.DateTimeField(auto_now=True, db_index=True, null=True)
-	
+
 	class Meta:
 		db_table = 'vote'
 		unique_together = [
-			'vote_token', 'content_type'
+			'vote_token', 'content_type', 'object_id',
 		]
 	
 	def __str__(self):

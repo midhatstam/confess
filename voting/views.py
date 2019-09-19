@@ -49,24 +49,12 @@ class VoteMixin(viewsets.ModelViewSet):
 			serializer.is_valid(raise_exception=False)
 			self.perform_create(serializer)
 			response_obj = {'success': 'true', 'message': 'created'}
-		
-		model_dict = {
-			'confession': 'confession',
-			'comment': 'comment'
-		}
-		try:
-			model_obj = apps.get_model(model_dict[model], model_name=model_dict[model])
-		except KeyError:
-			return Response({'message': 'Check out "item" params'})
-		
+
 		new_instance = instance.votes
 		votes = new_instance.values_list("vote", flat=True)
-		print(votes)
-		# print(votes)
-		likes = new_instance.filter(vote=1).count()
-		dislikes = new_instance.filter(vote=0).count()
+		list_votes = list(votes)
+		likes = list_votes.count(True)
+		dislikes = list_votes.count(False)
 		response_obj['likes'] = likes
 		response_obj['dislikes'] = dislikes
-		# response_obj['votes'] = votes
-		# response_obj['votes_likes'] = votes
 		return Response(response_obj)

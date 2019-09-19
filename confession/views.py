@@ -1,4 +1,4 @@
-from django.db.models import Count
+from django.db.models import Count, Prefetch
 
 from rest_framework import viewsets, status, pagination
 from rest_framework.response import Response
@@ -7,6 +7,7 @@ from confession.models import Confession
 from confession.serializers import ConfessionSerializer
 
 from comment.models import Comment
+from voting.models import Vote
 
 
 class CustomApiPageNumber(pagination.PageNumberPagination):
@@ -28,7 +29,10 @@ class ConfessionAPIMixin(viewsets.ModelViewSet):
 
 class AllQS(viewsets.ModelViewSet):
 	queryset = Confession.objects.filter(admin_approved=True).annotate(
-		num_comments=Count('comment_related_key'))
+		num_comments=Count('comment_related_key')).prefetch_related(
+		Prefetch('votes', queryset=Vote.objects.filter(vote=1, content_type=1), to_attr='likes'),
+		Prefetch('votes', queryset=Vote.objects.filter(vote=0, content_type=1), to_attr='dislikes')
+	)
 
 
 class PopularQS(viewsets.ModelViewSet):

@@ -1,0 +1,20 @@
+{
+  "title": "Confession",
+  "type": "object",
+  "x-examples": {
+    "example-1": {
+      "value": {
+        "id": 2,
+        "item_meta_data_date": "16.09.2019 16:26:56.644412",
+        "num_comments": 2,
+        "item_meta_data_like": 0,
+        "item_meta_data_dislike": 0,
+        "body": "Danas me je zamolila drugarica da joj pričuvam bebu. Pristala sam i ovako spremam ispit, nemam gde drugo ići. Evo sat vremena već čitam literaturu naglas, kao pričicu ne bi li mali zaspao, on i ovako ne razume. Ajde što on ništa ne razume i smeška se, ali ni ja ne razumem pa mi dođe plakati, a ispit za 3 dana.",
+        "css_class": "success",
+        "admin_approved": true,
+        "user_approved": false
+      }
+    }
+  },
+  "description": ""
+}

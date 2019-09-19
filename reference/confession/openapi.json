@@ -1,0 +1,296 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Confession",
+    "version": "1.0",
+    "description": "",
+    "contact": {
+      "name": "Midhat Sibonjic",
+      "email": "midhatstam@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000",
+      "description": "Localhost"
+    }
+  ],
+  "paths": {
+    "/api/confessions/": {
+      "get": {
+        "summary": "All Confessions",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "count": 2,
+                      "next": null,
+                      "previous": null,
+                      "results": [
+                        {
+                          "id": 2,
+                          "item_meta_data_date": "16.09.2019 16:26:56.644412",
+                          "num_comments": 2,
+                          "item_meta_data_like": 0,
+                          "item_meta_data_dislike": 0,
+                          "body": "Danas me je zamolila drugarica da joj pričuvam bebu. Pristala sam i ovako spremam ispit, nemam gde drugo ići. Evo sat vremena već čitam literaturu naglas, kao pričicu ne bi li mali zaspao, on i ovako ne razume. Ajde što on ništa ne razume i smeška se, ali ni ja ne razumem pa mi dođe plakati, a ispit za 3 dana.",
+                          "css_class": "success",
+                          "admin_approved": true,
+                          "user_approved": false
+                        },
+                        {
+                          "id": 1,
+                          "item_meta_data_date": "16.09.2019 16:15:36.749511",
+                          "num_comments": 0,
+                          "item_meta_data_like": 1,
+                          "item_meta_data_dislike": 0,
+                          "body": "Imam 25 god i danas sam kupila bojanku i bojice i bojila. Super osećaj.",
+                          "css_class": "warning",
+                          "admin_approved": true,
+                          "user_approved": false
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create new confession",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "id": 3,
+                      "item_meta_data_date": "19.09.2019 15:04:25.946892",
+                      "item_meta_data_like": 0,
+                      "item_meta_data_dislike": 0,
+                      "body": "hello",
+                      "css_class": "success",
+                      "admin_approved": false,
+                      "user_approved": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "body": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "body"
+                ]
+              },
+              "examples": {}
+            }
+          },
+          "description": ""
+        }
+      }
+    },
+    "/api/confessions/popular/": {
+      "get": {
+        "summary": "Popular confessions",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/confessions/best/": {
+      "get": {
+        "summary": "The best Confessions",
+        "tags": [],
+        "responses": {}
+      }
+    },
+    "/api/confessions/by_comments/": {
+      "get": {
+        "summary": "Most commented confessions",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "count": 2,
+                      "next": null,
+                      "previous": null,
+                      "results": [
+                        {
+                          "id": 2,
+                          "item_meta_data_date": "16.09.2019 16:26:56.644412",
+                          "num_comments": 2,
+                          "item_meta_data_like": 0,
+                          "item_meta_data_dislike": 0,
+                          "body": "Danas me je zamolila drugarica da joj pričuvam bebu. Pristala sam i ovako spremam ispit, nemam gde drugo ići. Evo sat vremena već čitam literaturu naglas, kao pričicu ne bi li mali zaspao, on i ovako ne razume. Ajde što on ništa ne razume i smeška se, ali ni ja ne razumem pa mi dođe plakati, a ispit za 3 dana.",
+                          "css_class": "success",
+                          "admin_approved": true,
+                          "user_approved": false
+                        },
+                        {
+                          "id": 1,
+                          "item_meta_data_date": "16.09.2019 16:15:36.749511",
+                          "num_comments": 0,
+                          "item_meta_data_like": 1,
+                          "item_meta_data_dislike": 0,
+                          "body": "Imam 25 god i danas sam kupila bojanku i bojice i bojila. Super osećaj.",
+                          "css_class": "warning",
+                          "admin_approved": true,
+                          "user_approved": false
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/confessions/by_likes/": {
+      "get": {
+        "summary": "Most liked confessions",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "count": 2,
+                      "next": null,
+                      "previous": null,
+                      "results": [
+                        {
+                          "id": 1,
+                          "item_meta_data_date": "16.09.2019 16:15:36.749511",
+                          "num_comments": 0,
+                          "item_meta_data_like": 1,
+                          "item_meta_data_dislike": 0,
+                          "body": "Imam 25 god i danas sam kupila bojanku i bojice i bojila. Super osećaj.",
+                          "css_class": "warning",
+                          "admin_approved": true,
+                          "user_approved": false
+                        },
+                        {
+                          "id": 2,
+                          "item_meta_data_date": "16.09.2019 16:26:56.644412",
+                          "num_comments": 2,
+                          "item_meta_data_like": 0,
+                          "item_meta_data_dislike": 0,
+                          "body": "Danas me je zamolila drugarica da joj pričuvam bebu. Pristala sam i ovako spremam ispit, nemam gde drugo ići. Evo sat vremena već čitam literaturu naglas, kao pričicu ne bi li mali zaspao, on i ovako ne razume. Ajde što on ništa ne razume i smeška se, ali ni ja ne razumem pa mi dođe plakati, a ispit za 3 dana.",
+                          "css_class": "success",
+                          "admin_approved": true,
+                          "user_approved": false
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/confessions/by_dislikes/": {
+      "get": {
+        "summary": "Most disliked Confessions",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "count": 2,
+                      "next": null,
+                      "previous": null,
+                      "results": [
+                        {
+                          "id": 1,
+                          "item_meta_data_date": "16.09.2019 16:15:36.749511",
+                          "num_comments": 0,
+                          "item_meta_data_like": 1,
+                          "item_meta_data_dislike": 0,
+                          "body": "Imam 25 god i danas sam kupila bojanku i bojice i bojila. Super osećaj.",
+                          "css_class": "warning",
+                          "admin_approved": true,
+                          "user_approved": false
+                        },
+                        {
+                          "id": 2,
+                          "item_meta_data_date": "16.09.2019 16:26:56.644412",
+                          "num_comments": 2,
+                          "item_meta_data_like": 0,
+                          "item_meta_data_dislike": 0,
+                          "body": "Danas me je zamolila drugarica da joj pričuvam bebu. Pristala sam i ovako spremam ispit, nemam gde drugo ići. Evo sat vremena već čitam literaturu naglas, kao pričicu ne bi li mali zaspao, on i ovako ne razume. Ajde što on ništa ne razume i smeška se, ali ni ja ne razumem pa mi dođe plakati, a ispit za 3 dana.",
+                          "css_class": "success",
+                          "admin_approved": true,
+                          "user_approved": false
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
