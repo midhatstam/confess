@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from vote.models import ItemVoteData, ConfessVote, CommentVote
+from vote.models import ItemVoteData, ConfessionVote, CommentVote
 
 
 class ItemVoteDataSerializer(serializers.ModelSerializer):
@@ -8,9 +8,9 @@ class ItemVoteDataSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 
 
-class ConfessVoteSerializer(ItemVoteDataSerializer):
+class ConfessionVoteSerializer(ItemVoteDataSerializer):
 	class Meta:
-		model = ConfessVote
+		model = ConfessionVote
 		fields = '__all__'
 
 

@@ -1,6 +1,10 @@
-from django.db import models
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+from django.db import models, DataError
+from six import text_type
 
-from core.models import Confess, Comment
+from confession.models import Confession
+from comment.models import Comment
 
 
 class ItemVoteData(models.Model):
@@ -12,46 +16,61 @@ class ItemVoteData(models.Model):
 	vote = models.BooleanField(default=1, blank=False, null=False)
 
 
-class ConfessVote(ItemVoteData):
+class ConfessionVote(ItemVoteData):
 	class Meta:
-		db_table = 'confess_vote'
+		db_table = 'confession_vote'
 		unique_together = [
-			'confess_vote_self', 'vote_token'
+			'confession_vote_self', 'vote_token'
 		]
 	
-	confess_vote_self = models.ForeignKey(
-		'core.Confess', related_name='confess_vote_self_key', on_delete=models.CASCADE, blank=True, null=True)
+	confession_vote_self = models.ForeignKey(
+		'confession.Confession', related_name='confession_vote_self_key', on_delete=models.CASCADE, blank=True, null=True)
 	
 	def save(self, *args, **kwargs):
 		try:
-			confess = Confess.objects.get(id=self.confess_vote_self_id)
-		except:
-			confess = None
+			confession = Confession.objects.get(id=self.confession_vote_self_id)
+		except Confession.DoesNotExist:
+			confession = None
 		
-		if confess is not None:
+		if confession is not None:
 			if self.pk is None:
 				if self.vote == True:
-					confess.item_meta_data_like += 1
+					try:
+						confession.item_meta_data_like += 1
+					except TypeError:
+						confession.item_meta_data_like = 1
 				else:
-					confess.item_meta_data_dislike += 1
+					try:
+						confession.item_meta_data_dislike += 1
+					except TypeError:
+						confession.item_meta_data_dislike = 1
 			else:
-				current_confess_session = ConfessVote.objects.get(id=self.pk)
-				if current_confess_session.vote == self.vote:
+				current_confession_session = ConfessionVote.objects.get(id=self.pk)
+				if current_confession_session.vote == self.vote:
 					pass
 				else:
 					if self.vote == True:
-						confess.item_meta_data_like += 1
-						confess.item_meta_data_dislike += -1
+						try:
+							confession.item_meta_data_like += 1
+						except DataError:
+							confession.item_meta_data_like = 1
+						try:
+							confession.item_meta_data_dislike += -1
+						except DataError:
+							confession.item_meta_data_dislike = 0
 					else:
-						confess.item_meta_data_dislike += 1
-						confess.item_meta_data_like += -1
-			try:
-				confess.save()
-			except:
-				print('cant save')
+						try:
+							confession.item_meta_data_dislike += 1
+						except DataError:
+							confession.item_meta_data_dislike = 1
+						try:
+							confession.item_meta_data_like += -1
+						except DataError:
+							confession.item_meta_data_like = 0
+			confession.save()
+			super(ConfessionVote, self).save(*args, **kwargs)
 		else:
-			print('confess not found')
-		super(ConfessVote, self).save(*args, **kwargs)
+			print('confession not found')
 
 
 class CommentVote(ItemVoteData):
@@ -62,12 +81,12 @@ class CommentVote(ItemVoteData):
 		]
 	
 	comment_vote_self = models.ForeignKey(
-		'core.Comment', related_name='comment_vote_self_key', on_delete=models.CASCADE, blank=True, null=True)
+		'comment.Comment', related_name='comment_vote_self_key', on_delete=models.CASCADE, blank=True, null=True)
 	
 	def save(self, *args, **kwargs):
 		try:
 			comment = Comment.objects.get(id=self.comment_vote_self_id)
-		except:
+		except Comment.DoesNotExist:
 			comment = None
 		
 		if comment is not None:
@@ -87,10 +106,7 @@ class CommentVote(ItemVoteData):
 					else:
 						comment.item_meta_data_dislike += 1
 						comment.item_meta_data_like += -1
-			try:
-				comment.save()
-			except:
-				print('cant save')
+			comment.save()
+			super(CommentVote, self).save(*args, **kwargs)
 		else:
-			print('confess not found')
-		super(CommentVote, self).save(*args, **kwargs)
+			print('confession not found')

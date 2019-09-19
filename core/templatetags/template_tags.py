@@ -3,7 +3,6 @@ from django import template
 from datetime import datetime, timedelta
 from django.utils.timesince import timesince
 
-from core.models import Comment
 
 register = template.Library()
 
@@ -11,7 +10,7 @@ register = template.Library()
 @register.simple_tag
 def get_date(date):
 	now = datetime.now()
-	date_obj = datetime.strptime(date, '%d.%m.%Y')
+	date_obj = datetime.strptime(date, '%d.%m.%Y %H:%M:%S.%f')
 	
 	try:
 		difference = now - date_obj.replace(tzinfo=None)

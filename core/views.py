@@ -4,14 +4,11 @@ import uuid
 
 from collections import OrderedDict
 
-from django.db.models import Count
-
 from rest_framework.response import Response
-from rest_framework import viewsets, pagination, status
+from rest_framework import pagination
 from rest_framework.renderers import TemplateHTMLRenderer
 
-from core.models import Confess, Comment
-from core.serializers import ConfessSerializer
+from confession.views import ConfessionAPIMixin, AllQS, PopularQS, BestQS, MostLikesQS, MostDislikesQS, MostCommentsQS
 
 
 class CustomPageNumber(pagination.PageNumberPagination):
@@ -39,31 +36,14 @@ class CustomPageNumber(pagination.PageNumberPagination):
 		]))
 
 
-class CustomApiPageNumber(pagination.PageNumberPagination):
-	page_size = 10
-
-
-class ConfessAPIMixin(viewsets.ModelViewSet):
-	serializer_class = ConfessSerializer
-	pagination_class = CustomApiPageNumber
-	lookup_field = 'id'
-	
-	def create(self, request, *args, **kwargs):
-		serializer = self.get_serializer(data=request.data)
-		serializer.is_valid(raise_exception=True)
-		self.perform_create(serializer)
-		headers = self.get_success_headers(serializer.data)
-		return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-
-class ConfessHTMLMixin(ConfessAPIMixin):
+class ConfessionHTMLMixin(ConfessionAPIMixin):
 	renderer_classes = [TemplateHTMLRenderer]
 	template_name = 'main/index.html'
 	pagination_class = CustomPageNumber
 	
 	def finalize_response(self, request, response, *args, **kwargs):
 		token = uuid.uuid4()
-		response_obj = super(ConfessHTMLMixin, self).finalize_response(
+		response_obj = super(ConfessionHTMLMixin, self).finalize_response(
 			request, response, *args, **kwargs)
 		
 		try:
@@ -79,81 +59,25 @@ class ConfessHTMLMixin(ConfessAPIMixin):
 		return response
 
 
-class AllQS(viewsets.ModelViewSet):
-	queryset = Confess.objects.filter(confess_admin_approved=True).annotate(
-		num_comments=Count('comment_related_key'))
-
-
-class PopularQS(viewsets.ModelViewSet):
-	queryset = Confess.objects.filter(confess_admin_approved=True, item_meta_data_like__gte=200).annotate(
-		num_comments=Count('comment_related_key'))
-
-
-class BestQS(viewsets.ModelViewSet):
-	comments = Comment.objects.all().values_list('comment_related', flat=True).annotate(total=Count('id')).filter(
-		total__gte=2).values_list('comment_related', flat=True)
-	queryset = Confess.objects.filter(confess_admin_approved=True, item_meta_data_like__gte=200,
-									  id__in=comments).annotate(num_comments=Count('comment_related_key'))
-
-
-class MostLikesQS(viewsets.ModelViewSet):
-	queryset = Confess.objects.filter(confess_admin_approved=True).order_by('-item_meta_data_like').annotate(
-		num_comments=Count('comment_related_key'))
-
-
-class MostDislikesQS(viewsets.ModelViewSet):
-	queryset = Confess.objects.filter(confess_admin_approved=True).order_by('-item_meta_data_dislike').annotate(
-		num_comments=Count('comment_related_key'))
-
-
-class MostCommentsQS(viewsets.ModelViewSet):
-	queryset = Confess.objects.filter(confess_admin_approved=True).annotate(
-		num_comments=Count('comment_related_key')).order_by('-num_comments')
-
-
-class ConfessView(AllQS, ConfessHTMLMixin):
+class ConfessionView(AllQS, ConfessionHTMLMixin):
 	pass
 
 
-class ConfessApiView(AllQS, ConfessAPIMixin):
+class ConfessionPopularView(PopularQS, ConfessionHTMLMixin):
 	pass
 
 
-class ConfessPopularView(PopularQS, ConfessHTMLMixin):
+class ConfessionBestView(BestQS, ConfessionHTMLMixin):
 	pass
 
 
-class ConfessApiPopularView(PopularQS, ConfessAPIMixin):
+class ConfessionMostLikeView(MostLikesQS, ConfessionHTMLMixin):
 	pass
 
 
-class ConfessBestView(BestQS, ConfessHTMLMixin):
+class ConfessionMostDislikeView(MostDislikesQS, ConfessionHTMLMixin):
 	pass
 
 
-class ConfessApiBestView(BestQS, ConfessAPIMixin):
-	pass
-
-
-class ConfessMostLikeView(MostLikesQS, ConfessHTMLMixin):
-	pass
-
-
-class ConfessApiMostLikeView(MostLikesQS, ConfessAPIMixin):
-	pass
-
-
-class ConfessMostDislikeView(MostDislikesQS, ConfessHTMLMixin):
-	pass
-
-
-class ConfessApiMostDislikeView(MostDislikesQS, ConfessAPIMixin):
-	pass
-
-
-class ConfessMostCommentsView(MostCommentsQS, ConfessHTMLMixin):
-	pass
-
-
-class ConfessApiMostCommentsView(MostCommentsQS, ConfessAPIMixin):
+class ConfessionMostCommentsView(MostCommentsQS, ConfessionHTMLMixin):
 	pass

@@ -19,16 +19,19 @@ from django.contrib import admin
 from core import views as core_views
 
 urlpatterns = [
-	url(r'^$', core_views.ConfessView.as_view({'get': 'list', 'post': 'create'}), name='home'),
+	url(r'^$', core_views.ConfessionView.as_view({'get': 'list', 'post': 'create'}), name='home'),
 	url(r'^', include('core.urls')),
+	url(r'^', include('confession.urls')),
 	url(r'^', include('vote.urls')),
-	# url(r'^admin/', admin.site.urls),
+	url(r'^', include('voting.urls')),
+	url(r'^', include('comment.urls')),
+	url(r'^admin/', admin.site.urls),
 	# url(r'^confesses/$', views.ConfessView.as_view()),
 
 ]
 
 if settings.DEBUG:
-	import debug_toolbar
-	
-	urlpatterns = [url(r'^__debug__/', include(debug_toolbar.urls)), ] + urlpatterns
+	# import debug_toolbar
+	#
+	# urlpatterns = [url(r'^__debug__/', include(debug_toolbar.urls)), ] + urlpatterns
 	urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))]

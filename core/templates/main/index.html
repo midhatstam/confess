@@ -25,6 +25,7 @@
 
 <body>
 
+{% csrf_token %}
 <header class="header-global">
 	<nav id="navbar-main" class="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light headroom">
 		<div class="container">
@@ -150,39 +151,38 @@
 						<div class="tab-pane fade show active" id="tabs-icons-text-1" role="tabpanel"
 							 aria-labelledby="tabs-icons-text-1-tab">
 							{% for confess in results %}
-								<div class="card shadow border-0">
-									<div class="card-body">
-										<h6 class="text-{{ confess.confess_class }} text-uppercase float-left">
+								<div class="card shadow border-0 card-lift--hover">
+									<div class="card-body details">
+										<h6 class="text-{{ confess.css_class }} text-uppercase float-left">
 											#<span class="id-field">{{ confess.id }}</span></h6>
-										<h6 class="text-{{ confess.confess_class }} float-right">{% get_date confess.item_meta_data_date %}</h6>
-										<p class="description mt-5">{{ confess.confess_body }}</p>
+										<h6 class="text-{{ confess.css_class }} float-right">{% get_date confess.item_meta_data_date %}</h6>
+										<p class="description mt-5">{{ confess.body }}</p>
 										<div class="confess-actions">
 											<div class="confess-actions-panel">
-												<button class="btn btn-{{ confess.confess_class }} mt-4 confess-buttons like">
-												<span class="btn-inner--icon">
-													<i class="fa fa-thumbs-up" aria-hidden="true"></i>
-												</span>
-													<span class="btn-inner--text">{% firstof confess.item_meta_data_like '0' %}</span>
+												<button class="btn btn-{{ confess.css_class }} mt-4 confess-buttons elem-exc like">
+													<span class="btn-inner--icon elem-exc">
+														<i class="fa fa-thumbs-up elem-exc" aria-hidden="true"></i>
+													</span>
+													<span class="btn-inner--text elem-exc">{% firstof confess.item_meta_data_like '0' %}</span>
 												</button>
 
 												<button style="cursor:pointer; display: block; flex-grow:1;"
-														class="btn btn-{{ confess.confess_class }} mt-4 confess-buttons dislike">
-												<span class="btn-inner--icon">
-													<i class="fa fa-thumbs-down" aria-hidden="true"></i>
-												</span>
-													<span class="btn-inner--text">{% firstof confess.item_meta_data_dislike '0' %}</span>
+														class="btn btn-{{ confess.css_class }} mt-4 confess-buttons elem-exc dislike">
+													<span class="btn-inner--icon elem-exc">
+														<i class="fa fa-thumbs-down elem-exc" aria-hidden="true"></i>
+													</span>
+													<span class="btn-inner--text elem-exc">{% firstof confess.item_meta_data_dislike '0' %}</span>
 												</button>
 
 												<button style="cursor:pointer; display: block; flex-grow:1;"
-														class="btn btn-{{ confess.confess_class }} mt-4">
-												<span class="btn-inner--icon">
-													<i class="fa fa-commenting-o" aria-hidden="true"></i>
-												</span>
+														class="btn btn-{{ confess.css_class }} mt-4">
+													<span class="btn-inner--icon">
+														<i class="fa fa-commenting-o" aria-hidden="true"></i>
+													</span>
 													<span class="btn-inner--text">{{ confess.num_comments }}</span>
 												</button>
-
 												<button style="cursor:pointer; display: block; flex-grow:1;"
-														class="btn btn-{{ confess.confess_class }} mt-4">
+														class="btn btn-{{ confess.css_class }} mt-4">
 													<span class="btn-inner--text">Read more</span>
 												</button>
 											</div>
@@ -241,7 +241,8 @@
 				<div class="col-sm-12 col-lg-3">
 					<div class="card shadow border-0">
 						<div class="card-body">
-							<button type="button" class="btn btn-primary btn-lg btn-block">Admin ol!</button>
+							<button type="button" class="btn btn-primary btn-lg btn-block">Admin ol!
+							</button>
 							<hr>
 							<ul class="nav nav-pills nav-fill flex-column flex-sm-row" id="tabs-text"
 								role="tablist">
@@ -310,27 +311,33 @@
 												<button class="dropdown-item mb-sm-3 mb-md-0 {% if request.get_full_path == '/by_comments/' %}active{% else %}{% endif %}"
 														id="tabs-text-4-tab"
 														data-toggle="tab"
-														href="#tabs-icons-text-4" role="tab" aria-controls="tabs-text-4"
+														href="#tabs-icons-text-4" role="tab"
+														aria-controls="tabs-text-4"
 														aria-selected="false"><i class="fa fa-commenting-o"
-																				 aria-hidden="true"></i>sayısına göre
+																				 aria-hidden="true"></i>sayısına
+													göre
 												</button>
 											</li>
 											<li>
 												<button class="dropdown-item mb-sm-3 mb-md-0 {% if request.get_full_path == '/by_likes/' %}active{% else %}{% endif %}"
 														id="tabs-text-5-tab"
 														data-toggle="tab"
-														href="#tabs-icons-text-5" role="tab" aria-controls="tabs-text-5"
+														href="#tabs-icons-text-5" role="tab"
+														aria-controls="tabs-text-5"
 														aria-selected="false"><i class="fa fa-thumbs-up"
-																				 aria-hidden="true"></i>sayısına göre
+																				 aria-hidden="true"></i>sayısına
+													göre
 												</button>
 											</li>
 											<li>
 												<button class="dropdown-item mb-sm-3 mb-md-0 {% if request.get_full_path == '/by_dislikes/' %}active{% else %}{% endif %}"
 														id="tabs-text-6-tab"
 														data-toggle="tab"
-														href="#tabs-icons-text-6" role="tab" aria-controls="tabs-text-6"
+														href="#tabs-icons-text-6" role="tab"
+														aria-controls="tabs-text-6"
 														aria-selected="false"><i class="fa fa-thumbs-down"
-																				 aria-hidden="true"></i>sayısına göre
+																				 aria-hidden="true"></i>sayısına
+													göre
 												</button>
 											</li>
 										</ul>
@@ -344,6 +351,60 @@
 		</div>
 	</section>
 </main>
+
+<div class="modal fade" id="modal-notification" tabindex="-1" role="dialog"
+	 aria-labelledby="modal-notification" aria-hidden="true">
+	<div class="modal-lg modal-dialog modal-danger modal-dialog-centered modal-"
+		 role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h6 class="modal-title" id="modal-title-notification">Your attention
+					is
+					required</h6>
+				<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				{#				<div class="py-3 text-center">#}
+				{#					<i class="ni ni-bell-55 ni-3x"></i>#}
+				{#					<h4 class="heading mt-4">You should read this!</h4>#}
+				{#					<p>A small river named Duden flows by their place and supplies#}
+				{#						it with#}
+				{#						the necessary regelialia.</p>#}
+				{#				</div>#}
+			</div>
+			<div class="pt-lg-2">
+				<div class="text-center">
+					<a class="btn btn-outline- btn-icon comment-button" role="button" aria-pressed="true">
+					<span class="btn-inner--icon">
+						<i class="fa fa-commenting-o" aria-hidden="true"></i>
+					</span>
+						<span class="nav-link-inner--text">Leave comment</span>
+					</a>
+				</div>
+				<div class="comments-wrapper">
+					<div class="card border-top-0 bg-gradient-primary p-lg-5 mt-lg-4 hidden-elm new-comment-panel">
+						<input type="text" class="form-control mb-lg-3 username" placeholder="Username (optional)">
+						<textarea class="form-control bg-neutral comment-body"></textarea>
+						<div class="float-right mt-lg-4">
+							<a class="btn btn-outline- btn-icon send-comment-button" role="button" aria-pressed="true">
+								<span class="btn-inner--icon">
+									<i class="fa fa-commenting-o comment-icon" aria-hidden="true"></i>
+									<i class="ni ni-check-bold hidden-elm success-comment" aria-hidden="true"></i>
+								</span>
+								<span class="nav-link-inner--text">SEND</span>
+							</a>
+						</div>
+					</div>
+					<div class="comments-panel p-lg-5">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 <!-- Core -->
 <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>

@@ -30,9 +30,12 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
 	'core',
+	'confession',
 	'vote',
+	'voting',
+	'comment',
 	'rest_framework',
-	'debug_toolbar',
+	# 'debug_toolbar',
 	'django.contrib.admin',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
@@ -50,7 +53,7 @@ MIDDLEWARE = [
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
-	'debug_toolbar.middleware.DebugToolbarMiddleware',
+	# 'debug_toolbar.middleware.DebugToolbarMiddleware',
 	'silk.middleware.SilkyMiddleware',
 ]
 
@@ -107,7 +110,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Istanbul'
 
 USE_I18N = True
 
@@ -129,7 +133,7 @@ STATICFILES_DIRS = [
 # 	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
 # 	'PAGE_SIZE': 10
 # }
-
-INTERNAL_IPS = [
-	'127.0.0.1',
-]
+#
+# INTERNAL_IPS = [
+# 	'127.0.0.1',
+# ]
