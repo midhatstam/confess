@@ -7,11 +7,11 @@ services:
       - postgres_data:/var/lib/postgresql/data/
   web:
     build: .
-    command: python /code/manage.py runserver 0.0.0.0:8080
+    command: python /code/manage.py runserver 0.0.0.0:8888
     volumes:
-      - .:/code
+     - .:/code
     ports:
-      - 8080:8080
+      - 8888:8888
     depends_on:
       - db
 
