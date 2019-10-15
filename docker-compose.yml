@@ -1,20 +1,19 @@
-version: '3'
+version: '3.6'
 
 services:
   db:
-    image: postgres:10
-    environment:
-      - PGDATA=/var/lib/postgresql/data/pgdata
+    image: postgres:10.1-alpine
     volumes:
-      - /opt/pg-data:/var/lib/postgresql/data/pgdata
-    ports:
-      - "5432:5432"
+      - postgres_data:/var/lib/postgresql/data/
   web:
     build: .
-    command: python3 manage.py runserver 0.0.0.0:8080
+    command: python /code/manage.py runserver 0.0.0.0:8080
     volumes:
       - .:/code
     ports:
-      - "8080:8080"
+      - 8080:8080
     depends_on:
       - db
+
+volumes:
+  postgres_data:
