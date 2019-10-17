@@ -1,6 +1,6 @@
 from django.db.models import Prefetch
 from rest_framework import serializers
-from confession.models import Confession
+from confession.models import Confession, ApprovedConfession
 from core.serializers import ItemMetaDataSerializer
 from voting.models import Vote
 from voting.serializers import VoteSerializer
@@ -14,7 +14,7 @@ class ConfessionSerializer(ItemMetaDataSerializer):
 	dislikes_count = serializers.SerializerMethodField(required=False)
 
 	class Meta:
-		model = Confession
+		model = ApprovedConfession
 		fields = '__all__'
 		depth = 1
 
