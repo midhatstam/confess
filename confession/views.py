@@ -11,67 +11,75 @@ from voting.models import Vote
 
 
 class CustomApiPageNumber(pagination.PageNumberPagination):
-	page_size = 10
+    page_size = 10
 
 
 class ConfessionAPIMixin(viewsets.ModelViewSet):
-	serializer_class = ConfessionSerializer
-	pagination_class = CustomApiPageNumber
-	lookup_field = 'id'
-	
-	def create(self, request, *args, **kwargs):
-		serializer = self.get_serializer(data=request.data)
-		serializer.is_valid(raise_exception=True)
-		self.perform_create(serializer)
-		headers = self.get_success_headers(serializer.data)
-		return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    serializer_class = ConfessionSerializer
+    pagination_class = CustomApiPageNumber
+    lookup_field = 'id'
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def patch(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', True)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer=serializer)
+        return Response(serializer.data, status.HTTP_200_OK)
 
 
 class AllQS(viewsets.ModelViewSet):
-	queryset = ApprovedConfession.objects.all()
+    queryset = ApprovedConfession.objects.all()
 
 
 class PopularQS(viewsets.ModelViewSet):
-	queryset = ApprovedConfession.objects.filter(item_meta_data_like__gte=200)
+    queryset = ApprovedConfession.objects.filter(item_meta_data_like__gte=200)
 
 
 class BestQS(viewsets.ModelViewSet):
-	comments = Comment.objects.all().values_list('related', flat=True).annotate(total=Count('id')).filter(
-		total__gte=2).values_list('related', flat=True)
-	queryset = ApprovedConfession.objects.filter(item_meta_data_like__gte=200, id__in=comments)
+    comments = Comment.objects.all().values_list('related', flat=True).annotate(total=Count('id')).filter(
+        total__gte=2).values_list('related', flat=True)
+    queryset = ApprovedConfession.objects.filter(item_meta_data_like__gte=200, id__in=comments)
 
 
 class MostLikesQS(viewsets.ModelViewSet):
-	queryset = ApprovedConfession.objects.all().order_by('-item_meta_data_like')
+    queryset = ApprovedConfession.objects.all().order_by('-item_meta_data_like')
 
 
 class MostDislikesQS(viewsets.ModelViewSet):
-	queryset = ApprovedConfession.objects.all().order_by('-item_meta_data_dislike')
+    queryset = ApprovedConfession.objects.all().order_by('-item_meta_data_dislike')
 
 
 class MostCommentsQS(viewsets.ModelViewSet):
-	queryset = ApprovedConfession.objects.all().order_by('-num_comments')
+    queryset = ApprovedConfession.objects.all().order_by('-num_comments')
 
 
 class ConfessionApiView(AllQS, ConfessionAPIMixin):
-	pass
+    pass
 
 
 class ConfessionApiPopularView(PopularQS, ConfessionAPIMixin):
-	pass
+    pass
 
 
 class ConfessionApiBestView(BestQS, ConfessionAPIMixin):
-	pass
+    pass
 
 
 class ConfessionApiMostLikeView(MostLikesQS, ConfessionAPIMixin):
-	pass
+    pass
 
 
 class ConfessionApiMostDislikeView(MostDislikesQS, ConfessionAPIMixin):
-	pass
+    pass
 
 
 class ConfessionApiMostCommentsView(MostCommentsQS, ConfessionAPIMixin):
-	pass
+    pass

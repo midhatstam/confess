@@ -21,11 +21,11 @@ class ConfessionSerializer(ItemMetaDataSerializer):
 	def get_likes_count(self, obj):
 		try:
 			return len(obj.likes)
-		except TypeError:
+		except AttributeError:
 			return 0
 
 	def get_dislikes_count(self, obj):
 		try:
 			return len(obj.dislikes)
-		except TypeError:
+		except AttributeError:
 			return 0
