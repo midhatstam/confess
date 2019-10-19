@@ -3,6 +3,8 @@ import random
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 
+from confess import settings
+
 from confession.managers import ApprovedConfessionManager, AllConfessionsManager
 from core.models import ItemMetaData
 from voting.models import Vote
@@ -30,6 +32,9 @@ class Confession(ItemMetaData):
 	def save(self, *args, **kwargs):
 		if not self.css_class:
 			self.css_class = random.choices(self.class_options)[0][0]
+		if settings.DEBUG == 1:
+			self.admin_approved = 1
+			self.user_approved = 1
 		super(Confession, self).save(*args, **kwargs)
 	
 	def __str__(self):

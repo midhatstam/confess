@@ -6,3 +6,6 @@ Run those commands in shell:
   - Password: required (more than 8 characters, can't be common like 'password123')
 
 Go to: https://localhost:8080
+
+(Delete all containers, images and data:
+`docker system prune -a --volumes`)
