@@ -1,6 +1,6 @@
-from django.db.models import Count, Prefetch
+from django.db.models import Count, Prefetch, Sum, Q
 
-from rest_framework import viewsets, status, pagination
+from rest_framework import viewsets, status, pagination, generics
 from rest_framework.response import Response
 
 from confession.models import ApprovedConfession
@@ -32,21 +32,33 @@ class AllQS(viewsets.ModelViewSet):
 
 
 class PopularQS(viewsets.ModelViewSet):
-    queryset = ApprovedConfession.objects.filter(item_meta_data_like__gte=200)
+    queryset = ApprovedConfession.objects.filter(votes__gte=200)
 
 
 class BestQS(viewsets.ModelViewSet):
     comments = Comment.objects.all().values_list('related', flat=True).annotate(total=Count('id')).filter(
         total__gte=2).values_list('related', flat=True)
-    queryset = ApprovedConfession.objects.filter(item_meta_data_like__gte=200, id__in=comments)
+    queryset = ApprovedConfession.objects.filter(votes__gte=200, id__in=comments)
 
 
-class MostLikesQS(viewsets.ModelViewSet):
-    queryset = ApprovedConfession.objects.all().order_by('-item_meta_data_like')
+class MostLikesQS(generics.ListAPIView):
+    queryset = ApprovedConfession.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        serializer = self.get_serializer(self.queryset, many=True)
+        serializer_data = sorted(
+            serializer.data, key=lambda k: k['vote_diff'], reverse=True)
+        return Response(serializer_data)
 
 
 class MostDislikesQS(viewsets.ModelViewSet):
-    queryset = ApprovedConfession.objects.all().order_by('-item_meta_data_dislike')
+    queryset = ApprovedConfession.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        serializer = self.get_serializer(self.queryset, many=True)
+        serializer_data = sorted(
+            serializer.data, key=lambda k: k['vote_diff'], reverse=False)
+        return Response(serializer_data)
 
 
 class MostCommentsQS(viewsets.ModelViewSet):

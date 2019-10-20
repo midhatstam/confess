@@ -31,3 +31,9 @@ class CommentSerializer(ItemMetaDataSerializer):
 			return len(obj.dislikes)
 		except AttributeError:
 			return 0
+
+
+class CommentSerializerSingle(CommentSerializer):
+	class Meta:
+		model = Comment
+		exclude = ('related', )

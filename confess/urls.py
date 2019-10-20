@@ -26,6 +26,7 @@ urlpatterns = [
 	url(r'^', include('voting.urls')),
 	url(r'^', include('comment.urls')),
 	url(r'^admin/', admin.site.urls),
+	url(r'^adminpanel/', include('admin.urls'))
 	# url(r'^confesses/$', views.ConfessView.as_view()),
 
 ]
