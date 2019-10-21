@@ -1,4 +1,4 @@
-from rest_framework import pagination, generics
+from rest_framework import generics
 
 from comment.models import Comment
 from comment.serializers import CommentSerializer
@@ -15,7 +15,8 @@ class CommentMixin(generics.ListAPIView):
     lookup_field = 'id'
 
 
-class AllComments(CommentMixin):
+class AllComments(generics.ListAPIView):
+    serializer_class = CommentSerializer
     queryset = Comment.objects.all()
 
 

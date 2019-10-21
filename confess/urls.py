@@ -25,8 +25,9 @@ urlpatterns = [
 	path('', include('vote.urls')),
 	path('', include('voting.urls')),
 	path('', include('comment.urls')),
+	path('', include('reports.urls')),
 	path('admin/', admin.site.urls),
-	path('adminpanel/', include('admin.urls'))
+	path('adminpanel/', include('admin_panel.urls'))
 	# path('confesses/', views.ConfessView.as_view()),
 
 ]

@@ -1,3 +1,4 @@
+from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
 from core.serializers import ItemMetaDataSerializer
@@ -8,6 +9,7 @@ class CommentSerializer(ItemMetaDataSerializer):
 	reply_count = SerializerMethodField(required=False)
 	likes_count = SerializerMethodField(required=False)
 	dislikes_count = SerializerMethodField(required=False)
+	report_count = serializers.IntegerField(required=False)
 
 	class Meta:
 		model = Comment
