@@ -26,7 +26,7 @@ jobs:
             - 'venv'
       - run:
           name: Add python project to path
-          command: 'echo "$(realpath .)/app" > venv/lib/python3.7/site-packages/app.pth'
+          command: 'echo "$(realpath .)/code" > venv/lib/python3.7/site-packages/code.pth'
       - run:
           name: Run tests
           command: |
