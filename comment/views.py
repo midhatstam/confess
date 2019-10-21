@@ -1,4 +1,4 @@
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Count
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
 from rest_framework import viewsets
@@ -9,6 +9,7 @@ from confession.views import CustomApiPageNumber
 from confession.models import Confession
 from comment.models import Comment
 from comment.serializers import CommentSerializer
+from reports.models import ReportComment
 from voting.models import Vote
 
 
@@ -22,7 +23,7 @@ class CommentApiMixin(viewsets.ModelViewSet):
         queryset = Comment.objects.filter(related_id=kwargs['id'], is_parent=True).prefetch_related(
             Prefetch('votes', queryset=Vote.objects.filter(vote=1, content_type=5), to_attr='likes'),
             Prefetch('votes', queryset=Vote.objects.filter(vote=0, content_type=5), to_attr='dislikes')
-        ).order_by('-item_meta_data_date')
+        ).annotate(report_count=Count("comments")).order_by('-item_meta_data_date')
         serializer = CommentSerializer(queryset, many=True)
         return Response(serializer.data)
 

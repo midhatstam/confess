@@ -1,5 +1,5 @@
 from django.urls import path
-from admin.confession.views import *
+from admin_panel.confession.views import *
 
 urlpatterns = [
     path('confessions/', AllConfessions.as_view()),

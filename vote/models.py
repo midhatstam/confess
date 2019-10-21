@@ -1,10 +1,8 @@
-from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models, DataError
-from six import text_type
 
-from confession.models import Confession
 from comment.models import Comment
+from confession.models import Confession
 
 
 class ItemVoteData(models.Model):

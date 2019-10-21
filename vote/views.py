@@ -1,15 +1,12 @@
-from rest_framework.decorators import list_route
-
-from rest_framework.response import Response
-from rest_framework import viewsets, filters
-
 from django.apps import apps
+from rest_framework import viewsets, filters
+from rest_framework.decorators import list_route
+from rest_framework.response import Response
 
+from comment import serializers
+from confession import serializers
 from vote.models import ConfessionVote, CommentVote
 from vote.serializers import ConfessionVoteSerializer, CommentVoteSerializer
-
-from confession import serializers
-from comment import serializers
 
 
 def vote_up(self, request):

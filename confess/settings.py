@@ -34,6 +34,8 @@ INSTALLED_APPS = [
 	'vote',
 	'voting',
 	'comment',
+	'reports',
+	'admin_panel',
 	'rest_framework',
 	# 'debug_toolbar',
 	'django.contrib.admin',
