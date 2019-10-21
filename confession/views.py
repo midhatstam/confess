@@ -1,9 +1,9 @@
-from django.db.models import Count, Prefetch
+from django.db.models import Count, Prefetch, Sum, Q
 
-from rest_framework import viewsets, status, pagination
+from rest_framework import viewsets, status, pagination, generics
 from rest_framework.response import Response
 
-from confession.models import Confession
+from confession.models import ApprovedConfession
 from confession.serializers import ConfessionSerializer
 
 from comment.models import Comment
@@ -11,76 +11,79 @@ from voting.models import Vote
 
 
 class CustomApiPageNumber(pagination.PageNumberPagination):
-	page_size = 10
+    page_size = 10
 
 
 class ConfessionAPIMixin(viewsets.ModelViewSet):
-	serializer_class = ConfessionSerializer
-	pagination_class = CustomApiPageNumber
-	lookup_field = 'id'
-	
-	def create(self, request, *args, **kwargs):
-		serializer = self.get_serializer(data=request.data)
-		serializer.is_valid(raise_exception=True)
-		self.perform_create(serializer)
-		headers = self.get_success_headers(serializer.data)
-		return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    serializer_class = ConfessionSerializer
+    pagination_class = CustomApiPageNumber
+    lookup_field = 'id'
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class AllQS(viewsets.ModelViewSet):
-	queryset = Confession.objects.filter(admin_approved=True).annotate(
-		num_comments=Count('comment_related_key')).prefetch_related(
-		Prefetch('votes', queryset=Vote.objects.filter(vote=1, content_type=1), to_attr='likes'),
-		Prefetch('votes', queryset=Vote.objects.filter(vote=0, content_type=1), to_attr='dislikes')
-	)
+    queryset = ApprovedConfession.objects.all()
 
 
 class PopularQS(viewsets.ModelViewSet):
-	queryset = Confession.objects.filter(admin_approved=True, item_meta_data_like__gte=200).annotate(
-		num_comments=Count('comment_related_key'))
+    queryset = ApprovedConfession.objects.filter(votes__gte=200)
 
 
 class BestQS(viewsets.ModelViewSet):
-	comments = Comment.objects.all().values_list('related', flat=True).annotate(total=Count('id')).filter(
-		total__gte=2).values_list('related', flat=True)
-	queryset = Confession.objects.filter(admin_approved=True, item_meta_data_like__gte=200,
-									  id__in=comments).annotate(num_comments=Count('comment_related_key'))
+    comments = Comment.objects.all().values_list('related', flat=True).annotate(total=Count('id')).filter(
+        total__gte=2).values_list('related', flat=True)
+    queryset = ApprovedConfession.objects.filter(votes__gte=200, id__in=comments)
 
 
-class MostLikesQS(viewsets.ModelViewSet):
-	queryset = Confession.objects.filter(admin_approved=True).order_by('-item_meta_data_like').annotate(
-		num_comments=Count('comment_related_key'))
+class MostLikesQS(generics.ListAPIView):
+    queryset = ApprovedConfession.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        serializer = self.get_serializer(self.queryset, many=True)
+        serializer_data = sorted(
+            serializer.data, key=lambda k: k['vote_diff'], reverse=True)
+        return Response(serializer_data)
 
 
 class MostDislikesQS(viewsets.ModelViewSet):
-	queryset = Confession.objects.filter(admin_approved=True).order_by('-item_meta_data_dislike').annotate(
-		num_comments=Count('comment_related_key'))
+    queryset = ApprovedConfession.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        serializer = self.get_serializer(self.queryset, many=True)
+        serializer_data = sorted(
+            serializer.data, key=lambda k: k['vote_diff'], reverse=False)
+        return Response(serializer_data)
 
 
 class MostCommentsQS(viewsets.ModelViewSet):
-	queryset = Confession.objects.filter(admin_approved=True).annotate(
-		num_comments=Count('comment_related_key')).order_by('-num_comments')
+    queryset = ApprovedConfession.objects.all().order_by('-num_comments')
 
 
 class ConfessionApiView(AllQS, ConfessionAPIMixin):
-	pass
+    pass
 
 
 class ConfessionApiPopularView(PopularQS, ConfessionAPIMixin):
-	pass
+    pass
 
 
 class ConfessionApiBestView(BestQS, ConfessionAPIMixin):
-	pass
+    pass
 
 
 class ConfessionApiMostLikeView(MostLikesQS, ConfessionAPIMixin):
-	pass
+    pass
 
 
 class ConfessionApiMostDislikeView(MostDislikesQS, ConfessionAPIMixin):
-	pass
+    pass
 
 
 class ConfessionApiMostCommentsView(MostCommentsQS, ConfessionAPIMixin):
-	pass
+    pass

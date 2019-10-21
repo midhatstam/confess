@@ -1,31 +1,42 @@
-from django.db.models import Prefetch
 from rest_framework import serializers
-from confession.models import Confession
+
+from comment.serializers import CommentSerializer, CommentSerializerSingle
+from confession.models import Confession, ApprovedConfession
 from core.serializers import ItemMetaDataSerializer
-from voting.models import Vote
-from voting.serializers import VoteSerializer
 
 
 class ConfessionSerializer(ItemMetaDataSerializer):
 	num_comments = serializers.IntegerField(required=False)
+	comments = CommentSerializerSingle(many=True, required=False)
 	# likes = serializers.ListSerializer(child=VoteSerializer())
 	# dislikes = serializers.ListSerializer(child=VoteSerializer())
 	likes_count = serializers.SerializerMethodField(required=False)
 	dislikes_count = serializers.SerializerMethodField(required=False)
+	vote_diff = serializers.SerializerMethodField(required=False)
 
 	class Meta:
-		model = Confession
+		model = ApprovedConfession
 		fields = '__all__'
 		depth = 1
 
-	def get_likes_count(self, obj):
+	@staticmethod
+	def get_likes_count(obj):
 		try:
 			return len(obj.likes)
-		except TypeError:
+		except AttributeError:
 			return 0
 
-	def get_dislikes_count(self, obj):
+	@staticmethod
+	def get_dislikes_count(obj):
 		try:
 			return len(obj.dislikes)
-		except TypeError:
+		except AttributeError:
+			return 0
+
+	@staticmethod
+	def get_vote_diff(obj):
+		try:
+			diff = len(obj.likes) - len(obj.dislikes)
+			return diff
+		except AttributeError:
 			return 0
