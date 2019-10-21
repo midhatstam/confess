@@ -1,7 +1,7 @@
 """confess URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.11/topics/http/urls/
+    https://docs.djangoproject.com/en/2.2/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -13,26 +13,26 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.urls import path, include
 from django.conf import settings
 from django.contrib import admin
 from core import views as core_views
 
 urlpatterns = [
-	url(r'^$', core_views.ConfessionView.as_view({'get': 'list', 'post': 'create'}), name='home'),
-	url(r'^', include('core.urls')),
-	url(r'^', include('confession.urls')),
-	url(r'^', include('vote.urls')),
-	url(r'^', include('voting.urls')),
-	url(r'^', include('comment.urls')),
-	url(r'^admin/', admin.site.urls),
-	url(r'^adminpanel/', include('admin.urls'))
-	# url(r'^confesses/$', views.ConfessView.as_view()),
+	path('', core_views.ConfessionView.as_view({'get': 'list', 'post': 'create'}), name='home'),
+	path('', include('core.urls')),
+	path('', include('confession.urls')),
+	path('', include('vote.urls')),
+	path('', include('voting.urls')),
+	path('', include('comment.urls')),
+	path('admin/', admin.site.urls),
+	path('adminpanel/', include('admin.urls'))
+	# path('confesses/', views.ConfessView.as_view()),
 
 ]
 
 if settings.DEBUG:
 	# import debug_toolbar
 	#
-	# urlpatterns = [url(r'^__debug__/', include(debug_toolbar.urls)), ] + urlpatterns
-	urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))]
+	# urlpatterns = [path('__debug__/', include(debug_toolbar.urls)), ] + urlpatterns
+	urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]

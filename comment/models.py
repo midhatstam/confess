@@ -11,7 +11,7 @@ class Comment(ItemMetaData):
 	username = models.CharField(max_length=100, blank=True, null=True)
 	body = models.TextField()
 	is_parent = models.BooleanField(default=1, blank=False, null=False)
-	parent = models.ForeignKey("self", blank=True, null=True)
+	parent = models.ForeignKey("self", blank=True, null=True, on_delete=models.CASCADE)
 	related = models.ForeignKey(
 		"confession.Confession", related_name="comments", on_delete=models.CASCADE, blank=True, null=True)
 	removed = models.BooleanField(default=0, blank=False, null=False)

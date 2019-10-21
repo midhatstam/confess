@@ -1,7 +1,7 @@
-from django.conf.urls import url
+from django.urls import path
 from admin.comment.views import *
 
 urlpatterns = [
-    url(r'comments/$', AllComments.as_view()),
-    url(r'comments/(?P<id>[0-9]+)/$', CommentDetail.as_view()),
+    path('comments/', AllComments.as_view()),
+    path('comments/<int:id>/', CommentDetail.as_view()),
 ]

@@ -1,6 +1,6 @@
-from django.conf.urls import url, include
+from django.urls import path, include
 
 urlpatterns = [
-    url(r'', include('admin.confession.urls'), name='admin-confessions'),
-    url(r'', include('admin.comment.urls'), name='admin-comments'),
+    path('', include('admin.confession.urls'), name='admin-confessions'),
+    path('', include('admin.comment.urls'), name='admin-comments'),
 ]

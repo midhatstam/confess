@@ -1,6 +1,6 @@
-from django.conf.urls import url
+from django.urls import path
 from voting import views as voting_views
 
 urlpatterns = [
-	url(r'^api/voting/up/$', voting_views.VoteMixin.as_view({'post': 'up'})),
+	path('api/voting/up/', voting_views.VoteMixin.as_view({'post': 'up'})),
 ]
