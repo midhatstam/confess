@@ -9,11 +9,11 @@ jobs:
       DJANGO_SECRET_KEY: ef+-3suc6+7wh%-n1hr71v83-5wvu7)dl8au#w9fe@4jd-af3#
       DJANGO_READ_DOT_ENV_FILE: True
       DJANGO_SETTINGS_MODULE: config.settings.test
-    working_directory: ~/app
+    working_directory: ~/code
     steps:
       - checkout
       - restore_cache:
-          key: v001-app-{{ .Branch }}-{{ checksum "requirements/local.txt" }}
+          key: v001-code-{{ .Branch }}-{{ checksum "requirements.txt" }}
       - run:
           name: Install Python dependencies
           command: |
@@ -21,7 +21,7 @@ jobs:
             . venv/bin/activate
             pip install -r requirements.txt
       - save_cache:
-          key: v001-app-{{ .Branch }}-{{ checksum "requirements/local.txt" }}
+          key: v001-code-{{ .Branch }}-{{ checksum "requirements.txt" }}
           paths:
             - 'venv'
       - run:
@@ -37,7 +37,7 @@ jobs:
       # Important to note that we're using 2.7 here. This is because at the time of
       # writing, Fabric doesn't work with Python 3
       - image: circleci/python:2.7
-    working_directory: ~/app
+    working_directory: ~/code
     steps:
       - checkout
       - run:
