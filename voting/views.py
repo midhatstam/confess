@@ -22,16 +22,16 @@ class VoteMixin(viewsets.ModelViewSet):
 	
 	@list_route(methods=['POST', 'GET'])
 	def up(self, request):
-		token = request.POST.get('vote_token')
-		vote_params = request.POST.get('vote', None)
+		token = request.data.get('vote_token')
+		vote_params = request.data.get('vote', None)
 		vote_dict = {
 			"true": True,
 			"false": False
 		}
 		
 		vote = vote_dict[vote_params]
-		id = request.POST.get("id", None)
-		model = request.POST.get("model").lower()
+		id = request.data.get("id", None)
+		model = request.data.get("model").lower()
 		content_type = ContentType.objects.get(app_label=model, model=model)
 		instance = content_type.get_object_for_this_type(pk=id)
 		data = {'vote_token': token, 'content_type': content_type.id, 'vote': vote, 'object_id': instance.id}
