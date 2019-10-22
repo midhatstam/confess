@@ -1,0 +1,153 @@
+.confess-actions {
+	position: relative;
+}
+
+.confess-actions-panel {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+}
+
+.confess-buttons {
+	cursor: pointer;
+	display: block;
+	flex-grow: 1;
+}
+
+.comment-buttons {
+	cursor: pointer;
+	display: block;
+	flex-grow: 1;
+}
+
+button:focus {
+	outline: none;
+}
+
+ul > li {
+	padding-right: 0 !important;
+	display: block;
+	width: 100%;
+}
+
+.search-bar {
+	width: 100%;
+}
+
+.s129 {
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-ms-flex-align: center;
+	align-items: center;
+	font-family: 'Montserrat', sans-serif;
+}
+
+.s129 form {
+	width: 100%;
+	max-width: 390px;
+}
+
+.s129 form .inner-form {
+	width: 100%;
+}
+
+.s129 form .inner-form .input-field {
+	width: 100%;
+	position: relative;
+}
+
+.s129 form .inner-form .input-field input {
+	height: 100%;
+	width: 100%;
+	background: transparent;
+	border: 0;
+	border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+	display: block;
+	width: 100%;
+	padding: 10px 32px 10px 25px;
+	color: #fff;
+	transition: all .2s ease-out, color .2s ease-out;
+}
+
+.s129 form .inner-form .input-field input.placeholder {
+	color: #fff;
+}
+
+.s129 form .inner-form .input-field input:-moz-placeholder {
+	color: #fff;
+}
+
+.s129 form .inner-form .input-field input::-webkit-input-placeholder {
+	color: #fff;
+}
+
+.s129 form .inner-form .input-field input:hover, .s129 form .inner-form .input-field input:focus {
+	box-shadow: none;
+	outline: 0;
+	border-bottom-color: #fff;
+}
+
+.s129 form .inner-form .input-field .btn-search {
+	width: 70px;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-align: center;
+	align-items: center;
+	position: absolute;
+	left: 0;
+	height: 100%;
+	background: transparent;
+	border: 0;
+	padding: 0;
+	cursor: pointer;
+}
+
+.s129 form .inner-form .input-field .btn-search i {
+	color: #fff;
+	/*width: 50px;*/
+	/*height: 50px;*/
+}
+
+.s129 form .inner-form .input-field .btn-search:hover, .s129 form .inner-form .input-field .btn-search:focus {
+	outline: 0;
+	box-shadow: none;
+}
+
+@media screen and (max-width: 767px) {
+	.s129 form .inner-form .input-field {
+		margin-bottom: 20px;
+		height: 50px;
+	}
+
+	.s129 form .inner-form .input-field input {
+		padding-left: 45px;
+	}
+
+	.s129 form .inner-form .input-field .btn-search i {
+		width: 36px;
+		height: 36px;
+	}
+}
+
+.new-card ~ .card {
+	opacity: 0.5;
+}
+
+.details:hover {
+	cursor: pointer;
+}
+
+.comment-card {
+	margin: 0 0 10px 0 !important;
+	border-radius: 0 !important;
+}
+
+.card-body-sm {
+	padding: 1.5rem 1.5rem 0.5rem 1.5rem !important;
+}
+
+.hidden-elm {
+	display: none;
+}
