@@ -142,7 +142,7 @@ STATICFILES_DIRS = [
 	'static/',
 ]
 
-STATIC_ROOT = '/static/'
+# STATIC_ROOT = '/static/'
 
 # REST_FRAMEWORK = {
 # 	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -159,4 +159,4 @@ CORS_ORIGIN_ALLOW_ALL = True
 # del DATABASES['default']['OPTIONS']['sslmode']
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
