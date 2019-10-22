@@ -60,6 +60,7 @@ MIDDLEWARE = [
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 	# 'debug_toolbar.middleware.DebugToolbarMiddleware',
 	'silk.middleware.SilkyMiddleware',
+	'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'confess.urls'
@@ -159,3 +160,5 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 # PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
