@@ -1,1 +1,1 @@
-web: gunicorn confess.wsgi --log-file -
+web: gunicorn confess.wsgi
