@@ -157,3 +157,4 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 django_heroku.settings(locals())
 del DATABASES['default']['OPTIONS']['sslmode']
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
