@@ -32,34 +32,47 @@ jobs:
           command: |
             . venv/bin/activate
             python manage.py test
-  deploy-job:
+  deploy:
     docker:
-      # Important to note that we're using 2.7 here. This is because at the time of
-      # writing, Fabric doesn't work with Python 3
-      - image: circleci/python:2.7
-    working_directory: ~/code
+      - image: buildpack-deps:trusty
     steps:
       - checkout
-      - run:
-          name: Deploy via Fabric
+          - run:
+          name: Deploy Master to Heroku
           command: |
-            sudo pip install fabric==1.14.0
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              fab -f .circleci/deploy.py -i ~/.ssh/id_rsa production deploy
-            else
-              fab -f .circleci/deploy.py -i ~/.ssh/id_rsa staging deploy
-            fi
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+
+#  deploy-job:
+#    docker:
+#      # Important to note that we're using 2.7 here. This is because at the time of
+#      # writing, Fabric doesn't work with Python 3
+#      - image: circleci/python:2.7
+#    working_directory: ~/code
+#    steps:
+#      - checkout
+#      - run:
+#          name: Deploy via Fabric
+#          command: |
+#            sudo pip install fabric==1.14.0
+#            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+#              fab -f .circleci/deploy.py -i ~/.ssh/id_rsa production deploy
+#            else
+#              fab -f .circleci/deploy.py -i ~/.ssh/id_rsa staging deploy
+#            fi
+
 
 
 workflows:
   version: 2
   build-deploy:
     jobs:
-      - build-job:
+      - build:
+      - deploy:
+          requires:
+            - build
           filters:
             branches:
               only:
-                - develop
                 - master
 #      - deploy-job:
 #          requires:
