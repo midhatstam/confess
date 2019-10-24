@@ -32,7 +32,7 @@ jobs:
           command: |
             . venv/bin/activate
             python manage.py test
-  deploy:
+  deploy-job:
     docker:
       - image: buildpack-deps:trusty
     steps:
@@ -67,9 +67,9 @@ workflows:
   build-deploy:
     jobs:
       - build:
-      - deploy:
+      - deploy-job:
           requires:
-            - build
+            - build-job
           filters:
             branches:
               only:
