@@ -38,10 +38,6 @@ jobs:
             set -x
             docker system prune -a --volumes -f
             docker-compose up -d --build
-      - run:
-          name: Run tests
-          command: |
-            set -x
             docker-compose exec web python code/manage.py test
   deploy-job:
     docker:
