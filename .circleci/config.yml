@@ -41,8 +41,7 @@ jobs:
       - run:
           name: All containers
           command: |
-            docker images
-            docker ps
+            docker exec code_web python /code/manage.py test
   deploy-job:
     docker:
       - image: buildpack-deps:trusty
