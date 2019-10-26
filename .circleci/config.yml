@@ -37,12 +37,12 @@ jobs:
           command: |
             set -x
             docker system prune -a --volumes -f
-            docker-compose up --build
+            docker-compose up -d --build
       - run:
           name: Run tests
           command: |
             set -x
-            docker-compose exec web python manage.py test
+            docker-compose exec web python code/manage.py test
   deploy-job:
     docker:
       - image: buildpack-deps:trusty
