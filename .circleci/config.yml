@@ -2,8 +2,8 @@ version: 2
 jobs:
   build-job:
     docker:
-      - image: python:3.8.0-alpine
-      - image: postgres:12.0-alpine
+      - image: circleci/python:3.8.0-alpine
+      - image: circleci/postgres:12.0-alpine
     environment:
       DATABASE_URL: postgres://postgres:@localhost/circle_test
       DJANGO_SECRET_KEY: ef+-3suc6+7wh%-n1hr71v83-5wvu7)dl8au#w9fe@4jd-af3#
@@ -40,6 +40,7 @@ jobs:
             curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
             chmod +x ~/docker-compose
             mv ~/docker-compose /usr/local/bin/docker-compose
+            set -x
             docker-compose up -d --build
       - run:
           name: Run tests
