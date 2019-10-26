@@ -41,7 +41,7 @@ jobs:
       - run:
           name: Run tests
           command: |
-            docker-compose exec web python manage.py test
+            docker-compose exec app_web_1 python manage.py test
   deploy-job:
     docker:
       - image: buildpack-deps:trusty
