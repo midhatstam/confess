@@ -31,14 +31,15 @@ jobs:
 #      - run:
 #          name: Add python project to path
 #          command: 'echo "$(realpath .)/code" > venv/lib/python3.7/site-packages/code.pth'
+      - setup_remote_docker
       - run:
           name: Install Docker Compose
           command: |
+            set -x
             apk update && apk add curl curl-dev
             curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
             chmod +x ~/docker-compose
             mv ~/docker-compose /usr/local/bin/docker-compose
-            set -x
             docker-compose up -d --build
       - run:
           name: Run tests
