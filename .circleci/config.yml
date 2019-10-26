@@ -33,6 +33,11 @@ jobs:
 #          command: 'echo "$(realpath .)/code" > venv/lib/python3.7/site-packages/code.pth'
       - setup_remote_docker
       - run:
+          name: List
+          command: |
+            pwd
+            ls
+      - run:
           name: Start container and verify it's working
           command: |
             set -x
