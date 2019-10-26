@@ -15,4 +15,4 @@ COPY ./entrypoint.sh /code/
 COPY . /code/
 
 RUN ls /code/
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["~/code/entrypoint.sh"]
