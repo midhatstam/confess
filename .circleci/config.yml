@@ -42,7 +42,6 @@ jobs:
       - run:
           name: Start container and verify it is working
           command: |
-            set -x
             docker-compose up -d --build
       - run:
           name: Run tests
