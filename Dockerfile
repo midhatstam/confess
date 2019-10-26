@@ -15,4 +15,4 @@ COPY ./entrypoint.sh /code/
 COPY . /code/
 
 RUN ls /code/
-ENTRYPOINT ["~/code/entrypoint.sh"]
+ENTRYPOINT ["/home/circleci/code/entrypoint.sh"]
