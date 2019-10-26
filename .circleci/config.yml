@@ -41,7 +41,8 @@ jobs:
       - run:
           name: All containers
           command: |
-            docker run code_web
+            docker run -d code_web
+            docker exec code_web python /code/manage.py migrate
   deploy-job:
     docker:
       - image: buildpack-deps:trusty
