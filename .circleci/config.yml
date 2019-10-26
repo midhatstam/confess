@@ -39,10 +39,9 @@ jobs:
             docker system prune -a --volumes -f
             docker-compose up --build -d
       - run:
-          name: All containers
+          name: Run container
           command: |
             docker run -d code_web
-            docker exec code_web python /code/manage.py migrate
   deploy-job:
     docker:
       - image: buildpack-deps:trusty
