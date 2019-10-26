@@ -2,8 +2,8 @@ version: 2
 jobs:
   build-job:
     docker:
-      - image: python:3.8.0-alpine
-      - image: postgres:12.0-alpine
+      - image: circleci/python:3.8.0
+      - image: circleci/postgres:12.0
     environment:
       DATABASE_URL: postgres://postgres:@localhost/circle_test
       DJANGO_SECRET_KEY: ef+-3suc6+7wh%-n1hr71v83-5wvu7)dl8au#w9fe@4jd-af3#
