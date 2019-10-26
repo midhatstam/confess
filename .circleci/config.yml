@@ -41,8 +41,8 @@ jobs:
       - run:
           name: All containers
           command: |
-            docker run -it --entrypoint=/bin/bash code_web_1
-            docker exec code_web_1 python /code/manage.py test
+            docker images
+            docker ps
   deploy-job:
     docker:
       - image: buildpack-deps:trusty
