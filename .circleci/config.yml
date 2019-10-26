@@ -9,7 +9,7 @@ jobs:
       DJANGO_SECRET_KEY: ef+-3suc6+7wh%-n1hr71v83-5wvu7)dl8au#w9fe@4jd-af3#
       DJANGO_READ_DOT_ENV_FILE: True
       DJANGO_SETTINGS_MODULE: confess.settings
-    working_directory: ~/code
+    working_directory: ~/app
     steps:
       - checkout
 #      - restore_cache:

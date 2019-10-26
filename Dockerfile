@@ -14,5 +14,4 @@ RUN pip install -r requirements.txt
 COPY ./entrypoint.sh /code/
 COPY . /code/
 
-RUN ls /code/
-ENTRYPOINT ["/home/circleci/code/entrypoint.sh"]
+ENTRYPOINT ["/code/entrypoint.sh"]
