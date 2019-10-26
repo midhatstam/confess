@@ -25,6 +25,10 @@ jobs:
           paths:
             - 'venv'
       - run:
+          name: Migrate
+          command: |
+            python manage.py migrate
+      - run:
           name: Add python project to path
           command: 'echo "$(realpath .)/code" > venv/lib/python3.7/site-packages/code.pth'
       - run:
