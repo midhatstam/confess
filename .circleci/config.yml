@@ -36,7 +36,7 @@ jobs:
           name: Start container and verify it's working
           command: |
             set -x
-            docker system prune
+            docker system prune -a --volumes -f
             docker-compose up -d --build
       - run:
           name: Run tests
