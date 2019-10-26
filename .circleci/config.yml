@@ -38,10 +38,7 @@ jobs:
             curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
             chmod +x ~/docker-compose
             mv ~/docker-compose /usr/local/bin/docker-compose
-      - setup_remote_docker
-      - run:
-          name: Start container and verify it is working
-          command: |
+            set -x
             docker-compose up -d --build
       - run:
           name: Run tests
