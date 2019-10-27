@@ -15,7 +15,7 @@ class ConfessionSerializer(ItemMetaDataSerializer):
 	vote_diff = serializers.SerializerMethodField(required=False, read_only=True)
 
 	class Meta:
-		model = ApprovedConfession
+		model = Confession
 		fields = '__all__'
 		depth = 1
 

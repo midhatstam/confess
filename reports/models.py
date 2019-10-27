@@ -6,15 +6,6 @@ from comment.models import Comment
 from core.models import ItemMetaData
 
 
-class ReportConfession(ItemMetaData):
-    class Meta:
-        db_table = 'report_confession'
-
-    confession = models.ForeignKey(Confession, on_delete=models.CASCADE, related_name="confessions")
-    reason = models.TextField(blank=True, null=True)
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-
-
 class ReportComment(ItemMetaData):
     class Meta:
         db_table = 'report_comment'
