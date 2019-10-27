@@ -41,7 +41,7 @@ jobs:
       - run:
           name: Run container
           command: |
-            docker run -d code_web --name confess
+            docker run -d --name confess code_web
       - run:
           name: Run tests
           command: |
