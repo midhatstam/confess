@@ -13,7 +13,9 @@ services:
       - 32768:5432
   web:
     build: .
-    command: python /code/manage.py runserver 0.0.0.0:8008
+    command: |
+      sh /code/entrypoint.sh
+      python /code/manage.py runserver 0.0.0.0:8008
     volumes:
      - .:/code
     ports:
