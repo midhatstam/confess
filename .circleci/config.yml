@@ -31,8 +31,7 @@ jobs:
 #      - run:
 #          name: Add python project to path
 #          command: 'echo "$(realpath .)/code" > venv/lib/python3.7/site-packages/code.pth'
-      - setup_remote_docker:
-          docker_layer_caching: true
+      - setup_remote_docker
       - run:
           name: Start container and verify it's working
           command: |
@@ -46,6 +45,7 @@ jobs:
       - run:
           name: Run tests
           command: |
+            docker run -d confess
             docker exec -it confess ls
   deploy-job:
     docker:
