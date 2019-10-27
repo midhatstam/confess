@@ -20,7 +20,7 @@ class CommentApiMixin(viewsets.ModelViewSet):
     lookup_field = 'id'
 
     def list(self, request, *args, **kwargs):
-        queryset = Comment.objects.filter(related_id=kwargs['id'], is_parent=True).prefetch_related(
+        queryset = Comment.objects.filter(related_id=kwargs['id'], is_parent=True, reported=False).prefetch_related(
             Prefetch('votes', queryset=Vote.objects.filter(vote=1, content_type=5), to_attr='likes'),
             Prefetch('votes', queryset=Vote.objects.filter(vote=0, content_type=5), to_attr='dislikes')
         ).annotate(report_count=Count("comments")).order_by('-item_meta_data_date')
@@ -48,7 +48,8 @@ class CommentDetailsApiMixin(viewsets.ModelViewSet):
         queryset = Comment.objects.filter(
             related_id=kwargs['id'],
             is_parent=False,
-            parent_id=kwargs['comment_id']
+            parent_id=kwargs['comment_id'],
+            reported=False
         ).prefetch_related(
             Prefetch('votes', queryset=Vote.objects.filter(vote=1, content_type=5), to_attr='likes'),
             Prefetch('votes', queryset=Vote.objects.filter(vote=0, content_type=5), to_attr='dislikes')

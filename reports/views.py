@@ -17,7 +17,7 @@ class ReportCommentAPI(viewsets.ModelViewSet):
     lookup_field = 'id'
 
     def list(self, request, *args, **kwargs):
-        queryset = ReportComment.objects.filter(comment=kwargs['id']).order_by('-item_meta_data_date')
+        queryset = ReportComment.objects.filter(comment_id=kwargs['id']).order_by('-item_meta_data_date')
         serializer = ReportCommentSerializer(queryset, many=True)
         return Response(serializer.data)
 
