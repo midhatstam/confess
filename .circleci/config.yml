@@ -45,6 +45,7 @@ jobs:
       - run:
           name: Run tests
           command: |
+            docker images --all
             docker run -d confess
             docker exec -it confess ls
   deploy-job:
