@@ -41,11 +41,11 @@ jobs:
       - run:
           name: Run container
           command: |
-            docker run -d code_web
+            docker run -d code_web --name confess
       - run:
           name: Run tests
           command: |
-            docker ps -all
+            docker exec -it confess ls
   deploy-job:
     docker:
       - image: buildpack-deps:trusty
