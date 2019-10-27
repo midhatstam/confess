@@ -42,6 +42,10 @@ jobs:
           name: Run container
           command: |
             docker run -d code_web
+      - run:
+          name: Run tests
+          command: |
+            docker exec -it code_web ls
   deploy-job:
     docker:
       - image: buildpack-deps:trusty
