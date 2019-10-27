@@ -1,37 +1,48 @@
-from rest_framework import generics
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from comment.models import Comment
 from comment.serializers import CommentSerializer
-from core.views import CustomPageNumber
+from confession.views import CustomApiPageNumber
+from reports.models import ReportComment
+from reports.serializers import ReportCommentSerializer
 
 
-class AdminApiPageNumber(CustomPageNumber):
+class AdminApiPageNumber(CustomApiPageNumber):
     page_size = 25
 
 
-class CommentMixin(generics.ListAPIView):
+class CommentMixin(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     pagination_class = AdminApiPageNumber
     lookup_field = 'id'
 
+    def update(self, request, *args, **kwargs):
+        instance = Comment.objects.filter(id=request.data['id']).first()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
 
-class AllComments(generics.ListAPIView):
-    serializer_class = CommentSerializer
-    queryset = Comment.objects.all()
+
+class AllComments(CommentMixin):
+    queryset = Comment.objects.filter(reported=False)
 
 
-class CommentDetail(generics.RetrieveAPIView):
-    serializer_class = CommentSerializer
-    pagination_class = AdminApiPageNumber
+class CommentDetail(CommentMixin):
     queryset = Comment.objects.all()
     lookup_field = 'id'
 
 
-# TODO: Reported comments
-class ReportedConfessions(CommentMixin):
-    pass
+class ReportedComments(CommentMixin):
+    queryset = Comment.objects.filter(reported=True)
 
 
-# TODO: Blocked comments
-class BlockedConfessions(CommentMixin):
-    pass
+class CommentReports(viewsets.ModelViewSet):
+    serializer_class = ReportCommentSerializer
+
+    def reports(self, request, *args, **kwargs):
+        queryset = ReportComment.objects.filter(comment__id=request.data['id'])
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
