@@ -6,7 +6,7 @@ from core.serializers import ItemMetaDataSerializer
 
 
 class ConfessionSerializer(ItemMetaDataSerializer):
-	num_comments = serializers.IntegerField(required=False)
+	num_comments = serializers.IntegerField(required=False, read_only=True)
 	comments = CommentSerializerSingle(many=True, required=False)
 	# likes = serializers.ListSerializer(child=VoteSerializer())
 	# dislikes = serializers.ListSerializer(child=VoteSerializer())
