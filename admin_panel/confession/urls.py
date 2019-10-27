@@ -7,5 +7,5 @@ urlpatterns = [
     path('confessions/user-approved/', UserApprovedConfessions.as_view({'get': 'list', 'patch': 'update'})),
     path('confessions/unapproved/', UnapprovedConfessions.as_view({'get': 'list', 'patch': 'update'})),
     path('confessions/reported/', ReportedConfessions.as_view({'get': 'list', 'patch': 'update'})),
-    path('confessions/<int:id>/', ConfessionDetail.as_view({'get': 'list'})),
+    path('confessions/<int:id>/', ConfessionDetail.as_view({'get': 'retrieve'})),
 ]
