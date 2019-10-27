@@ -46,7 +46,7 @@ jobs:
           name: Run tests
           command: |
             docker images --all
-            docker start code_web
+            docker start confess
             docker exec -it confess ls
   deploy-job:
     docker:
