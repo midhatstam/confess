@@ -3,6 +3,7 @@ from rest_framework.fields import SerializerMethodField
 
 from core.serializers import ItemMetaDataSerializer
 from comment.models import Comment
+from reports.models import ReportComment
 
 
 class CommentSerializer(ItemMetaDataSerializer):
@@ -15,7 +16,7 @@ class CommentSerializer(ItemMetaDataSerializer):
 		model = Comment
 		fields = '__all__'
 		depth = 1
-		read_only_fields = ('related',)
+		read_only_fields = ('related', 'reply_count', 'likes_count', 'dislikes_count', 'report_count')
 		
 	def get_reply_count(self, obj):
 		if obj.item_is_parent:
@@ -31,6 +32,12 @@ class CommentSerializer(ItemMetaDataSerializer):
 	def get_dislikes_count(self, obj):
 		try:
 			return len(obj.dislikes)
+		except AttributeError:
+			return 0
+
+	def get_report_count(self, obj):
+		try:
+			return ReportComment.objects.filter(comment_id=obj.id).count()
 		except AttributeError:
 			return 0
 
