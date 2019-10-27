@@ -8,5 +8,5 @@ class ItemMetaDataSerializer(serializers.ModelSerializer):
 	
 	class Meta:
 		model = ItemMetaData
-		exclude = ('item_meta_data_like', 'item_meta_data_dislike',)
+		fields = '__all__'
 		abstract = True

@@ -19,21 +19,21 @@ from django.contrib import admin
 from core import views as core_views
 
 urlpatterns = [
-	path('', core_views.ConfessionView.as_view({'get': 'list', 'post': 'create'}), name='home'),
-	path('', include('core.urls')),
-	path('', include('confession.urls')),
-	path('', include('vote.urls')),
-	path('', include('voting.urls')),
-	path('', include('comment.urls')),
-	path('', include('reports.urls')),
-	path('admin/', admin.site.urls),
-	path('adminpanel/', include('admin_panel.urls'))
-	# path('confesses/', views.ConfessView.as_view()),
+    path('', core_views.ConfessionView.as_view({'get': 'list', 'post': 'create'}), name='home'),
+    path('', include('core.urls')),
+    path('', include('confession.urls')),
+    path('', include('vote.urls')),
+    path('', include('voting.urls')),
+    path('', include('comment.urls')),
+    path('', include('reports.urls')),
+    path('admin/', admin.site.urls),
+    path('adminpanel/', include('admin_panel.urls'))
+    # path('confesses/', views.ConfessView.as_view()),
 
 ]
 
-if settings.DEBUG:
-	# import debug_toolbar
-	#
-	# urlpatterns = [path('__debug__/', include(debug_toolbar.urls)), ] + urlpatterns
-	urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]
+# if settings.DEBUG:
+# import debug_toolbar
+#
+# urlpatterns = [path('__debug__/', include(debug_toolbar.urls)), ] + urlpatterns
+# urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]

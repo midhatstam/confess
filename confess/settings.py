@@ -45,7 +45,7 @@ INSTALLED_APPS = [
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
-	'silk',
+	#'silk',
 	'corsheaders'
 ]
 
@@ -59,7 +59,7 @@ MIDDLEWARE = [
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 	# 'debug_toolbar.middleware.DebugToolbarMiddleware',
-	'silk.middleware.SilkyMiddleware',
+	# 'silk.middleware.SilkyMiddleware',
 	'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
