@@ -1,6 +1,7 @@
-from rest_framework import pagination, generics
+from rest_framework import pagination, generics, viewsets
+from rest_framework.response import Response
 
-from confession.models import Confession
+from confession.models import Confession, AllConfession, ApprovedConfession, AdminApprovedConfession, ReportedConfession
 from confession.serializers import ConfessionSerializer
 
 
@@ -8,41 +9,41 @@ class AdminApiPageNumber(pagination.PageNumberPagination):
     page_size = 25
 
 
-class ConfessionMixin(generics.ListAPIView):
+class ConfessionMixin(viewsets.ModelViewSet):
     serializer_class = ConfessionSerializer
     pagination_class = AdminApiPageNumber
     lookup_field = 'id'
 
+    def update(self, request, *args, **kwargs):
+        instance = AllConfession.objects.filter(id=request.data['id']).first()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
 
 class AllConfessions(ConfessionMixin):
-    queryset = Confession.objects.all()
+    queryset = AllConfession.objects.all()
     pagination_class = AdminApiPageNumber
 
 
 class AdminApprovedConfessions(ConfessionMixin):
-    queryset = Confession.objects.filter(admin_approved=True, user_approved=False)
+    queryset = AdminApprovedConfession.objects.all()
 
 
 class UserApprovedConfessions(ConfessionMixin):
-    queryset = Confession.objects.filter(admin_approved=True, user_approved=True)
+    queryset = ApprovedConfession.objects.all()
 
 
 class UnapprovedConfessions(ConfessionMixin):
     queryset = Confession.objects.filter(admin_approved=False, user_approved=False)
 
 
-class ConfessionDetail(generics.RetrieveAPIView):
+class ConfessionDetail(viewsets.ModelViewSet):
     serializer_class = ConfessionSerializer
-    pagination_class = AdminApiPageNumber
     queryset = Confession.objects.all()
     lookup_field = 'id'
 
 
-# TODO: Reported confessions
 class ReportedConfessions(ConfessionMixin):
-    pass
-
-
-# TODO: Blocked confessions
-class BlockedConfessions(ConfessionMixin):
-    pass
+    queryset = ReportedConfession.objects.all()
