@@ -25,6 +25,7 @@ class Confession(ItemMetaData):
 	css_class = models.CharField(choices=class_options, max_length=15, blank=False, null=True, default=None)
 	admin_approved = models.BooleanField(default=0, blank=False, null=False)
 	user_approved = models.BooleanField(default=0, blank=False, null=False)
+	reported = models.BooleanField(default=0, blank=False, null=False)
 	votes = GenericRelation(Vote, related_query_name="confession_votes")
 
 	objects = AllConfessionsManager()

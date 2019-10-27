@@ -20,3 +20,4 @@ class AllConfessionsManager(models.Manager):
             Prefetch('votes', queryset=Vote.objects.filter(vote=1, content_type=1), to_attr='likes'),
             Prefetch('votes', queryset=Vote.objects.filter(vote=0, content_type=1), to_attr='dislikes')
         ).annotate(num_comments=Count('comments'))
+

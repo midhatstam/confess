@@ -10,9 +10,9 @@ class ConfessionSerializer(ItemMetaDataSerializer):
 	comments = CommentSerializerSingle(many=True, required=False)
 	# likes = serializers.ListSerializer(child=VoteSerializer())
 	# dislikes = serializers.ListSerializer(child=VoteSerializer())
-	likes_count = serializers.SerializerMethodField(required=False)
-	dislikes_count = serializers.SerializerMethodField(required=False)
-	vote_diff = serializers.SerializerMethodField(required=False)
+	likes_count = serializers.SerializerMethodField(required=False, read_only=True)
+	dislikes_count = serializers.SerializerMethodField(required=False, read_only=True)
+	vote_diff = serializers.SerializerMethodField(required=False, read_only=True)
 
 	class Meta:
 		model = ApprovedConfession
