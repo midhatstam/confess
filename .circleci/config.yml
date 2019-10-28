@@ -38,17 +38,18 @@ jobs:
             set -x
             docker system prune -a --volumes -f
             docker-compose up --build -d
-      - run:
-          name: Run container
-          command: |
-            docker run -d --name confess code_web
-      - run:
-          name: Run tests
-          command: |
-            docker ps --all
-            docker start confess
-            docker ps --all
-            docker exec -it confess ls
+            docker exec -it code_web_1 ls
+#      - run:
+#          name: Run container
+#          command: |
+#            docker run -d --name confess code_web
+#      - run:
+#          name: Run tests
+#          command: |
+#            docker ps --all
+#            docker start confess
+#            docker ps --all
+#            docker exec -it confess ls
   deploy-job:
     docker:
       - image: buildpack-deps:trusty
