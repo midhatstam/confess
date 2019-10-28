@@ -39,7 +39,7 @@ jobs:
             docker system prune -a --volumes -f
             docker-compose up --build -d
             docker run --name confess code_web
-#            docker exec -it confess ls
+            docker exec -it confess ls
 #      - run:
 #          name: Run container
 #          command: |
