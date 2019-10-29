@@ -1,5 +1,3 @@
-#!/usr/bin/python2
-
 from fabric.api import env, run, cd, task
 
 debug = False
@@ -23,13 +21,13 @@ env.user = 'midhat'
 @task
 def production():
     env.branch = 'master'
-    env.hosts = ['itiraf.cf', ]
+    env.hosts = ['206.189.203.241', ]
 
 
 @task
 def staging():
     env.branch = 'develop'
-    env.hosts = ['itiraf.cf', ]
+    env.hosts = ['206.189.203.241', ]
 
 
 @task
