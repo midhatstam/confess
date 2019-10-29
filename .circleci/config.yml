@@ -40,12 +40,13 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Deploy Master to Heroku
+          name: Deploy to Heroku
           command: |
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
   server-deploy-job:
     docker:
-      - image: circleci/python2.7
+      - image: circleci/python:2.7
+    working_directory: ~/code
     steps:
       - checkout
       - run:
@@ -69,7 +70,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - develop
       - server-deploy-job:
           requires:
             - deploy-job
