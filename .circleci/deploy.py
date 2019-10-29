@@ -16,20 +16,20 @@ if debug:
     paramiko.common.logging.basicConfig(level=paramiko.common.DEBUG)
 
 env.venv_name = 'confess'
-env.path = '~/confess'
-env.user = 'admin'
+env.path = '/home/midhat/confess'
+env.user = 'midhat'
 
 
 @task
 def production():
     env.branch = 'master'
-    env.hosts = ['timmyomahony.com', ]
+    env.hosts = ['itiraf.cf', ]
 
 
 @task
 def staging():
     env.branch = 'develop'
-    env.hosts = ['timmyomahony.com', ]
+    env.hosts = ['itiraf.cf', ]
 
 
 @task
