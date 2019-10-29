@@ -43,11 +43,15 @@ jobs:
           name: Deploy Master to Heroku
           command: |
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+  server-deploy-job:
+    docker:
+      - image: circleci/python2.7
+    steps:
+      - checkout
       - run:
           name: Deploy via Fabric
           command: |
-            . venv/bin/activate
-            pip install fabric==1.14.0
+            sudo pip install fabric==1.14.0
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               fab -f .circleci/deploy.py -i ~/.ssh/github_rsa production deploy
             else
@@ -66,6 +70,13 @@ workflows:
             branches:
               only:
                 - master
+      - server-deploy-job:
+          requires:
+            - deploy-job
+          filters:
+            branches:
+              only:
+               master
 #      - deploy-job:
 #          requires:
 #            - build-job
