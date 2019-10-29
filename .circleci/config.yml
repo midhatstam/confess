@@ -70,7 +70,7 @@ workflows:
           filters:
             branches:
               only:
-                - develop
+                - master
       - server-deploy-job:
           requires:
             - deploy-job
