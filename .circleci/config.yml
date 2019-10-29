@@ -53,10 +53,7 @@ jobs:
           name: Deploy via Fabric
           command: |
             sudo pip install fabric==2.5.0
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              fab -f .circleci/deploy.py -i ~/.ssh/id_rsa production deploy
-            else
-              fab -f .circleci/deploy.py -i ~/.ssh/id_rsa staging deploy
+            fab -r .circleci/deploy.py -i ~/.ssh/id_rsa deploy
             fi
 
 workflows:

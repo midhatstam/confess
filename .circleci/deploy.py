@@ -1,44 +1,29 @@
-from fabric.api import env, run, cd, task
+from fabric import task
+from invoke import env, run
+from invoke.util import cd
 
 debug = False
 
-"""
-Fabric deploy script
-
-This is a Fabric (python 2.7) deployment script to be used by CircleCI to
-deploy this project automatically to either production or staging.
-"""
 
 if debug:
     import paramiko
     paramiko.common.logging.basicConfig(level=paramiko.common.DEBUG)
 
-env.venv_name = 'confess'
-env.path = '/home/midhat/confess'
-env.user = 'midhat'
-
-
-@task
-def production():
-    env.branch = 'master'
-    env.hosts = ['206.189.203.241', ]
-
-
-@task
-def staging():
-    env.branch = 'develop'
-    env.hosts = ['206.189.203.241', ]
+env.Environment.venv_name = 'confess'
+env.Environment.user = 'midhat'
+env.Environment.branch = 'master'
+env.Environment.hosts = ['206.189.203.241', ]
 
 
 @task
 def venv(cmd):
-    run('workon {0} && {1}'.format(env.venv_name, cmd))
+    run('workon {0} && {1}'.format(env.Environment.venv_name, cmd))
 
 
 @task
 def deploy():
-    with cd(env.path):
-        run('git pull origin {0}'.format(env.branch))
+    with cd('/home/midhat/confess'):
+        run(f'git pull origin {env.Environment.branch}')
         venv('pip install -r requirements.txt')
         venv('python manage.py migrate')
         venv('python manage.py collectstatic --noinput')
