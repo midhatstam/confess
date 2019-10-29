@@ -1,5 +1,5 @@
 from django.db.models import Prefetch, Count
-from rest_framework.decorators import list_route
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
@@ -27,7 +27,7 @@ class CommentApiMixin(viewsets.ModelViewSet):
         serializer = CommentSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    @list_route(methods=['POST', 'GET'])
+    @action(methods=['POST', 'GET'], detail=False)
     def create(self, request, *args, **kwargs):
         confess = Confession.objects.filter(id=kwargs.pop('id'))
         if not confess.exists() or confess.count() != 1:
@@ -57,7 +57,7 @@ class CommentDetailsApiMixin(viewsets.ModelViewSet):
         serializer = CommentSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    @list_route(methods=['POST', 'GET'])
+    @action(methods=['POST', 'GET'], detail=False)
     def create(self, request, *args, **kwargs):
         confess = Confession.objects.filter(id=kwargs.pop('id'))
         if not confess.exists() or confess.count() != 1:

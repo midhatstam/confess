@@ -1,6 +1,6 @@
 from django.apps import apps
 from rest_framework import viewsets, filters
-from rest_framework.decorators import list_route
+from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from comment import serializers
@@ -63,7 +63,7 @@ class ConfessionVoteMixin(viewsets.ModelViewSet):
 			return self.serializer_class
 		return self.serializer_class
 	
-	@list_route(methods=['POST', 'GET'])
+	@action(methods=['POST', 'GET'], detail=False)
 	def up(self, request):
 		return vote_up(self, request)
 
@@ -76,6 +76,6 @@ class CommentVoteMixin(viewsets.ModelViewSet):
 			return self.serializer_class
 		return self.serializer_class
 	
-	@list_route(methods=['POST', 'GET'])
+	@action(methods=['POST', 'GET'], detail=False)
 	def up(self, request):
 		return vote_up(self, request)
