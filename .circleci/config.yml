@@ -12,36 +12,28 @@ jobs:
     working_directory: ~/code
     steps:
       - checkout
-#      - restore_cache:
-#          key: v001-code-{{ .Branch }}-{{ checksum "requirements.txt" }}
-#      - run:
-#          name: Install Python dependencies
-#          command: |
-#            python3 -m venv venv
-#            . venv/bin/activate
-#            pip install -r requirements.txt
-#      - save_cache:
-#          key: v001-code-{{ .Branch }}-{{ checksum "requirements.txt" }}
-#          paths:
-#            - 'venv'
-#      - run:
-#          name: Migrate
-#          command: |
-#            python manage.py migrate
-#      - run:
-#          name: Add python project to path
-#          command: 'echo "$(realpath .)/code" > venv/lib/python3.7/site-packages/code.pth'
-      - setup_remote_docker
+      - restore_cache:
+          key: v001-code-{{ .Branch }}-{{ checksum "requirements.txt" }}
       - run:
-          name: Start container and verify it's working
+          name: Install Python dependencies
           command: |
-            set -x
-            docker system prune -a --volumes -f
-            docker-compose up --build -d
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+      - save_cache:
+          key: v001-code-{{ .Branch }}-{{ checksum "requirements.txt" }}
+          paths:
+            - 'venv'
       - run:
-          name: Run container
+          name: Migrate
           command: |
-            docker run -d code_web
+            . venv/bin/activate
+            python manage.py migrate
+      - run:
+          name: Run tests
+          command: |
+            . venv/bin/activate
+            python manage.py test
   deploy-job:
     docker:
       - image: buildpack-deps:trusty
@@ -51,26 +43,15 @@ jobs:
           name: Deploy Master to Heroku
           command: |
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
-
-#  deploy-job:
-#    docker:
-#      # Important to note that we're using 2.7 here. This is because at the time of
-#      # writing, Fabric doesn't work with Python 3
-#      - image: circleci/python:2.7
-#    working_directory: ~/code
-#    steps:
-#      - checkout
-#      - run:
-#          name: Deploy via Fabric
-#          command: |
-#            sudo pip install fabric==1.14.0
-#            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-#              fab -f .circleci/deploy.py -i ~/.ssh/id_rsa production deploy
-#            else
-#              fab -f .circleci/deploy.py -i ~/.ssh/id_rsa staging deploy
-#            fi
-
-
+      - run:
+          name: Deploy via Fabric
+          command: |
+            sudo pip install fabric==1.14.0
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              fab -f .circleci/deploy.py -i ~/.ssh/id_rsa production deploy
+            else
+              fab -f .circleci/deploy.py -i ~/.ssh/id_rsa staging deploy
+            fi
 
 workflows:
   version: 2
