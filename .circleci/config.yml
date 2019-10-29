@@ -53,7 +53,7 @@ jobs:
           name: Deploy via Fabric
           command: |
             sudo pip install fabric==2.5.0
-            fab -r .circleci/deploy.py -i ~/.ssh/id_rsa deploy
+            fab -f .circleci/deploy.py -i ~/.ssh/id_rsa deploy
             fi
 
 workflows:

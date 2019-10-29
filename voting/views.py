@@ -4,7 +4,7 @@ from django.apps import apps
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count
 from rest_framework import viewsets
-from rest_framework.decorators import list_route
+from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from voting.serializers import VoteSerializer
@@ -20,7 +20,7 @@ class VoteMixin(viewsets.ModelViewSet):
 			return self.serializer_class
 		return self.serializer_class
 	
-	@list_route(methods=['POST', 'GET'])
+	@action(methods=['POST', 'GET'], detail=False)
 	def up(self, request):
 		token = request.data.get('vote_token')
 		vote_params = request.data.get('vote', None)

@@ -1,4 +1,4 @@
-from rest_framework.decorators import list_route
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
@@ -21,7 +21,7 @@ class ReportCommentAPI(viewsets.ModelViewSet):
         serializer = ReportCommentSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    @list_route(methods=['POST', 'GET'])
+    @action(methods=['POST', 'GET'], detail=False)
     def create(self, request, *args, **kwargs):
         comment = Comment.objects.filter(id=kwargs.pop('id'))
         if not comment.exists() or comment.count() != 1:
