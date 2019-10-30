@@ -41,7 +41,7 @@ def development():
 
 def set_project_settings():
     stage_settings = project_settings['stages'][env.stage]
-    if not all(project_settings.values()):
+    if not all(project_settings.itervalues()):
         raise KeyError('Missing values in project settings.')
     env.settings = stage_settings
 
