@@ -52,7 +52,7 @@ jobs:
       - run:
           name: Deploy via Fabric
           command: |
-            sudo pip install fabric3
+            sudo pip install Fabric3==1.14.post1 fabric-virtualenv==0.3.0 Unipath==1.1
             fab -f ./.circleci/fabfile.py -i ~/.ssh/id_rsa deploy
             fi
 
