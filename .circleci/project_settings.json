@@ -12,7 +12,6 @@
       "requirements_file": "/home/midhat/confess/requirements.txt",
       "code_src_directory": "/home/midhat/confess/",
       "restart_command": "supervisorctl restart all",
-      "ssh_key": "/home/midhat/.ssh/authorized_keys"
     },
     "development": {
       "name": "stage",
