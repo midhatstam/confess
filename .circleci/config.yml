@@ -2,7 +2,7 @@ version: 2
 jobs:
   build-job:
     docker:
-      - image: circleci/python:3.8.0
+      - image: circleci/python:3.6.8
       - image: circleci/postgres:12.0
     environment:
       DATABASE_URL: postgres://postgres:@localhost/circle_test
@@ -30,10 +30,17 @@ jobs:
             . venv/bin/activate
             python manage.py migrate
       - run:
+          name: Static analysis
+          command: |
+            . venv/bin/activate
+            pip install pylint flake8
+            pylint ./ --output-format=parseable --exit-zero > pylint.log
+            flake8 ./ --format=pylint --exit-zero > flake8.log
+      - run:
           name: Run tests
           command: |
             . venv/bin/activate
-            python manage.py test
+            tox
   deploy-job:
     docker:
       - image: buildpack-deps:trusty
