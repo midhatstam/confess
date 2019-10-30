@@ -42,16 +42,17 @@ def deploy(ctx):
     with conn.cd(stage_settings().get('code_src_directory')):
         pull_git_repository(conn)
     venv_dir = stage_settings().get("venv_directory")
-    with conn.run(f'source {venv_dir}/bin/activate'):
+    conn.run(f'source {venv_dir}/bin/activate')
+    with conn.cd(stage_settings().get('code_src_directory')):
         collect_static(conn)
-        install_requirements()
-        migrate_models()
+        install_requirements(conn)
+        migrate_models(conn)
     restart_application(conn)
 
 
 def print_status(description):
     def print_status_decorator(fn):
-        def print_status_wrapper(test):
+        def print_status_wrapper(conn):
             now = datetime.now().strftime('%H:%M:%S')
             suffix = '...\n'
             print(f'({now}) {description.capitalize()}{suffix}')

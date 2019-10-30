@@ -11,7 +11,7 @@
       "venv_directory": "/home/midhat/.venv/",
       "requirements_file": "/home/midhat/confess/requirements.txt",
       "code_src_directory": "/home/midhat/confess/",
-      "restart_command": "supervisorctl restart all",
+      "restart_command": "supervisorctl restart all"
     },
     "development": {
       "name": "stage",
