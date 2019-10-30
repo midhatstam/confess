@@ -6,7 +6,9 @@ from os import abort
 
 from fabric import Connection, task
 
-SETTINGS_FILE_PATH = '/home/midhat/project_settings.json'
+from unipath import Path
+
+SETTINGS_FILE_PATH = Path(__file__).ancestor(1).child('project_settings.json')
 
 with open(SETTINGS_FILE_PATH, 'r') as f:
     # Load settings.
@@ -37,7 +39,6 @@ def deploy(ctx):
     conn = get_connection(ctx)
     if conn is None:
         sys.exit("Failed to get connection")
-    conn.run('cp project_settings.json /home/midhat/confess/.circleci/')
     conn.run('cp .env.dev /home/midhat/confess/')
     with conn.cd(stage_settings().get('code_src_directory')):
         pull_git_repository(conn)
