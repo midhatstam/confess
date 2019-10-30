@@ -152,7 +152,7 @@ def migrate_models():
 def restart_application():
     with settings(warn_only=True):
         restart_command = env.settings['restart_command']
-        result = run(restart_command)
+        result = run(sudo(restart_command))
     if result.failed:
         abort('Could not restart application.')
 
