@@ -51,7 +51,6 @@ def deploy(tests='yes'):
     """
     Deploys project to previously set stage.
     """
-    print(project_settings)
     require('stage', provided_by=(stable, development))
     require('settings', provided_by=(stable, development))
     # Set env.
@@ -140,6 +139,7 @@ def collect_static():
 @print_status('installing requirements')
 def install_requirements():
     with cd(env.settings['code_src_directory']):
+        print(env.settings['requirements_file'])
         run('pip install -r {0}'.format(env.settings['requirements_file']))
 
 
