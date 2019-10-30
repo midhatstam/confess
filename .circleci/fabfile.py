@@ -17,7 +17,7 @@ with open(SETTINGS_FILE_PATH, 'r') as f:
 
 def get_connection(ctx):
     try:
-        with Connection(ctx.host, ctx.user, connect_kwargs=ctx.connect_kwargs) as conn:
+        with Connection(ctx.host, ctx.user) as conn:
             return conn
     except Exception as e:
         return None
