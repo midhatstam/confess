@@ -32,7 +32,7 @@ def stage_settings(stage='stable'):
 def development(ctx):
     ctx.user = stage_settings().get('user')
     ctx.host = stage_settings().get('host')
-    ctx.connect_kwargs.key_filename = stage_settings().get('ssh_key')
+    ctx.connect_kwargs.key_filename = '~/.ssh/id_rsa'
 
 
 @task
