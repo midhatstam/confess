@@ -41,7 +41,7 @@ def development():
 
 def set_project_settings():
     stage_settings = project_settings['stages'][env.stage]
-    if not all(project_settings.values()):
+    if not all(project_settings.itervalues()):
         raise KeyError('Missing values in project settings.')
     env.settings = stage_settings
 
@@ -112,7 +112,7 @@ def run_tests():
 @print_status('pulling git repository')
 def pull_git_repository():
     command = 'git pull {} {}'.format(
-        env.project_settings.get('git_repository'),
+        project_settings.get('git_repository'),
         env.settings.get('vcs_branch')
     )
     run(command)
@@ -139,6 +139,7 @@ def collect_static():
 @print_status('installing requirements')
 def install_requirements():
     with cd(env.settings['code_src_directory']):
+        print(env.settings['requirements_file'])
         run('pip install -r {0}'.format(env.settings['requirements_file']))
 
 
@@ -151,7 +152,7 @@ def migrate_models():
 def restart_application():
     with settings(warn_only=True):
         restart_command = env.settings['restart_command']
-        result = run(restart_command)
+        result = sudo(restart_command)
     if result.failed:
         abort('Could not restart application.')
 
