@@ -51,6 +51,7 @@ def deploy(tests='yes'):
     """
     Deploys project to previously set stage.
     """
+    print(env.project_settings)
     require('stage', provided_by=(stable, development))
     require('settings', provided_by=(stable, development))
     # Set env.
@@ -112,7 +113,7 @@ def run_tests():
 @print_status('pulling git repository')
 def pull_git_repository():
     command = 'git pull {} {}'.format(
-        env.project_settings.get('git_repository'),
+        project_settings.get('git_repository'),
         env.settings.get('vcs_branch')
     )
     run(command)
