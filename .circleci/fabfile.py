@@ -17,7 +17,7 @@ with open(SETTINGS_FILE_PATH, 'r') as f:
 
 def get_connection(ctx):
     try:
-        with Connection(ctx.host, ctx.user, connect_kwargs=ctx.connect_kwargs) as conn:
+        with Connection(ctx.host, ctx.user) as conn:
             return conn
     except Exception as e:
         return None
@@ -32,7 +32,6 @@ def stage_settings(stage='stable'):
 def development(ctx):
     ctx.user = stage_settings().get('user')
     ctx.host = stage_settings().get('host')
-    ctx.connect_kwargs.key_filename = '~/.ssh/id_rsa'
 
 
 @task
