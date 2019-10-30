@@ -10,7 +10,6 @@ django-cors-headers==3.1.1
 django-heroku==0.3.1
 djangorestframework==3.10.3
 fabric-virtualenv==0.3.0
-Fabric3==1.14.post1
 gprof2dot==2017.9.19
 gunicorn==19.9.0
 idna==2.8
