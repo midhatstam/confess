@@ -1,0 +1,27 @@
+{
+  "project_name": "confess",
+  "vcs_type": "git",
+  "git_repository": "origin",
+  "stages": {
+    "stable": {
+      "name": "stable",
+      "host": "206.189.203.241",
+      "user": "midhat",
+      "vcs_branch": "master",
+      "venv_directory": "/home/midhat/.venv/",
+      "requirements_file": "/home/midhat/confess/requirements.txt",
+      "code_src_directory": "/home/midhat/confess/",
+      "restart_command": "supervisorctl restart all"
+    },
+    "development": {
+      "name": "stage",
+      "host": "",
+      "user": "",
+      "vcs_branch": "",
+      "venv_directory": "",
+      "requirements_file": "",
+      "code_src_directory": "",
+      "restart_command": ""
+    }
+  }
+}
