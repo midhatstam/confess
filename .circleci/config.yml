@@ -53,7 +53,7 @@ jobs:
           name: Deploy via Fabric
           command: |
             sudo pip install fabric Unipath==1.1
-            fab -f ./.circleci/fabfile.py -i ~/.ssh/id_rsa development deploy
+            fab -r ./.circleci/fabfile.py -i ~/.ssh/id_rsa development deploy
             fi
 
 workflows:
