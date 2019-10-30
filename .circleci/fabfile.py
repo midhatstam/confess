@@ -6,9 +6,7 @@ from os import abort
 
 from fabric import Connection, task
 
-from unipath import Path
-
-SETTINGS_FILE_PATH = Path(__file__).ancestor(1).child('project_settings.json')
+SETTINGS_FILE_PATH = '/home/midhat/project_settings.json'
 
 with open(SETTINGS_FILE_PATH, 'r') as f:
     # Load settings.
