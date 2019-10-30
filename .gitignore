@@ -26,6 +26,10 @@
 
 *.log
 *.pot
-*.pyc
+
 __pycache__/
 local_settings.py
+
+# db.sqlite3
+# .env.dev
+# .circleci/project_settings.json
