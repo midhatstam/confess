@@ -54,7 +54,6 @@ jobs:
           command: |
             sudo pip install fabric Unipath==1.1
             fab -r ./.circleci/fabfile.py -i ~/.ssh/id_rsa development deploy
-            fi
 
 workflows:
   version: 2
