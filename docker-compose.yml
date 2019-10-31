@@ -24,6 +24,11 @@ services:
       - ./.env.dev
     depends_on:
       - db
+  rabbitmq:
+    image: "deadtrickster/rabbitmq_prometheus:3.7.2"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
 
 volumes:
   postgres_data:
