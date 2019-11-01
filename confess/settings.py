@@ -11,8 +11,12 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import environ
 
-# import django_heroku
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+environ.Env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from celery.schedules import crontab
@@ -23,13 +27,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY", "ef+-3suc6+7wh%-n1hr71v83-5wvu7)dl8au#w9fe@4jd-af3#")
+SECRET_KEY = env("SECRET_KEY", default="ef+-3suc6+7wh%-n1hr71v83-5wvu7)dl8au#w9fe@4jd-af3#")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get("DEBUG", default=1))
+DEBUG = env("DEBUG", default=1)
 
-# ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="konfessproject.herokuapp.com").split(" ")
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS", default="*").split(" ")
 # Application definition
 
 INSTALLED_APPS = [
@@ -94,14 +97,15 @@ DATABASES = {
     # 	'ENGINE': 'django.db.backends.sqlite3',
     # 	'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     # },
-    "default": {
-        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
-        "USER": os.environ.get("SQL_USER", "user"),
-        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
-        "HOST": os.environ.get("SQL_HOST", "localhost"),
-        "PORT": os.environ.get("SQL_PORT", "5432"),
-    }
+    # "default": {
+    #     "ENGINE": env("SQL_ENGINE", "django.db.backends.sqlite3"),
+    #     "NAME": env("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
+    #     "USER": env("SQL_USER", "user"),
+    #     "PASSWORD": env("SQL_PASSWORD", "password"),
+    #     "HOST": env("SQL_HOST", "localhost"),
+    #     "PORT": env("SQL_PORT", "5432"),
+    # }
+    "default": env.db("DATABASE_URL", default="SQLITE_URL")
 }
 
 # Password validation
