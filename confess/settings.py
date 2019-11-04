@@ -177,4 +177,4 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(hour=22, minute=59),
     },
 }
-SLACK_TOKEN = env("SLACK_TOKEN")
+SLACK_TOKEN = env("SLACK_TOKEN", default="ZS1OTeWOOUeG2dXOIiCUQcpnyr27w0QT")
