@@ -17,6 +17,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.contrib import admin
 from core import views as core_views
+import confession.utils as con_utils
 
 urlpatterns = [
     path('', core_views.ConfessionView.as_view({'get': 'list', 'post': 'create'}), name='home'),
@@ -27,7 +28,8 @@ urlpatterns = [
     path('', include('comment.urls')),
     path('', include('reports.urls')),
     path('admin/', admin.site.urls),
-    path('adminpanel/', include('admin_panel.urls'))
+    path('adminpanel/', include('admin_panel.urls')),
+    path('instagram/', con_utils.instagram),
     # path('confesses/', views.ConfessView.as_view()),
 
 ]

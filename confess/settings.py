@@ -172,8 +172,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'amqp://localhost:5672')
 CELERY_TIMEZONE = 'Europe/Istanbul'
 CELERY_BEAT_SCHEDULE = {
-    'send-email': {
-        'task': 'confession.tasks.send_email',
-        'schedule': crontab(minute=59, hour=22),
+    'set-publish-time': {
+        'task': 'confession.tasks.set_publish_time',
+        'schedule': crontab(hour=22, minute=59),
     },
 }

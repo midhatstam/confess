@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /code
 
-RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev postgresql-dev libffi-dev make
+RUN apk update && apk add --no-cache postgresql-dev gcc python3-dev musl-dev postgresql-dev libffi-dev make build-base py-pip jpeg-dev zlib-dev
 RUN pip install --upgrade pip
 
 COPY requirements.txt /code/
