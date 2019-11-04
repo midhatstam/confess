@@ -29,11 +29,12 @@
 *.pot
 
 __pycache__/
+*/__pycache__/
 **/__pycache__/
 local_settings.py
 
 db.sqlite3
-.env.dev
+.env
 
 # Unit test / coverage reports
 htmlcov/

@@ -3,8 +3,10 @@ import random
 import json
 
 from django.conf import settings
+from confess import settings as app_settings
 from django.http import HttpResponse
 from InstagramAPI import InstagramAPI as Insta
+from slacker import Slacker
 
 
 def get_random_time():
@@ -26,3 +28,14 @@ def instagram(request):
     response = InstagramAPI.uploadPhoto(photo_path, caption=caption)
     print(response)
     return HttpResponse(json.dumps(str(response)), content_type="application/json")
+
+
+def slack_notify(message=None):
+    message = 'Test'
+    slack = Slacker(app_settings.SLACK_TOKEN)
+    if slack.api.test().successful:
+        print(
+            f"Connected to {slack.team.info().body['team']['name']}.")
+    else:
+        print('Try Again!')
+    slack.chat.post_message(channel='#tasks', text=message, username='Task worker', icon_emoji=':construction_worker:')

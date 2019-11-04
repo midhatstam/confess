@@ -1,4 +1,4 @@
-from django.db.models import Count, Prefetch, Sum, Q
+from django.db.models import Count
 
 from rest_framework import viewsets, status, pagination, generics
 from rest_framework.response import Response
@@ -7,7 +7,6 @@ from confession.models import ApprovedConfession
 from confession.serializers import ConfessionSerializer
 
 from comment.models import Comment
-from voting.models import Vote
 
 
 class CustomApiPageNumber(pagination.PageNumberPagination):
@@ -24,7 +23,11 @@ class ConfessionAPIMixin(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(
+            serializer.data,
+            status=status.HTTP_201_CREATED,
+            headers=headers
+        )
 
 
 class AllQS(viewsets.ModelViewSet):
@@ -36,9 +39,13 @@ class PopularQS(viewsets.ModelViewSet):
 
 
 class BestQS(viewsets.ModelViewSet):
-    comments = Comment.objects.all().values_list('related', flat=True).annotate(total=Count('id')).filter(
+    comments = Comment.objects.all().values_list(
+        'related', flat=True
+    ).annotate(total=Count('id')).filter(
         total__gte=2).values_list('related', flat=True)
-    queryset = ApprovedConfession.objects.filter(votes__gte=200, id__in=comments)
+    queryset = ApprovedConfession.objects.filter(
+        votes__gte=200, id__in=comments
+    )
 
 
 class MostLikesQS(generics.ListAPIView):
