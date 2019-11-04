@@ -1,8 +1,6 @@
 import datetime
-import json
 
 from celery import task
-from django.db.models import Count
 
 from confession.models import Confession
 
