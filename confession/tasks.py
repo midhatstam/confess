@@ -1,15 +1,12 @@
-from celery import task
-from django.core.mail import send_mail
+import json
 
-from django.conf import settings
+from celery import task
+from django.db.models import Count
+
+from confession.models import Confession
 
 
 @task
-def send_email():
-    send_mail(
-        'Celery task test',
-        'It is working',
-        settings.EMAIL_HOST_USER,
-        ['midhat@gmail.com'],
-        fail_silently=False,
-    )
+def set_publish_time():
+    instances: Confession = Confession.objects.filter()
+
