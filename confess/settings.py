@@ -169,7 +169,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'amqp://localhost:5672')
+CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='amqp://localhost:5672')
 CELERY_TIMEZONE = 'Europe/Istanbul'
 CELERY_BEAT_SCHEDULE = {
     'set-publish-time': {
@@ -177,3 +177,4 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(hour=22, minute=59),
     },
 }
+SLACK_TOKEN = env("SLACK_TOKEN", default="ZS1OTeWOOUeG2dXOIiCUQcpnyr27w0QT")
