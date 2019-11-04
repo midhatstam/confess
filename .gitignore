@@ -9,6 +9,7 @@
 # ignore .pyc files
 *.pyc
 **/*.pyc
+*.py[cod]
 
 .DS*
 **/.DS*
@@ -34,4 +35,10 @@ local_settings.py
 db.sqlite3
 .env.dev
 
-.tox
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
