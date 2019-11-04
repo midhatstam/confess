@@ -50,6 +50,8 @@ jobs:
           name: Deploy to Heroku
           command: |
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+            wget -qO- https://toolbelt.heroku.com/install.sh | bash
+            sudo ln -s /usr/local/heroku/bin/heroku /usr/bin/heroku
             heroku run python manage.py migrate
   server-deploy-job:
     docker:
