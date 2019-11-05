@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'comment',
     'reports',
     'admin_panel',
+    'rule',
     'rest_framework',
     # 'debug_toolbar',
     'django.contrib.admin',
@@ -105,7 +106,7 @@ DATABASES = {
     #     "HOST": env("SQL_HOST", "localhost"),
     #     "PORT": env("SQL_PORT", "5432"),
     # }
-    "default": env.db("DATABASE_URL", default="SQLITE_URL")
+    "default": env.db("DATABASE_URL", default="sqlite://../db.sqlite3")
 }
 
 # Password validation
