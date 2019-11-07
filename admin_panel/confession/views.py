@@ -1,7 +1,8 @@
-from rest_framework import pagination, generics, viewsets
+from rest_framework import pagination, viewsets
 from rest_framework.response import Response
 
-from confession.models import Confession, AllConfession, ApprovedConfession, AdminApprovedConfession, ReportedConfession
+from confession.models import Confession, AllConfession, ApprovedConfession, AdminApprovedConfession, \
+    ReportedConfession, ConfessionForApprove
 from confession.serializers import ConfessionSerializer
 
 
@@ -47,3 +48,7 @@ class ConfessionDetail(viewsets.ModelViewSet):
 
 class ReportedConfessions(ConfessionMixin):
     queryset = ReportedConfession.objects.all()
+
+
+class ConfessionForApproveView(ConfessionMixin):
+    queryset = ConfessionForApprove.objects.all()

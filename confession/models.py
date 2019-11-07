@@ -1,9 +1,6 @@
 import random
 
 from django.contrib.contenttypes.fields import GenericRelation
-from django.db import models
-
-from confess import settings
 
 from confession.managers import *
 from core.models import ItemMetaData
@@ -65,6 +62,13 @@ class AdminApprovedConfession(Confession):
 
 class ReportedConfession(Confession):
 	objects = ReportedConfessionManager()
+
+	class Meta:
+		proxy = True
+
+
+class ConfessionForApprove(Confession):
+	objects = ConfessionForApproveManager()
 
 	class Meta:
 		proxy = True
