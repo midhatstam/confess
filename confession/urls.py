@@ -10,4 +10,5 @@ urlpatterns = [
 	path('api/confessions/by_comments/', confession_views.ConfessionApiMostCommentsView.as_view({'get': 'list'})),
 	path('api/confessions/by_likes/', confession_views.ConfessionApiMostLikeView.as_view({'get': 'list'})),
 	path('api/confessions/by_dislikes/', confession_views.ConfessionApiMostDislikeView.as_view({'get': 'list'})),
+	path('api/confessions/approve/', confession_views.ConfessionApiForApprove.as_view({'get': 'retrieve'})),
 ]

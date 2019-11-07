@@ -3,7 +3,7 @@ from django.db.models import Count
 from rest_framework import viewsets, status, pagination, generics
 from rest_framework.response import Response
 
-from confession.models import ApprovedConfession
+from confession.models import ApprovedConfession, ConfessionForApprove
 from confession.serializers import ConfessionSerializer
 
 from comment.models import Comment
@@ -72,6 +72,21 @@ class MostCommentsQS(viewsets.ModelViewSet):
     queryset = ApprovedConfession.objects.all().order_by('-num_comments')
 
 
+class ConfessionForApproveView(viewsets.ModelViewSet):
+    serializer_class = ConfessionSerializer
+
+    def get_queryset(self):
+        try:
+            return ConfessionForApprove.objects.random()
+        except TypeError:
+            return []
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_queryset()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+
 class ConfessionApiView(AllQS, ConfessionAPIMixin):
     pass
 
@@ -93,4 +108,8 @@ class ConfessionApiMostDislikeView(MostDislikesQS, ConfessionAPIMixin):
 
 
 class ConfessionApiMostCommentsView(MostCommentsQS, ConfessionAPIMixin):
+    pass
+
+
+class ConfessionApiForApprove(ConfessionForApproveView, ConfessionAPIMixin):
     pass
