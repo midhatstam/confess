@@ -1,5 +1,6 @@
 import json
 import sys
+import logging
 
 from datetime import datetime
 from os import abort
@@ -9,6 +10,7 @@ from fabric import Connection, task
 from unipath import Path
 
 SETTINGS_FILE_PATH = Path(__file__).ancestor(1).child('project_settings.json')
+logger = logging.getLogger(__name__)
 
 with open(SETTINGS_FILE_PATH, 'r') as f:
     # Load settings.
@@ -20,6 +22,8 @@ def get_connection(ctx):
         with Connection(ctx.host, ctx.user) as conn:
             return conn
     except Exception as e:
+        logger.warning(f'Cannot establish connection as to host: {ctx.host} and user: {ctx.user}')
+        logger.exception(e)
         return None
 
 
