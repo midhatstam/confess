@@ -1,3 +1,5 @@
+from random import randint
+
 from django.db import models
 from django.db.models import Prefetch, Count
 
@@ -20,6 +22,11 @@ class AllConfessionsManager(models.Manager):
             Prefetch('votes', queryset=Vote.objects.filter(vote=1, content_type=1), to_attr='likes'),
             Prefetch('votes', queryset=Vote.objects.filter(vote=0, content_type=1), to_attr='dislikes')
         ).annotate(num_comments=Count('comments'))
+
+    def random(self):
+        count = self.aggregate(count=Count('id'))['count']
+        random_index = randint(0, count - 1)
+        return self.all()[random_index]
 
 
 class ApprovedConfessionManager(models.Manager):
