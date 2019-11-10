@@ -47,3 +47,4 @@ class ConfessionUserApprovementSerializer(ItemMetaDataSerializer):
 		model = ConfessionUserApprovement
 		fields = '__all__'
 		depth = 1
+		read_only_fields = ("related", )
