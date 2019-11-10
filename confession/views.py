@@ -4,7 +4,7 @@ from rest_framework import viewsets, status, pagination, generics
 from rest_framework.response import Response
 
 from confession.models import ApprovedConfession, ConfessionForApprove
-from confession.serializers import ConfessionSerializer
+from confession.serializers import ConfessionSerializer, ConfessionUserApprovementSerializer
 
 from comment.models import Comment
 
@@ -85,6 +85,21 @@ class ConfessionForApproveView(viewsets.ModelViewSet):
         instance = self.get_queryset()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
+
+
+class ConfessionUserApprovement(viewsets.ModelViewSet):
+    serializer_class = ConfessionUserApprovementSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            serializer.data,
+            status=status.HTTP_201_CREATED,
+            headers=headers
+        )
 
 
 class ConfessionApiView(AllQS, ConfessionAPIMixin):
