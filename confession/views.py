@@ -92,10 +92,13 @@ class ConfessionForApproveView(viewsets.ModelViewSet):
 class ConfessionUserApprovementView(viewsets.ModelViewSet):
     serializer_class = ConfessionUserApprovementSerializer
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+    def create(self, validated_data, **kwargs):
+        serializer = self.get_serializer(data=self.request.data)
+        confession_id = self.request.data.pop('confession')
+        confession_instance = ConfessionForApprove.objects.get(id=confession_id)
         serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
+        #self.perform_create(serializer)
+        serializer.save(confession=confession_instance)
         headers = self.get_success_headers(serializer.data)
         return Response(
             serializer.data,
