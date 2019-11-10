@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from comment.serializers import CommentSerializer, CommentSerializerSingle
-from confession.models import Confession, ApprovedConfession
+from confession.models import Confession, ApprovedConfession, ConfessionUserApprovement
 from core.serializers import ItemMetaDataSerializer
 
 
@@ -40,3 +40,10 @@ class ConfessionSerializer(ItemMetaDataSerializer):
 			return diff
 		except AttributeError:
 			return 0
+
+
+class ConfessionUserApprovementSerializer(ItemMetaDataSerializer):
+	class Meta:
+		model = ConfessionUserApprovement
+		fields = '__all__'
+		depth = 1

@@ -74,9 +74,9 @@ class ConfessionForApprove(Confession):
 		proxy = True
 
 
-class ConfessionUserApprovements(ItemMetaData):
+class ConfessionUserApprovement(ItemMetaData):
 	class Meta:
-		db_table = "confession_user_approvements"
+		db_table = "confession_user_approvement"
 
 	confession = models.ForeignKey(Confession, on_delete=models.CASCADE)
 	vote = models.IntegerField(default=1, blank=False, null=False)
