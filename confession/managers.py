@@ -59,7 +59,7 @@ class ConfessionForApproveManager(models.Manager):
             Prefetch('votes', queryset=Vote.objects.filter(vote=0, content_type=1), to_attr='dislikes')
         ).annotate(num_comments=Count('comments'))
 
-    def random(self):
+    def random(self, approved):
         count = self.aggregate(count=Count('id'))['count']
         random_index = randint(0, count - 1)
-        return self.all()[random_index]
+        return self.all().exclude(id__in=approved)[random_index]

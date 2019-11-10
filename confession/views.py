@@ -77,7 +77,7 @@ class ConfessionForApproveView(viewsets.ModelViewSet):
 
     def get_random_queryset(self, approved_instances):
         try:
-            return ConfessionForApprove.objects.random().exclude(id__in=approved_instances)
+            return ConfessionForApprove.objects.random(approved=approved_instances)
         except TypeError:
             return []
 
