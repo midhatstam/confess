@@ -72,3 +72,12 @@ class ConfessionForApprove(Confession):
 
 	class Meta:
 		proxy = True
+
+
+class ConfessionUserApprovements(ItemMetaData):
+	class Meta:
+		db_table = "confession_user_approvements"
+
+	confession = models.ForeignKey(Confession, on_delete=models.CASCADE)
+	vote = models.IntegerField(default=1, blank=False, null=False)
+	token = models.CharField(max_length=250, blank=False, null=False)
