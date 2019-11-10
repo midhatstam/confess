@@ -3,7 +3,7 @@ from django.db.models import Count
 from rest_framework import viewsets, status, pagination, generics
 from rest_framework.response import Response
 
-from confession.models import ApprovedConfession, ConfessionForApprove
+from confession.models import ApprovedConfession, ConfessionForApprove, ConfessionUserApprovement
 from confession.serializers import ConfessionSerializer, ConfessionUserApprovementSerializer
 
 from comment.models import Comment
@@ -82,12 +82,14 @@ class ConfessionForApproveView(viewsets.ModelViewSet):
             return []
 
     def retrieve(self, request, *args, **kwargs):
-        instance = self.get_queryset()
+        token = request.COOKIES.get('session_token')
+        approved_instances_id = ConfessionUserApprovement.objects.filter(token=token).values_list('id')
+        instance = self.get_queryset().exclude(approved_instances_id)
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
 
-class ConfessionUserApprovement(viewsets.ModelViewSet):
+class ConfessionUserApprovementView(viewsets.ModelViewSet):
     serializer_class = ConfessionUserApprovementSerializer
 
     def create(self, request, *args, **kwargs):
