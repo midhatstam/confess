@@ -60,7 +60,7 @@ class ConfessionForApproveManager(models.Manager):
         ).annotate(num_comments=Count('comments'))
 
     def random(self, approved):
-        count = self.aggregate(count=Count('id'))['count']
+        count = self.exclude(id__in=approved).aggregate(count=Count('id'))['count']
         random_index = randint(0, count - 1)
         print(approved)
-        return self.exclude(id__in=approved)[random_index]
+        return self.all()[random_index]
