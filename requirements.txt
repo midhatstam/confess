@@ -65,7 +65,7 @@ slacker==0.13.0
 sqlparse==0.3.0
 toml==0.10.0
 tox==3.14.0
-tqdm==4.37.0
+tqdm==4.38.0
 typed-ast==1.4.0
 Unipath==1.1
 urllib3==1.25.6
