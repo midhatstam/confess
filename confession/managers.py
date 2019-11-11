@@ -62,4 +62,5 @@ class ConfessionForApproveManager(models.Manager):
     def random(self, approved):
         count = self.aggregate(count=Count('id'))['count']
         random_index = randint(0, count - 1)
-        return self.all().exclude(id__in=approved)[random_index]
+        print(approved)
+        return self.exclude(id__in=approved)[random_index]

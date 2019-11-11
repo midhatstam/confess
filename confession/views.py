@@ -84,6 +84,7 @@ class ConfessionForApproveView(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         token = request.COOKIES.get('session_token')
         approved_instances_id = ConfessionUserApprovement.objects.filter(token=token).values("confession_id")
+        print(approved_instances_id)
         instance = self.get_random_queryset(approved_instances_id)
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
