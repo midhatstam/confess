@@ -52,6 +52,8 @@ def deploy(ctx):
         collect_static(conn)
         install_requirements(conn)
         migrate_models(conn)
+    supervisor_conf(conn)
+    celery_log_files(conn)
     restart_application(conn)
 
 
@@ -123,3 +125,37 @@ def restart_application(ctx):
     result = conn.sudo(restart_command)
     if result.failed:
         abort('Could not restart application.')
+
+
+@print_status('copy celery supervisor conf files')
+@task
+def supervisor_conf(ctx):
+    if isinstance(ctx, Connection):
+        conn = ctx
+    else:
+        conn = get_connection(ctx)
+
+    worker_conf = conn.sudo('cp /home/midhat/confess/celery_set_publish_time_worker.conf /etc/supervisor/conf.d/')
+    beat_conf = conn.sudo('cp /home/midhat/confess/celery_set_publish_time_beat.conf /etc/supervisor/conf.d/')
+
+    if worker_conf.failed:
+        abort('Could not copy worker conf.')
+    if beat_conf.failed:
+        abort('Could not copy beat conf.')
+
+
+@print_status('create supervisor celery log files')
+@task
+def celery_log_files(ctx):
+    if isinstance(ctx, Connection):
+        conn = ctx
+    else:
+        conn = get_connection(ctx)
+
+    worker_log = conn.sudo('touch /var/log/celery/confess_worker.log')
+    beat_log = conn.sudo('touch /var/log/celery/confess_beat.log')
+
+    if worker_log.failed:
+        abort('Could not create worker log file.')
+    if beat_log.failed:
+        abort('Could not create beat log file.')
