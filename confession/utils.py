@@ -31,7 +31,6 @@ def instagram(request):
 
 
 def slack_notify(message=None):
-    message = 'Test'
     slack = Slacker(app_settings.SLACK_TOKEN)
     if slack.api.test().successful:
         print(
