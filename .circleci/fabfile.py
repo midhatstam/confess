@@ -52,6 +52,8 @@ def deploy(ctx):
         collect_static(conn)
         install_requirements(conn)
         migrate_models(conn)
+    supervisor_conf(conn)
+    celery_log_files(conn)
     restart_application(conn)
 
 
