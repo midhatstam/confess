@@ -79,6 +79,7 @@ def pull_git_repository(ctx):
 
     repository = project_settings.get("git_repository")
     branch = stage_settings().get("vcs_branch")
+    conn.run(f'git stash')
     conn.run(f'git pull {repository} {branch}')
 
 
