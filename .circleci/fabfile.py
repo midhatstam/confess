@@ -47,7 +47,7 @@ def deploy(ctx):
     with conn.cd(stage_settings().get('code_src_directory')):
         pull_git_repository(conn)
     venv_dir = stage_settings().get("venv_directory")
-    conn.run(f'source {venv_dir}/bin/activate')
+    conn.run(f'source {venv_dir}bin/activate')
     with conn.cd(stage_settings().get('code_src_directory')):
         collect_static(conn)
         install_requirements(conn)
