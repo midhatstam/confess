@@ -19,7 +19,7 @@ with open(SETTINGS_FILE_PATH, 'r') as f:
 
 def get_connection(ctx):
     try:
-        with Connection(ctx.host, ctx.user, connect_kwargs=ctx.connect_kwargs) as conn:
+        with Connection(ctx.host, ctx.user) as conn:
             return conn
     except Exception as e:
         logger.warning(f'Cannot establish connection as to host: {ctx.host} and user: {ctx.user}')
@@ -36,7 +36,6 @@ def stage_settings(stage='stable'):
 def development(ctx):
     ctx.user = stage_settings().get('user')
     ctx.host = stage_settings().get('host')
-    ctx.connect_kwargs.key_filename = '~/.ssh/id_rsa'
 
 
 @task
@@ -60,22 +59,20 @@ def deploy(ctx):
 
 
 def print_status(description):
-    def print_status_decorator(fn):
-        def print_status_wrapper(conn):
-            now = datetime.now().strftime('%H:%M:%S')
-            suffix = '...\n'
-            print(f'({now}) {description.capitalize()}{suffix}')
-        return print_status_wrapper
-    return print_status_decorator
+    now = datetime.now().strftime('%H:%M:%S')
+    suffix = '...\n'
+    print(f'({now}) {description.capitalize()}{suffix}')
 
 
-@print_status('pulling git repository')
 @task
 def pull_git_repository(ctx):
+    print_status('pulling git repository')
     if isinstance(ctx, Connection):
         conn = ctx
+        print('yes')
     else:
         conn = get_connection(ctx)
+        print('no')
 
     repository = project_settings.get("git_repository")
     branch = stage_settings().get("vcs_branch")
@@ -83,9 +80,9 @@ def pull_git_repository(ctx):
     conn.run(f'git pull {repository} {branch}')
 
 
-@print_status('collecting static files')
 @task
 def collect_static(ctx):
+    print_status('collecting static files')
     if isinstance(ctx, Connection):
         conn = ctx
     else:
@@ -93,9 +90,9 @@ def collect_static(ctx):
     conn.run('python manage.py collectstatic')
 
 
-@print_status('installing requirements')
 @task
 def install_requirements(ctx):
+    print_status('installing requirements')
     if isinstance(ctx, Connection):
         conn = ctx
     else:
@@ -104,9 +101,9 @@ def install_requirements(ctx):
     conn.run(f'pip install -r {requirements_file}')
 
 
-@print_status('migrating models')
 @task
 def migrate_models(ctx):
+    print_status('migrating models')
     if isinstance(ctx, Connection):
         conn = ctx
     else:
@@ -114,9 +111,9 @@ def migrate_models(ctx):
     conn.run('python manage.py migrate')
 
 
-@print_status('restarting application')
 @task
 def restart_application(ctx):
+    print_status('restarting application')
     if isinstance(ctx, Connection):
         conn = ctx
     else:
@@ -128,8 +125,8 @@ def restart_application(ctx):
         abort('Could not restart application.')
 
 
-@print_status('restarting gunicorn')
 def restart_gunicorn(ctx):
+    print_status('restarting gunicorn')
     if isinstance(ctx, Connection):
         conn = ctx
     else:
@@ -140,9 +137,9 @@ def restart_gunicorn(ctx):
         abort('Could not restart gunicorn.')
 
 
-@print_status('copy celery supervisor conf files')
 @task
 def supervisor_conf(ctx):
+    print_status('copy celery supervisor conf files')
     if isinstance(ctx, Connection):
         conn = ctx
     else:
@@ -157,9 +154,9 @@ def supervisor_conf(ctx):
         abort('Could not copy beat conf.')
 
 
-@print_status('create supervisor celery log files')
 @task
 def celery_log_files(ctx):
+    print_status('create supervisor celery log files')
     if isinstance(ctx, Connection):
         conn = ctx
     else:
