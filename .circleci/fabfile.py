@@ -19,7 +19,7 @@ with open(SETTINGS_FILE_PATH, 'r') as f:
 
 def get_connection(ctx):
     try:
-        with Connection(ctx.host, ctx.user) as conn:
+        with Connection(ctx.host, ctx.user, connect_kwargs=ctx.connect_kwargs) as conn:
             return conn
     except Exception as e:
         logger.warning(f'Cannot establish connection as to host: {ctx.host} and user: {ctx.user}')
@@ -36,6 +36,7 @@ def stage_settings(stage='stable'):
 def development(ctx):
     ctx.user = stage_settings().get('user')
     ctx.host = stage_settings().get('host')
+    ctx.connect_kwargs.key_filename = '~/.ssh/id_rsa'
 
 
 @task
@@ -43,7 +44,7 @@ def deploy(ctx):
     conn = get_connection(ctx)
     if conn is None:
         sys.exit("Failed to get connection")
-    conn.run('cp .env /home/midhat/confess/')
+    conn.run('cp /home/midhat/.env /home/midhat/confess/')
     with conn.cd(stage_settings().get('code_src_directory')):
         pull_git_repository(conn)
     venv_dir = stage_settings().get("venv_directory")
@@ -55,6 +56,7 @@ def deploy(ctx):
     supervisor_conf(conn)
     celery_log_files(conn)
     restart_application(conn)
+    restart_gunicorn(conn)
 
 
 def print_status(description):
@@ -62,8 +64,6 @@ def print_status(description):
         def print_status_wrapper(conn):
             now = datetime.now().strftime('%H:%M:%S')
             suffix = '...\n'
-            print(f'({now}) {description.capitalize()}{suffix}')
-            now = datetime.now().strftime('%H:%M:%S')
             print(f'({now}) {description.capitalize()}{suffix}')
         return print_status_wrapper
     return print_status_decorator
@@ -126,6 +126,18 @@ def restart_application(ctx):
     result = conn.sudo(restart_command)
     if result.failed:
         abort('Could not restart application.')
+
+
+@print_status('restarting gunicorn')
+def restart_gunicorn(ctx):
+    if isinstance(ctx, Connection):
+        conn = ctx
+    else:
+        conn = get_connection(ctx)
+
+    result = conn.sudo('service restart gunicorn')
+    if result.failed:
+        abort('Could not restart gunicorn.')
 
 
 @print_status('copy celery supervisor conf files')
