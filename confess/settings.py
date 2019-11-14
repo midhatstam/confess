@@ -175,7 +175,7 @@ CELERY_TIMEZONE = 'Europe/Istanbul'
 CELERY_BEAT_SCHEDULE = {
     'set-publish-time': {
         'task': 'confession.tasks.set_publish_time',
-        'schedule': crontab(hour=18, minute=15),
+        'schedule': crontab(hour=7, minute=15),
     },
 }
 SLACK_TOKEN = env("SLACK_TOKEN", default="ZS1OTeWOOUeG2dXOIiCUQcpnyr27w0QT")  # default is mocked
