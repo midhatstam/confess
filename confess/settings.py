@@ -175,7 +175,10 @@ CELERY_TIMEZONE = 'Europe/Istanbul'
 CELERY_BEAT_SCHEDULE = {
     'set-publish-time': {
         'task': 'confession.tasks.set_publish_time',
-        'schedule': crontab(hour=7, minute=30),
+        'schedule': crontab(hour=17, minute=45),
     },
 }
 SLACK_TOKEN = env("SLACK_TOKEN", default="ZS1OTeWOOUeG2dXOIiCUQcpnyr27w0QT")  # default is mocked
+SLACK_WEBHOOK = 'https://hooks.slack.com/services/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'
+SLACK_CHANNEL = '#tasks'
+SLACK_USERNAME = 'localhost'
