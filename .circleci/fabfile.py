@@ -44,6 +44,7 @@ def deploy(ctx):
     if conn is None:
         sys.exit("Failed to get connection")
     conn.run('cp /home/midhat/.env /home/midhat/confess/confess/')
+    conn.run('cp /home/midhat/.env /home/midhat/confess/')
     with conn.cd(stage_settings().get('code_src_directory')):
         pull_git_repository(conn)
     venv_dir = stage_settings().get("venv_directory")
