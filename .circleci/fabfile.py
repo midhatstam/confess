@@ -43,14 +43,14 @@ def deploy(ctx):
     conn = get_connection(ctx)
     if conn is None:
         sys.exit("Failed to get connection")
-    conn.run('cp /home/midhat/.env /home/midhat/confess/')
+    conn.run('cp /home/midhat/.env /home/midhat/confess/confess/')
     with conn.cd(stage_settings().get('code_src_directory')):
         pull_git_repository(conn)
     venv_dir = stage_settings().get("venv_directory")
     conn.run(f'source {venv_dir}bin/activate')
     with conn.cd(stage_settings().get('code_src_directory')):
-        collect_static(conn)
         install_requirements(conn)
+        collect_static(conn)
         migrate_models(conn)
     supervisor_conf(conn)
     celery_log_files(conn)
@@ -69,10 +69,8 @@ def pull_git_repository(ctx):
     print_status('pulling git repository')
     if isinstance(ctx, Connection):
         conn = ctx
-        print('yes')
     else:
         conn = get_connection(ctx)
-        print('no')
 
     repository = project_settings.get("git_repository")
     branch = stage_settings().get("vcs_branch")
@@ -87,7 +85,7 @@ def collect_static(ctx):
         conn = ctx
     else:
         conn = get_connection(ctx)
-    conn.run('python manage.py collectstatic')
+    conn.run('python3 manage.py collectstatic --noinput')
 
 
 @task
@@ -108,7 +106,7 @@ def migrate_models(ctx):
         conn = ctx
     else:
         conn = get_connection(ctx)
-    conn.run('python manage.py migrate')
+    conn.run('python3 manage.py migrate --noinput')
 
 
 @task
@@ -120,7 +118,7 @@ def restart_application(ctx):
         conn = get_connection(ctx)
 
     restart_command = stage_settings().get('restart_command')
-    result = conn.sudo(restart_command)
+    result = conn.sudo(restart_command, shell=False)
     if result.failed:
         abort('Could not restart application.')
 
@@ -132,7 +130,7 @@ def restart_gunicorn(ctx):
     else:
         conn = get_connection(ctx)
 
-    result = conn.sudo('service restart gunicorn')
+    result = conn.sudo('service gunicorn restart', shell=False)
     if result.failed:
         abort('Could not restart gunicorn.')
 
@@ -146,7 +144,7 @@ def supervisor_conf(ctx):
         conn = get_connection(ctx)
 
     worker_conf = conn.sudo('cp /home/midhat/confess/celery_set_publish_time_worker.conf /etc/supervisor/conf.d/')
-    beat_conf = conn.sudo('cp /home/midhat/confess/celery_set_publish_time_beat.conf /etc/supervisor/conf.d/')
+    beat_conf = conn.sudo('cp /home/midhat/confess/celery_set_publish_time_beat.conf /etc/supervisor/conf.d/', shell=False)
 
     if worker_conf.failed:
         abort('Could not copy worker conf.')
@@ -162,8 +160,8 @@ def celery_log_files(ctx):
     else:
         conn = get_connection(ctx)
 
-    worker_log = conn.sudo('touch /var/log/celery/confess_worker.log')
-    beat_log = conn.sudo('touch /var/log/celery/confess_beat.log')
+    worker_log = conn.sudo('touch /var/log/celery/confess_worker.log', shell=False)
+    beat_log = conn.sudo('touch /var/log/celery/confess_beat.log', shell=False)
 
     if worker_log.failed:
         abort('Could not create worker log file.')
