@@ -3,10 +3,10 @@ import random
 import json
 
 from django.conf import settings
-from confess import settings as app_settings
 from django.http import HttpResponse
 from InstagramAPI import InstagramAPI as Insta
-from slacker import Slacker
+
+from core.package import post
 
 
 def get_random_time():
@@ -30,11 +30,25 @@ def instagram(request):
     return HttpResponse(json.dumps(str(response)), content_type="application/json")
 
 
-def slack_notify(message=None):
-    slack = Slacker(app_settings.SLACK_TOKEN)
-    if slack.api.test().successful:
-        print(
-            f"Connected to {slack.team.info().body['team']['name']}.")
-    else:
-        print('Try Again!')
-    slack.chat.post_message(channel='#tasks', text=message, username='Task worker', icon_emoji=':construction_worker:')
+def slack_notify(message):
+    # slack = Slacker(app_settings.SLACK_TOKEN)
+    # if slack.api.test().successful:
+    #     print(
+    #         f"Connected to {slack.team.info().body['team']['name']}.")
+    # else:
+    #     print('Try Again!')
+    # slack.chat.post_message(channel='#tasks', text=message, username='Task worker', icon_emoji=':construction_worker:')
+
+    data = {
+        'channel': settings.SLACK_CHANNEL,
+        'username': settings.SLACK_USERNAME,
+        'mrkdwn': True,
+        'text': message,
+        'link_names': 1,
+    }
+
+    return post(
+        settings.SLACK_WEBHOOK,
+        data=json.dumps(data),
+        headers={'Content-Type': 'application/json'}
+    )
