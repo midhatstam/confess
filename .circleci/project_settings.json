@@ -6,7 +6,7 @@
     "stable": {
       "name": "stable",
       "host": "206.189.203.241",
-      "user": "midhat",
+      "user": "root",
       "vcs_branch": "master",
       "venv_directory": "/home/midhat/.venv/",
       "requirements_file": "/home/midhat/confess/requirements.txt",
