@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'reports',
     'admin_panel',
     'rule',
+    'django_celery_beat',
     'rest_framework',
     # 'debug_toolbar',
     'django.contrib.admin',
@@ -172,13 +173,38 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='amqp://localhost:5672')
 CELERY_TIMEZONE = 'Europe/Istanbul'
-CELERY_BEAT_SCHEDULE = {
-    'set-publish-time': {
-        'task': 'confession.tasks.set_publish_time',
-        'schedule': crontab(hour=17, minute=40),
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'default'
+        },
     },
+    'formatters': {
+        'default': {
+            'format': '[%(asctime)s %(levelname)s/%(processName)s/%(threadName)s] [%(name)s(%(funcName)s)(%(lineno)d)] %(message)s',
+            'datefmt': "%Y-%m-%d %H:%M:%S"
+        }
+    },
+    'loggers': {
+        'confession': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'celery': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True
+        },
+    }
 }
+
 SLACK_TOKEN = env("SLACK_TOKEN", default="ZS1OTeWOOUeG2dXOIiCUQcpnyr27w0QT")  # default is mocked
-SLACK_WEBHOOK = env("SLACK_WEBHOOK", default="")
+SLACK_WEBHOOK = env("SLACK_WEBHOOK",
+                    default="https://hooks.slack.com/services/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")
 SLACK_CHANNEL = '#tasks'
 SLACK_USERNAME = 'localhost'

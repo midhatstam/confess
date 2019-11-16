@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 @task
 def set_publish_time():
     # date_from = datetime.datetime.now() - datetime.timedelta(days=1)
-    instances = AdminApprovedConfession.objects.all().annotate(
+    instances = AdminApprovedConfession.objects.filter(publish_date__isnull=True).annotate(
         approved_count=Sum(
             Case(
                 When(confessionuserapprovement__vote=True, then=1),
@@ -37,6 +37,9 @@ def set_publish_time():
                 message = f'Confession with id: {confession.id} could not be updated with publish_time of {publish_time} with error: {e}'
                 slack_notify(message=message)
                 continue
+        return f'Task executed with confessions: {instances}'
     else:
         message = 'There is no confession to publish'
         slack_notify(message=message)
+
+        return f'Task executed with message: {message}'
