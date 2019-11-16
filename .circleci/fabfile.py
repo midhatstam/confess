@@ -48,11 +48,11 @@ def deploy(ctx):
     with conn.cd(stage_settings().get('code_src_directory')):
         pull_git_repository(conn)
     venv_dir = stage_settings().get("venv_directory")
-    conn.run(f'source {venv_dir}bin/activate')
-    with conn.cd(stage_settings().get('code_src_directory')):
-        install_requirements(conn)
-        collect_static(conn)
-        migrate_models(conn)
+    with conn.run(f'source {venv_dir}bin/activate'):
+        with conn.cd(stage_settings().get('code_src_directory')):
+            install_requirements(conn)
+            collect_static(conn)
+            migrate_models(conn)
     supervisor_conf(conn)
     celery_log_files(conn)
     restart_application(conn)
