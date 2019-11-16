@@ -1,8 +1,11 @@
 import random
 
 from django.contrib.contenttypes.fields import GenericRelation
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from confession.managers import *
+from confession.tasks import publish_confession
 from core.models import ItemMetaData
 from voting.models import Vote
 
@@ -37,6 +40,12 @@ class Confession(ItemMetaData):
 	
 	def __str__(self):
 		return str(self.id) + ' ' + self.body[:10]
+
+
+@receiver(post_save, sender=Confession)
+def confession_publish(sender, instance, **kwargs):
+	if instance.publish_date is not None:
+		publish_confession.apply_async(args=(instance.id, ), eta=instance.publish_date)
 
 
 class AllConfession(Confession):
