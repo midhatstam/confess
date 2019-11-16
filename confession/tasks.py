@@ -4,7 +4,7 @@ import logging
 from celery import task
 from django.db.models import Sum, When, Case, IntegerField
 
-from confession.models import AdminApprovedConfession, Confession
+from confession.models import Confession, AdminApprovedConfession
 from confession.utils import slack_notify, get_random_time
 
 logger = logging.getLogger(__name__)
