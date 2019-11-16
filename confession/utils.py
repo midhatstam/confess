@@ -48,7 +48,7 @@ def slack_notify(message):
     }
 
     return post(
-        settings.SLACK_WEBHOOK,
+        url=settings.SLACK_WEBHOOK,
         data=json.dumps(data),
         headers={'Content-Type': 'application/json'}
     )
