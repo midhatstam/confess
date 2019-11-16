@@ -3,8 +3,10 @@ import logging
 
 from celery import task
 from django.db.models import Sum, When, Case, IntegerField
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
-from confession.models import AdminApprovedConfession
+from confession.models import Confession, AdminApprovedConfession
 from confession.utils import slack_notify, get_random_time
 
 logger = logging.getLogger(__name__)
@@ -43,3 +45,21 @@ def set_publish_time():
         slack_notify(message=message)
 
         return f'Task executed with message: {message}'
+
+
+@task
+def publish_confession(self, instance_id):
+    logger.info(f'Confession with id: {instance_id} will be published')
+
+    instance = Confession.objects.get(id=instance_id)
+    logger.info(f'Confession with id: {instance_id} found!')
+    instance.user_approved = True
+    instance.save()
+
+    return f'Task executed successfully!'
+
+
+@receiver(post_save, sender=Confession)
+def confession_publish(sender, instance, **kwargs):
+    if instance.publish_date is not None:
+        publish_confession.apply_async(args=(instance.id,), eta=instance.publish_date)
