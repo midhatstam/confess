@@ -27,30 +27,37 @@ class ConfessionMixin(viewsets.ModelViewSet):
 
 class AllConfessions(ConfessionMixin):
     queryset = AllConfession.objects.all()
+    permission_classes = (IsAuthenticated,)
     pagination_class = AdminApiPageNumber
 
 
 class AdminApprovedConfessions(ConfessionMixin):
+    permission_classes = (IsAuthenticated,)
     queryset = AdminApprovedConfession.objects.all()
 
 
 class UserApprovedConfessions(ConfessionMixin):
+    permission_classes = (IsAuthenticated,)
     queryset = ApprovedConfession.objects.all()
 
 
 class UnapprovedConfessions(ConfessionMixin):
+    permission_classes = (IsAuthenticated,)
     queryset = Confession.objects.filter(admin_approved=False, user_approved=False)
 
 
 class ConfessionDetail(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
     serializer_class = ConfessionSerializer
     queryset = Confession.objects.all()
     lookup_field = 'id'
 
 
 class ReportedConfessions(ConfessionMixin):
+    permission_classes = (IsAuthenticated,)
     queryset = ReportedConfession.objects.all()
 
 
 class ConfessionForApproveView(ConfessionMixin):
+    permission_classes = (IsAuthenticated,)
     queryset = ConfessionForApprove.objects.all()

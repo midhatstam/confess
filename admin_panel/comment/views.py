@@ -29,15 +29,18 @@ class CommentMixin(viewsets.ModelViewSet):
 
 
 class AllComments(CommentMixin):
+    permission_classes = (IsAuthenticated,)
     queryset = Comment.objects.filter(reported=False)
 
 
 class CommentDetail(CommentMixin):
+    permission_classes = (IsAuthenticated,)
     queryset = Comment.objects.all()
     lookup_field = 'id'
 
 
 class ReportedComments(CommentMixin):
+    permission_classes = (IsAuthenticated,)
     queryset = Comment.objects.filter(reported=True)
 
 
