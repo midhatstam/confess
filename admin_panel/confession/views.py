@@ -1,6 +1,8 @@
 from rest_framework import pagination, viewsets
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from confession.models import Confession, AllConfession, ApprovedConfession, AdminApprovedConfession, \
     ReportedConfession, ConfessionForApprove
@@ -13,6 +15,7 @@ class AdminApiPageNumber(pagination.PageNumberPagination):
 
 class ConfessionMixin(viewsets.ModelViewSet):
     serializer_class = ConfessionSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, JSONWebTokenAuthentication]
     permission_classes = (IsAuthenticated,)
     pagination_class = AdminApiPageNumber
     lookup_field = 'id'
@@ -27,37 +30,32 @@ class ConfessionMixin(viewsets.ModelViewSet):
 
 class AllConfessions(ConfessionMixin):
     queryset = AllConfession.objects.all()
-    permission_classes = (IsAuthenticated,)
     pagination_class = AdminApiPageNumber
 
 
 class AdminApprovedConfessions(ConfessionMixin):
-    permission_classes = (IsAuthenticated,)
     queryset = AdminApprovedConfession.objects.all()
 
 
 class UserApprovedConfessions(ConfessionMixin):
-    permission_classes = (IsAuthenticated,)
     queryset = ApprovedConfession.objects.all()
 
 
 class UnapprovedConfessions(ConfessionMixin):
-    permission_classes = (IsAuthenticated,)
     queryset = Confession.objects.filter(admin_approved=False, user_approved=False)
 
 
 class ConfessionDetail(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
+    authentication_classes = [SessionAuthentication, BasicAuthentication, JSONWebTokenAuthentication]
     serializer_class = ConfessionSerializer
     queryset = Confession.objects.all()
     lookup_field = 'id'
 
 
 class ReportedConfessions(ConfessionMixin):
-    permission_classes = (IsAuthenticated,)
     queryset = ReportedConfession.objects.all()
 
 
 class ConfessionForApproveView(ConfessionMixin):
-    permission_classes = (IsAuthenticated,)
     queryset = ConfessionForApprove.objects.all()
