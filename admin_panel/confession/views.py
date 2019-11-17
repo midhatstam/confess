@@ -1,4 +1,5 @@
 from rest_framework import pagination, viewsets
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from confession.models import Confession, AllConfession, ApprovedConfession, AdminApprovedConfession, \
@@ -12,6 +13,7 @@ class AdminApiPageNumber(pagination.PageNumberPagination):
 
 class ConfessionMixin(viewsets.ModelViewSet):
     serializer_class = ConfessionSerializer
+    permission_classes = (IsAuthenticated,)
     pagination_class = AdminApiPageNumber
     lookup_field = 'id'
 

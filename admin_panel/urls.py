@@ -4,4 +4,5 @@ urlpatterns = [
     path('', include('admin_panel.confession.urls'), name='admin-confessions'),
     path('', include('admin_panel.comment.urls'), name='admin-comments'),
     path('', include('admin_panel.rule.urls'), name='admin-rules'),
+    path('accounts/', include('admin_panel.accounts.urls'), name='admin-accounts'),
 ]
