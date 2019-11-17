@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
-
+import datetime
 import os
 import environ
 
@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'rule',
     'django_celery_beat',
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
     # 'debug_toolbar',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -208,3 +210,21 @@ SLACK_WEBHOOK = env("SLACK_WEBHOOK",
                     default="https://hooks.slack.com/services/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")
 SLACK_CHANNEL = '#tasks'
 SLACK_USERNAME = 'localhost'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+
+REST_USE_JWT = True
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=60 * 60),
+    'JWT_ALLOW_REFRESH': True
+}

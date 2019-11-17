@@ -1,5 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from comment.models import Comment
@@ -16,6 +17,7 @@ class AdminApiPageNumber(CustomApiPageNumber):
 class CommentMixin(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     pagination_class = AdminApiPageNumber
+    permission_classes = (IsAuthenticated,)
     lookup_field = 'id'
 
     def update(self, request, *args, **kwargs):
@@ -40,6 +42,7 @@ class ReportedComments(CommentMixin):
 
 
 class CommentReports(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
     serializer_class = ReportCommentSerializer
 
     def reports(self, request, *args, **kwargs):
