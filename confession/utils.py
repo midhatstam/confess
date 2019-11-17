@@ -1,12 +1,15 @@
 import datetime
 import random
 import json
+import logging
 
 from django.conf import settings
 from django.http import HttpResponse
 from InstagramAPI import InstagramAPI as Insta
 
 from core.package import post
+
+logger = logging.getLogger(__name__)
 
 
 def get_random_time():
@@ -47,8 +50,15 @@ def slack_notify(message):
         'link_names': 1,
     }
 
-    return post(
-        url=settings.SLACK_WEBHOOK,
-        data=json.dumps(data),
-        headers={'Content-Type': 'application/json'}
-    )
+    try:
+        response = post(
+            url=settings.SLACK_WEBHOOK,
+            data=json.dumps(data),
+            headers={'Content-Type': 'application/json'}
+        )
+    except Exception as e:
+        response = None
+        logger.debug(f'Cound not send slack message')
+        logger.exception(e)
+
+    return response
