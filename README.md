@@ -1,3 +1,6 @@
+[![CircleCI](https://circleci.com/gh/midhatstam/confess.svg?style=svg)](https://circleci.com/gh/midhatstam/confess)
+
+
 Run those commands in shell:
 - docker-compose up -d --build
 - docker-compose exec web python3 manage.py createsuperuser

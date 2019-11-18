@@ -1,4 +1,10 @@
-version: 2
+version: 2.1
+executors:
+      docker-publisher:
+        environment:
+          IMAGE_NAME: midhatstam/konfess
+        docker:
+          - image: circleci/buildpack-deps:stretch
 jobs:
   build-job:
     docker:
@@ -50,17 +56,36 @@ jobs:
           name: Deploy to Heroku
           command: |
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
-  server-deploy-job:
-    docker:
-      - image: circleci/python:3.8
+  server-deploy-build-image-job:
+    executor: docker-publisher
     working_directory: ~/code
     steps:
       - checkout
+      - setup_remote_docker
       - run:
-          name: Deploy via Fabric
+          name: Build Docker image
+          command: docker build -t $IMAGE_NAME:latest .
+      - run:
+          name: Archive Docker image
+          command: docker save -o image.tar $IMAGE_NAME
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./image.tar
+  publish-latest:
+    executor: docker-publisher
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - setup_remote_docker
+      - run:
+          name: Load archived Docker image
+          command: docker load -i /tmp/workspace/image.tar
+      - run:
+          name: Publish Docker Image to Docker Hub
           command: |
-            sudo pip install fabric Unipath==1.1
-            fab -r ./.circleci/fabfile.py -i ~/.ssh/id_rsa development deploy
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push $IMAGE_NAME:latest
 
 workflows:
   version: 2
@@ -74,13 +99,20 @@ workflows:
             branches:
               only:
                 - master
-      - server-deploy-job:
+      - server-deploy-build-image-job:
           requires:
             - deploy-job
           filters:
             branches:
               only:
                master
+      - publish-latest:
+          requires:
+            - server-deploy-build-image-job
+          filters:
+            branches:
+              only:
+                - master
 #      - deploy-job:
 #          requires:
 #            - build-job
