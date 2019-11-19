@@ -1,5 +1,4 @@
 from rest_framework import pagination, viewsets
-from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
@@ -15,7 +14,7 @@ class AdminApiPageNumber(pagination.PageNumberPagination):
 
 class ConfessionMixin(viewsets.ModelViewSet):
     serializer_class = ConfessionSerializer
-    authentication_classes = [BasicAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
     permission_classes = (IsAuthenticated,)
     pagination_class = AdminApiPageNumber
     lookup_field = 'id'
@@ -47,7 +46,7 @@ class UnapprovedConfessions(ConfessionMixin):
 
 class ConfessionDetail(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    authentication_classes = [BasicAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
     serializer_class = ConfessionSerializer
     queryset = Confession.objects.all()
     lookup_field = 'id'
