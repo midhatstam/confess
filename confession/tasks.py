@@ -48,7 +48,7 @@ def set_publish_time():
 
 
 @task
-def publish_confession(self, instance_id):
+def publish_confession(instance_id):
     logger.info(f'Confession with id: {instance_id} will be published')
 
     instance = Confession.objects.get(id=instance_id)
