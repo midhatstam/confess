@@ -1,5 +1,4 @@
 from rest_framework import viewsets
-from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
@@ -19,7 +18,7 @@ class CommentMixin(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     pagination_class = AdminApiPageNumber
     permission_classes = (IsAuthenticated,)
-    authentication_classes = [BasicAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
     lookup_field = 'id'
 
     def update(self, request, *args, **kwargs):
@@ -45,7 +44,7 @@ class ReportedComments(CommentMixin):
 
 class CommentReports(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    authentication_classes = [BasicAuthentication, JSONWebTokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
     serializer_class = ReportCommentSerializer
 
     def reports(self, request, *args, **kwargs):
