@@ -1,7 +1,8 @@
 import datetime
 import logging
 
-from celery import task
+from celery import shared_task
+from confess import celery_app
 from django.db.models import Sum, When, Case, IntegerField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -12,7 +13,7 @@ from confession.utils import slack_notify, get_random_time
 logger = logging.getLogger(__name__)
 
 
-@task
+@celery_app.task
 def set_publish_time():
     # date_from = datetime.datetime.now() - datetime.timedelta(days=1)
     instances = AdminApprovedConfession.objects.filter(publish_date__isnull=True).annotate(
@@ -47,7 +48,10 @@ def set_publish_time():
         return f'Task executed with message: {message}'
 
 
-@task
+celery_app.register_task(set_publish_time)
+
+
+@shared_task
 def publish_confession(instance_id):
     logger.info(f'Confession with id: {instance_id} will be published')
 
