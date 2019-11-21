@@ -63,6 +63,9 @@ def publish_confession(instance_id):
     return f'Task executed successfully!'
 
 
+celery_app.register_task(publish_confession)
+
+
 @receiver(post_save, sender=Confession)
 def confession_publish(sender, instance, **kwargs):
     if instance.publish_date is not None:

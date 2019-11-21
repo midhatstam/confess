@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'admin_panel',
     'rule',
     'django_celery_results',
+    'django_celery_beat',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
