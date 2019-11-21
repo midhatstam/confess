@@ -179,7 +179,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULER = {
     'set-publish-time': {
         'task': 'confession.tasks.set_publish_time',
-        'schedule': crontab(hour=14, minute=25),
+        'schedule': crontab(hour=15, minute=00),
     },
 }
 CELERY_TIMEZONE = 'Europe/Istanbul'
