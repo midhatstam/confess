@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'reports',
     'admin_panel',
     'rule',
-    'django_celery_beat',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
@@ -180,7 +179,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULER = {
     'set-publish-time': {
         'task': 'confession.tasks.set_publish_time',
-        'schedule': crontab(hour=14, minute=15),
+        'schedule': crontab(hour=14, minute=25),
     },
 }
 CELERY_TIMEZONE = 'Europe/Istanbul'
