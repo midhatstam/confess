@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'reports',
     'admin_panel',
     'rule',
+    'django_celery_results',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
@@ -174,6 +175,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='amqp://localhost:5672')
 CELERY_TIMEZONE = 'Europe/Istanbul'
+
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'django-cache'
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
