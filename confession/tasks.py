@@ -48,9 +48,6 @@ def set_publish_time():
         return f'Task executed with message: {message}'
 
 
-celery_app.register_task(set_publish_time)
-
-
 @shared_task
 def publish_confession(instance_id):
     logger.info(f'Confession with id: {instance_id} will be published')
@@ -63,10 +60,10 @@ def publish_confession(instance_id):
     return f'Task executed successfully!'
 
 
-celery_app.register_task(publish_confession)
-
-
 @receiver(post_save, sender=Confession)
 def confession_publish(sender, instance, **kwargs):
     if instance.publish_date is not None:
         publish_confession.apply_async(args=(instance.id,), eta=instance.publish_date)
+
+
+celery_app.register_task(set_publish_time)
