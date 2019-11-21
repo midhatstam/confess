@@ -14,3 +14,6 @@ app.conf.beat_schedule = {
         'schedule': crontab(hour=15, minute=45),
     },
 }
+
+if __name__ == 'main':
+    app.start()
