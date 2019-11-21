@@ -173,15 +173,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='amqp://localhost:5672')
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_BEAT_SCHEDULER = {
-    'set-publish-time': {
-        'task': 'confession.tasks.set_publish_time',
-        'schedule': crontab(hour=15, minute=00),
-    },
-}
 CELERY_TIMEZONE = 'Europe/Istanbul'
 LOGGING = {
     'version': 1,
