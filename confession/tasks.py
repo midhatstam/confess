@@ -48,7 +48,7 @@ def set_publish_time():
         return f'Task executed with message: {message}'
 
 
-@shared_task
+@celery_app.task
 def publish_confession(instance_id):
     logger.info(f'Confession with id: {instance_id} will be published')
 
@@ -67,3 +67,4 @@ def confession_publish(sender, instance, **kwargs):
 
 
 celery_app.register_task(set_publish_time)
+celery_app.register_task(publish_confession)
