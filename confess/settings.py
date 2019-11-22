@@ -200,7 +200,8 @@ LOGGING = {
         'confession': {
             'handlers': ['console'],
             'level': 'DEBUG',
-            'propagate': False
+            'propagate': False,
+            'filename': '/var/log/confession/output.log'
         },
         'celery': {
             'handlers': ['console'],
