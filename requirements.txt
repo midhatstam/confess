@@ -51,7 +51,7 @@ packaging==19.2
 paramiko==2.6.0
 Pillow==6.2.1
 pipdeptree==0.13.2
-pluggy==0.13.0
+pluggy==0.13.1
 proglog==0.1.9
 psycopg2==2.8.4
 psycopg2-binary==2.8.4
