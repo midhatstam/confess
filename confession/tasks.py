@@ -2,6 +2,8 @@ import datetime
 import logging
 
 from celery import shared_task
+from django_celery_beat.models import PeriodicTask, ClockedSchedule
+
 from confess import celery_app
 from django.db.models import Sum, When, Case, IntegerField
 from django.db.models.signals import post_save
@@ -63,7 +65,18 @@ def publish_confession(instance_id):
 @receiver(post_save, sender=Confession)
 def confession_publish(sender, instance, **kwargs):
     if instance.publish_date is not None:
-        publish_confession.apply_async(args=(instance.id,), eta=instance.publish_date)
+        clocked = ClockedSchedule.objects.create(
+            clocked_time=instance.publish_date
+        )
+        PeriodicTask.objects.create(
+            clocked=clocked,
+            name='Publish confession',
+            task='confess.tasks.publish_confession',
+            args=[instance.id],
+            one_off=True
+        )
+
+        logger.info(f'Created clocked task for confession {instance.id} for datetime {instance.publish_date}')
 
 
 celery_app.register_task(set_publish_time)
