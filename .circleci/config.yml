@@ -87,6 +87,8 @@ jobs:
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
             docker push $IMAGE_NAME:latest
   server-deploy:
+    docker:
+      - image: circleci/python:3.6.8
     steps:
       - run:
           name: Deploy to server
@@ -112,10 +114,17 @@ workflows:
           filters:
             branches:
               only:
-               master
+               - master
       - publish-docker-image-job:
           requires:
             - build-docker-image-job
+          filters:
+            branches:
+              only:
+                - master
+      - server-deploy:
+          requires:
+            - publish-docker-image-job
           filters:
             branches:
               only:
