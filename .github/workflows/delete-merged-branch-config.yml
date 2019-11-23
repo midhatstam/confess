@@ -11,4 +11,5 @@ jobs:
       - name: Delete
       - uses: SvanBoxel/delete-merged-branch@v1.3.3
         if: github.branch.name != 'develop'
-      - run: delete-merged-branch
+        with: 
+          run: delete-merged-branch
