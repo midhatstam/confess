@@ -32,9 +32,6 @@ class Confession(ItemMetaData):
 	def save(self, *args, **kwargs):
 		if not self.css_class:
 			self.css_class = random.choices(self.class_options)[0][0]
-		# if settings.DEBUG == 1:
-		# 	self.admin_approved = 1
-		# 	self.user_approved = 1
 		if self.publish_date:
 			self.create_publish_task()
 		super(Confession, self).save(*args, **kwargs)
@@ -50,7 +47,7 @@ class Confession(ItemMetaData):
 		clocked.save()
 		publish_task = PeriodicTask(
 			clocked=clocked,
-			name='Publish confession',
+			name=f'Publish confession with id:{self.pk}',
 			task='confess.tasks.publish_confession',
 			args=[self.pk],
 			one_off=True

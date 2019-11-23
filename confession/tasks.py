@@ -1,13 +1,8 @@
 import datetime
 import logging
 
-from celery import shared_task
-from django_celery_beat.models import PeriodicTask, ClockedSchedule
-
 from confess import celery_app
 from django.db.models import Sum, When, Case, IntegerField
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 from confession.models import Confession, AdminApprovedConfession
 from confession.utils import slack_notify, get_random_time
@@ -60,25 +55,6 @@ def publish_confession(instance_id):
     instance.save()
 
     return f'Task executed successfully!'
-
-
-# @receiver(post_save, sender=Confession)
-# def confession_publish(sender, instance, **kwargs):
-#     if instance.publish_date is not None:
-#         clocked = ClockedSchedule(
-#             clocked_time=instance.publish_date
-#         )
-#         clocked.save()
-#         publish_task = PeriodicTask(
-#             clocked=clocked,
-#             name='Publish confession',
-#             task='confess.tasks.publish_confession',
-#             args=[instance.id],
-#             one_off=True
-#         )
-#         publish_task.save()
-#
-#         logger.info(f'Created clocked task for confession {instance.id} for datetime {instance.publish_date}')
 
 
 celery_app.register_task(set_publish_time)
