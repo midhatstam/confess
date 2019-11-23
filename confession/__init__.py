@@ -1,1 +1,1 @@
-default_app_config = 'confess.confession.apps.ConfessionConfig'
+default_app_config = 'confession.apps.ConfessionConfig'
