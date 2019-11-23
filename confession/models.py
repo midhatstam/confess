@@ -1,6 +1,8 @@
 import random
 
 from django.contrib.contenttypes.fields import GenericRelation
+from django.db.transaction import atomic
+from django_celery_beat.models import ClockedSchedule, PeriodicTask
 
 from confession.managers import *
 from core.models import ItemMetaData
@@ -33,10 +35,27 @@ class Confession(ItemMetaData):
 		# if settings.DEBUG == 1:
 		# 	self.admin_approved = 1
 		# 	self.user_approved = 1
+		if self.publish_date:
+			self.create_publish_task()
 		super(Confession, self).save(*args, **kwargs)
 	
 	def __str__(self):
 		return str(self.id) + ' ' + self.body[:10]
+
+	@atomic
+	def create_publish_task(self):
+		clocked = ClockedSchedule(
+			clocked_time=self.publish_date
+		)
+		clocked.save()
+		publish_task = PeriodicTask(
+			clocked=clocked,
+			name='Publish confession',
+			task='confess.tasks.publish_confession',
+			args=[self.pk],
+			one_off=True
+		)
+		publish_task.save()
 
 
 class AllConfession(Confession):
