@@ -65,16 +65,18 @@ def publish_confession(instance_id):
 @receiver(post_save, sender=Confession)
 def confession_publish(sender, instance, **kwargs):
     if instance.publish_date is not None:
-        clocked = ClockedSchedule.objects.create(
+        clocked = ClockedSchedule(
             clocked_time=instance.publish_date
         )
-        PeriodicTask.objects.create(
+        clocked.save()
+        publish_task = PeriodicTask(
             clocked=clocked,
             name='Publish confession',
             task='confess.tasks.publish_confession',
             args=[instance.id],
             one_off=True
         )
+        publish_task.save()
 
         logger.info(f'Created clocked task for confession {instance.id} for datetime {instance.publish_date}')
 
