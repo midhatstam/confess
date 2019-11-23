@@ -86,6 +86,13 @@ jobs:
           command: |
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
             docker push $IMAGE_NAME:latest
+  server-deploy:
+    steps:
+      - run:
+          name: Deploy to server
+          command: |
+            . venv/bin/activate
+            ansible-playbook -i hosts confess-ansible/api/deploy.yml
 
 workflows:
   version: 2
