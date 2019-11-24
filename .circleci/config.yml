@@ -88,7 +88,7 @@ jobs:
             docker push $IMAGE_NAME:latest
   server-deploy:
     docker:
-      - image: circleci/python:3.6.8
+      - image: circleci/buildpack-deps:latest
     steps:
       - run:
           name: Install Ansible
