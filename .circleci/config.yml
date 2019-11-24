@@ -89,7 +89,6 @@ jobs:
   server-deploy:
     docker:
       - image: circleci/buildpack-deps:18.04
-    machine: true
     working_directory: ~/code
     steps:
       - checkout
