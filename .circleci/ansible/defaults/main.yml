@@ -13,7 +13,7 @@ slack_username: "Ansible"
 docker_login_username: midhatstam
 docker_login_password: aa38a56f-de4a-4a1c-9f9a-d4435d25481c
 docker_login_email: midhatstam@gmail.com
-docker_registry: hub.docker.com/repository/docker/
+docker_registry: docker.io/
 
 docker_nginx_image: "nginx:1.17.4"
 
