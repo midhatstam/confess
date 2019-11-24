@@ -179,6 +179,7 @@ CELERY_TIMEZONE = 'Europe/Istanbul'
 
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_CACHE_BACKEND = 'django-cache'
+CELERY_IMPORTS = ['confession.']
 
 LOGGING = {
     'version': 1,
