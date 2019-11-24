@@ -89,7 +89,10 @@ jobs:
   server-deploy:
     docker:
       - image: circleci/buildpack-deps:18.04
+    machine: true
+    working_directory: ~/code
     steps:
+      - checkout
       - run:
           name: Install Ansible
           command: |
@@ -102,7 +105,8 @@ jobs:
           name: Run ansible playbook
           command: |
             ls -la
-            ansible-playbook -i .circleci/hosts ~/code/.circleci/ansible/api/deploy.yml
+            ls -la /home/
+            ansible-playbook -i .circleci/hosts .circleci/ansible/api/deploy.yml
 
 workflows:
   version: 2
