@@ -1,0 +1,12 @@
+---
+
+- name: Create project folder
+  file:
+    path: "{{project_path}}"
+    state: directory
+    mode: '0755'
+
+- name: Update Env
+  template:
+    src: "{{env_template_path}}"
+    dest: "{{env_path}}"

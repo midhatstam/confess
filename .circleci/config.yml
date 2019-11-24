@@ -101,7 +101,7 @@ jobs:
       - run:
           name: Run ansible playbook
           command: |
-            ansible-playbook -i .circleci/hosts /home/midhat/confess-ansible/api/deploy.yml "$DO"
+            ansible-playbook -i .circleci/hosts .circleci/ansible/api/deploy.yml
 
 workflows:
   version: 2
