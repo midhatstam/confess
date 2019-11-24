@@ -1,0 +1,26 @@
+---
+-
+  hosts: web
+  gather_facts: yes
+  remote_user: root
+  vars_files:
+    - '{{playbook_dir}}/../defaults/main.yml'
+    - '{{playbook_dir}}/../vars/{{env_name}}.yml'
+
+  vars:
+    app_name: "konfess"
+    compose_file_path: "{{project_path}}/docker-compose.yml"
+
+  tasks:
+
+    - import_tasks: '{{playbook_dir}}/../common/update-env.yml'
+
+    - import_tasks: '{{playbook_dir}}/../common/docker-login.yml'
+
+    - import_tasks: '{{playbook_dir}}/../common/docker-update.yml'
+      vars:
+        confess_docker_name: "{{confess_docker}}"
+        confess_docker_tag: "{{confess_tag}}"
+        confess_docker_container_name: web.api_web_1
+
+    - import_tasks: '{{playbook_dir}}/../common/slack.yml'

@@ -1,0 +1,28 @@
+version: "3.5"
+services:
+  web:
+    image: "{{confess_docker}}:{{confess_tag}}"
+    env_file:
+      - "{{env_path}}"
+    expose:
+    - "8000"
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./gunicorn.py:/etc/gunicorn.py
+      - /tmp/statics:/web
+    command: gunicorn confess.wsgi -c /etc/gunicorn.py
+    tty: true
+  nginx:
+    image: {{docker_nginx_image}}
+    ports:
+      - "80:80"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - /tmp/statics:/web:ro
+    restart: always
+    tty: true
+    logging:
+      options:
+        max-size: 100m

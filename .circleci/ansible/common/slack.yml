@@ -1,0 +1,8 @@
+---
+- name: Send slack notification
+  slack:
+    token: "{{slack_token}}"
+    msg: '[{{project_name}}] [{{env_name}}] {{app_name}} deployed on {{ inventory_hostname }} {{do_name}} '
+    channel: "{{slack_channel}}"
+    username: "{{slack_username}}"
+  delegate_to: localhost

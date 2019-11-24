@@ -1,0 +1,26 @@
+---
+
+installation_path: /home/midhat/
+project_name: "Konfess"
+project_path: "{{installation_path}}/confess"
+
+env_name: prod
+
+slack_token: "T6RU479AP/B9Y6KBCSD/8qjI8u3SOr6XhvjqVqzPBbC0"
+slack_channel: "#confess-deploy"
+slack_username: "Ansible"
+
+docker_login_username: midhatstam
+docker_login_password: aa38a56f-de4a-4a1c-9f9a-d4435d25481c
+docker_login_email: midhatstam@gmail.com
+docker_registry: hub.docker.com/repository/docker/
+
+docker_nginx_image: "nginx:1.17.4"
+
+confess_repo: midhatstam/konfess
+confess_docker: "{{docker_registry}}{{confess_repo}}"
+confess_tag: latest
+
+#mf_landingweb_repo: dofo/mf-landing-web
+#mf_landingweb_docker: "{{docker_registry}}{{mf_landingweb_repo}}"
+#mf_landingweb_tag: latest
