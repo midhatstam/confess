@@ -94,7 +94,6 @@ jobs:
           name: Install Ansible
           command: |
             sudo apt update -y
-            sudo apt install -y language-pack-ja-base language-pack-ja
             sudo apt install -y software-properties-common
             sudo apt-add-repository -y ppa:ansible/ansible
             sudo apt update -y
@@ -103,7 +102,10 @@ jobs:
             sudo python /tmp/get-pip.py
             sudo pip install --upgrade pip && pip install --upgrade setuptools
             sudo pip install ansible
-            ansible-playbook -i hosts confess-ansible/api/deploy.yml
+      - run:
+          name: Run ansible playbook
+          command: |
+            ansible-playbook -i .circleci/hosts confess-ansible/api/deploy.yml
 
 workflows:
   version: 2
