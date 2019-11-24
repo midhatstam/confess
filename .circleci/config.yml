@@ -47,15 +47,15 @@ jobs:
           command: |
             . venv/bin/activate
             tox
-  heroku-deploy-job:
-    docker:
-      - image: buildpack-deps:trusty
-    steps:
-      - checkout
-      - run:
-          name: Deploy to Heroku
-          command: |
-            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+#  heroku-deploy-job:
+#    docker:
+#      - image: buildpack-deps:trusty
+#    steps:
+#      - checkout
+#      - run:
+#          name: Deploy to Heroku
+#          command: |
+#            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
   build-docker-image-job:
     executor: docker-publisher
     working_directory: ~/code
@@ -100,16 +100,16 @@ workflows:
   build-deploy:
     jobs:
       - build-job
-      - heroku-deploy-job:
-          requires:
-            - build-job
-          filters:
-            branches:
-              only:
-                - develop
+#      - heroku-deploy-job:
+#          requires:
+#            - build-job
+#          filters:
+#            branches:
+#              only:
+#                - develop
       - build-docker-image-job:
           requires:
-            - heroku-deploy-job
+            - build-job
           filters:
             branches:
               only:
