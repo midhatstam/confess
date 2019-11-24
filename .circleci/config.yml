@@ -88,7 +88,7 @@ jobs:
             docker push $IMAGE_NAME:latest
   server-deploy:
     docker:
-      - image: circleci/buildpack-deps:latest
+      - image: circleci/buildpack-deps:18.04
     steps:
       - run:
           name: Install Ansible
@@ -97,11 +97,7 @@ jobs:
             sudo apt install -y software-properties-common
             sudo apt-add-repository -y ppa:ansible/ansible
             sudo apt update -y
-            sudo apt install -y curl python-dev git
-            sudo curl "https://bootstrap.pypa.io/get-pip.py" -o "/tmp/get-pip.py"
-            sudo python /tmp/get-pip.py
-            sudo pip install --upgrade pip && pip install --upgrade setuptools
-            sudo pip install ansible
+            sudo apt install -y ansible
       - run:
           name: Run ansible playbook
           command: |
