@@ -93,7 +93,6 @@ jobs:
       - run:
           name: Deploy to server
           command: |
-            . venv/bin/activate
             ansible-playbook -i hosts confess-ansible/api/deploy.yml
 
 workflows:
@@ -107,28 +106,28 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - develop
       - build-docker-image-job:
           requires:
             - heroku-deploy-job
           filters:
             branches:
               only:
-               - master
+               - develop
       - publish-docker-image-job:
           requires:
             - build-docker-image-job
           filters:
             branches:
               only:
-                - master
+                - develop
       - server-deploy:
           requires:
             - publish-docker-image-job
           filters:
             branches:
               only:
-                - master
+                - develop
 #      - deploy-job:
 #          requires:
 #            - build-job
