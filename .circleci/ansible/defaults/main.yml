@@ -6,7 +6,7 @@ project_path: "{{installation_path}}/confess"
 
 env_name: prod
 
-slack_token: "{{slack_token}}"
+slack_token: "T6RU479AP/B9Y6KBCSD/8qjI8u3SOr6XhvjqVqzPBbC0"
 slack_channel: "#confess-deploy"
 slack_username: "Ansible"
 
