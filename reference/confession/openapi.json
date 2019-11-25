@@ -11,8 +11,8 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8000",
-      "description": "Localhost"
+      "url": "http://itiraf.cf",
+      "description": "itiraf.cf"
     }
   ],
   "paths": {
