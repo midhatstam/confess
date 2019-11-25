@@ -26,4 +26,4 @@
 
     - import_tasks: '{{playbook_dir}}/../common/slack.yml'
       vars:
-        slack_token: '{{ lookup("env", "SLACK_TOKEN") }}'
+        slack_token: '{{ lookup("{{env_path}}", "SLACK_TOKEN") }}'
