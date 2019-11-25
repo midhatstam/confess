@@ -2,7 +2,7 @@
 
 installation_path: /home/midhat/
 project_name: "Konfess"
-project_path: "{{installation_path}}/confess/"
+project_path: "{{installation_path}}/confess"
 
 env_name: .env
 
