@@ -1,6 +1,6 @@
 env_name: .env
-env_template_path: "{{project_path}}../.env"
-env_path: "{{project_path}}"
+env_template_path: "{{playbook_dir}}/../../../../.env"
+env_path: "{{project_path}}/.env"
 
 confess_domain: itiraf.cf
 landing_domain: itiraf.cf
