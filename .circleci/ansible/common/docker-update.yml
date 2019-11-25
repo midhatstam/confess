@@ -2,6 +2,8 @@
 
 - import_tasks: 'docker-pull.yml'
 
+- import_tasks: 'update.yml'
+
 # - import_tasks: 'docker-compose-install.yml'
 
 - import_tasks: 'docker-update-compose.yml'
