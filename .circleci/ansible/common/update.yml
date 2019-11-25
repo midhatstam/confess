@@ -17,6 +17,7 @@
   pip:
     name: "{{ item.name }}"
     state: latest
+    extra_args: --user
   with_items:
     - { name: pip, version: "latest", install: true }
     - { name: setuptools, version: "latest", install: true }
@@ -31,6 +32,7 @@
     name: "{{ item.name }}"
     state: present
     version: "{{ item.version }}"
+    extra_args: --user
   with_items:
     - { name: pip, version: "latest", install: "true" }
     - { name: setuptools, version: "latest", install: "true" }
