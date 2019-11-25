@@ -3,7 +3,7 @@ services:
   web:
     image: "{{confess_docker}}:{{confess_tag}}"
     env_file:
-      - "{{env_path}}/.env"
+      - "{{env_path}}.env"
     expose:
     - "8000"
     restart: always
