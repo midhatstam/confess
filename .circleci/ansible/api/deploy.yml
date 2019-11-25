@@ -5,7 +5,7 @@
   remote_user: midhat
   vars_files:
     - '{{playbook_dir}}/../defaults/main.yml'
-    - '{{playbook_dir}}/../vars/prod.yml'
+    - '{{playbook_dir}}/../vars/{{env_name}}.yml'
 
   vars:
     app_name: "konfess"
