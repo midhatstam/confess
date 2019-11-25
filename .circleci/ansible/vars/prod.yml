@@ -1,6 +1,6 @@
-env_name: prod
-env_template_path: "{{playbook_dir}}/../assets/env/{{env_name}}"
-env_path: "/home/midhat/.env"
+env_name: .env
+env_template_path: "{{project_path}}/../.env"
+env_path: "{{project_path}}"
 
 confess_domain: itiraf.cf
 landing_domain: itiraf.cf
