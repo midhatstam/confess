@@ -25,3 +25,5 @@
         confess_docker_container_name: web.confess_web_1
 
     - import_tasks: '{{playbook_dir}}/../common/slack.yml'
+      vars:
+        slack_token: '{{ lookup("env", "{{env_path}}", "SLACK_TOKEN") }}'
