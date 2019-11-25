@@ -1,13 +1,13 @@
 - name: Install python-dev package with apt
+  become: yes
   apt:
-    become: yes
     pkg: 'python-dev'
     state: latest
     update_cache: yes
     cache_valid_time: 600
 - name: Install pip package with apt
+  become: yes
   apt:
-    become: yes
     pkg: 'python-pip'
     state: latest
     update_cache: yes
