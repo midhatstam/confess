@@ -4,7 +4,7 @@ installation_path: /home/midhat/
 project_name: "Konfess"
 project_path: "{{installation_path}}/confess"
 
-env_name: .env
+env_name: prod
 
 slack_token: "{{slack_token}}"
 slack_channel: "#confess-deploy"
