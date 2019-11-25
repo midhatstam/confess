@@ -16,7 +16,7 @@
     project_src: "{{app_path}}"
     state: absent
     timeout: 300
-  when: compose_file_output.stat.exists == true
+  #when: compose_file_output.stat.exists == true
 
 - name: Update Docker-compose file
   template:
