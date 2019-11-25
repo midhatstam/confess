@@ -35,11 +35,11 @@
     - { name: pip, version: "latest", install: "true" }
     - { name: setuptools, version: "latest", install: "true" }
     - { name: docker-py, version: "latest", install: "true" }
-    - { name: docker-compose, version: "latest", install: "true" }
+    - { name: docker-compose, version: "1.24.1", install: "true" }
   when: (item.version!="latest" and item.install)
 
-- name: Run/restart docker compose
-  docker_service: >
-    project_src=/root/www
-    restarted=yes
-    debug=yes
+#- name: Run/restart docker compose
+#  docker_compose: >
+#    project_src=/root/www
+#    restarted=yes
+#    debug=yes
