@@ -1,5 +1,5 @@
 env_name: .env
-env_template_path: "{{project_path}}/../.env"
+env_template_path: "{{project_path}}../.env"
 env_path: "{{project_path}}"
 
 confess_domain: itiraf.cf

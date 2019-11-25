@@ -10,7 +10,7 @@
   vars:
     app_name: "konfess"
     app_path: "{{project_path}}"
-    compose_file_path: "{{project_path}}/docker-compose.yml"
+    compose_file_path: "{{project_path}}docker-compose.yml"
 
   tasks:
 
