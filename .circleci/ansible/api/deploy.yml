@@ -22,6 +22,6 @@
       vars:
         confess_docker_name: "{{confess_docker}}"
         confess_docker_tag: "{{confess_tag}}"
-        confess_docker_container_name: web.api_web_1
+        confess_docker_container_name: web.confess_web_1
 
     - import_tasks: '{{playbook_dir}}/../common/slack.yml'
