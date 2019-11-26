@@ -5,12 +5,12 @@
   remote_user: midhat
   vars_files:
     - '{{playbook_dir}}/../defaults/main.yml'
-    - '{{playbook_dir}}/../vars/{{env_name}}.yml'
+    - '{{playbook_dir}}/../vars/prod.yml'
 
   vars:
     app_name: "konfess"
     app_path: "{{project_path}}"
-    compose_file_path: "{{project_path}}/docker-compose.yml"
+    compose_file_path: "{{project_path}}/"
 
   tasks:
 

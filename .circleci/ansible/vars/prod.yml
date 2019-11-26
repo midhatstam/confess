@@ -1,5 +1,5 @@
-env_name: prod
-env_template_path: "{{playbook_dir}}/../assets/env/{{env_name}}"
+ansible_env_name: prod
+env_template_path: "{{playbook_dir}}/../assets/env/{{ansible_env_name}}"
 env_path: "{{project_path}}/.env"
 
 confess_domain: itiraf.cf

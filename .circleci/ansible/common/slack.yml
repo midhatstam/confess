@@ -1,8 +1,20 @@
 ---
+
+- set_fact:
+    fetch_ini: "{{ playbook_dir }}/slack.ini"
+
+- fetch:
+    flat: true
+    src: /home/midhat/slack.ini
+    dest: "{{ fetch_ini }}"
+
+- set_fact:
+    slack_token: "{{ lookup('ini', 'SLACK_TOKEN type=properties file=' ~ fetch_ini) }}"
+
 - name: Send slack notification
   slack:
     token: "{{slack_token}}"
-    msg: '[{{project_name}}] [{{env_name}}] {{app_name}} deployed on {{ inventory_hostname }} '
+    msg: '[{{project_name}}] [{{ansible_env_name}}] {{app_name}} deployed on {{ inventory_hostname }} '
     channel: "{{slack_channel}}"
     username: "{{slack_username}}"
   delegate_to: localhost
