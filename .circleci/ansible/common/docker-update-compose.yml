@@ -11,14 +11,14 @@
     path: "{{compose_file_path}}"
   register: compose_file_output
 
-- name: Docker-compose down
-  docker_compose:
-    project_src: "{{app_path}}"
-    state: absent
-    timeout: 300
-  #when: compose_file_output.stat.exists == true
+#- name: Docker-compose down
+#  docker_compose:
+#    project_src: "{{project_path}}"
+#    state: absent
+#    timeout: 300
+#  when: compose_file_output.stat.exists == true
 
 - name: Update Docker-compose file
   template:
-    src: "{{ source_comppose_file | default('docker-compose.yml') }}"
+    src: "{{ source_compose_file | default('docker-compose.yml') }}"
     dest: "{{compose_file_path}}"
