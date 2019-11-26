@@ -1,0 +1,27 @@
+---
+-
+  hosts: web
+  gather_facts: yes
+  remote_user: midhat
+  vars_files:
+    - '{{playbook_dir}}/../defaults/main.yml'
+    - '{{playbook_dir}}/../vars/prod.yml'
+
+  vars:
+    app_name: "konfess"
+    app_path: "{{project_path}}"
+    compose_file_path: "{{project_path}}/"
+
+  tasks:
+
+#    - import_tasks: '{{playbook_dir}}/../common/update-env.yml'
+
+    - import_tasks: '{{playbook_dir}}/../common/docker-login.yml'
+
+    - import_tasks: '{{playbook_dir}}/../common/docker-update.yml'
+      vars:
+        confess_docker_name: "{{confess_docker}}"
+        confess_docker_tag: "{{confess_tag}}"
+        confess_docker_container_name: web.confess_web_1
+
+    - import_tasks: '{{playbook_dir}}/../common/slack.yml'

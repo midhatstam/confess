@@ -1,2 +1,2 @@
 [web]
-206.189.203.241
+206.189.203.241 ansible_ssh_user=midhat

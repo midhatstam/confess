@@ -88,12 +88,27 @@ jobs:
             docker push $IMAGE_NAME:latest
   server-deploy:
     docker:
-      - image: circleci/python:3.6.8
+      - image: circleci/buildpack-deps:18.04
+    working_directory: ~/code
     steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "91:f8:f0:a0:68:de:00:29:2c:41:72:7f:54:f8:dc:d9"
       - run:
-          name: Deploy to server
+          name: Install Ansible
           command: |
-            ansible-playbook -i hosts confess-ansible/api/deploy.yml
+            sudo apt update -y
+            sudo apt install -y software-properties-common
+            sudo apt-add-repository -y ppa:ansible/ansible
+            sudo apt update -y
+            sudo apt install -y ansible
+      - run:
+          name: Run ansible playbook
+          command: |
+            ls -la
+            ls -la /home/
+            ansible-playbook -i .circleci/hosts .circleci/ansible/api/deploy.yml
 
 workflows:
   version: 2

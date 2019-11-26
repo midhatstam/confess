@@ -1,0 +1,47 @@
+#- name: Install python-dev package with apt
+#  apt:
+#    pkg: 'python-dev'
+#    state: latest
+#    update_cache: yes
+#    cache_valid_time: 600
+#- name: Install pip package with apt
+#  apt:
+#    pkg: 'python-pip'
+#    state: latest
+#    update_cache: yes
+#    cache_valid_time: 600
+
+# Upgrade pip with pip to fix angstwad/docker.ubuntu/pull/35 and docker-py/issues/525
+# Install latest version when no specific release is set.
+- name: Upgrade latest pip, setuptools, docker-py and docker-compose with pip
+  pip:
+    name: "{{ item.name }}"
+    state: latest
+    extra_args: --user
+  with_items:
+    - { name: pip, version: "latest", install: true }
+    - { name: setuptools, version: "latest", install: true }
+    - { name: docker-py, version: "latest", install: true }
+    - { name: docker-compose, version: "latest", install: true }
+  when: (item.version=="latest" and item.install)
+  ignore_errors: yes
+
+# Install specific version when set in the variables
+- name: Install specific pip, setuptools, docker-py and docker-compose with pip
+  pip:
+    name: "{{ item.name }}"
+    state: present
+    version: "{{ item.version }}"
+    extra_args: --user
+  with_items:
+    - { name: pip, version: "latest", install: "true" }
+    - { name: setuptools, version: "latest", install: "true" }
+    - { name: docker-py, version: "latest", install: "true" }
+    - { name: docker-compose, version: "1.24.1", install: "true" }
+  when: (item.version!="latest" and item.install)
+
+#- name: Run/restart docker compose
+#  docker_compose: >
+#    project_src=/root/www
+#    restarted=yes
+#    debug=yes
