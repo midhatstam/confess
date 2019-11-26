@@ -129,7 +129,6 @@ workflows:
             branches:
               only:
                - develop
-               - master
       - publish-docker-image-job:
           requires:
             - build-docker-image-job
@@ -137,7 +136,6 @@ workflows:
             branches:
               only:
                 - develop
-                - master
       - server-deploy:
           requires:
             - publish-docker-image-job
