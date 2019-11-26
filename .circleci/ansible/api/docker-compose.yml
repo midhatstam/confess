@@ -1,18 +1,16 @@
 version: "3.5"
 services:
   web:
-    image: "{{confess_docker}}:{{confess_tag}}"
-    env_file:
-      - "{{env_path}}"
-    expose:
-    - "8000"
-    restart: always
+    build: .
+    command: |
+      sh /confess/entrypoint.sh
+      python /confess/manage.py runserver 0.0.0.0:8000
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./gunicorn.py:/etc/gunicorn.py
-      - /tmp/statics:/web
-    command: gunicorn confess.wsgi -c /etc/gunicorn.py
-    tty: true
+     - .:/confess
+    ports:
+      - 8000:8000
+    env_file:
+      - ./.env
 #  nginx:
 #    image: {{docker_nginx_image}}
 #    ports:
