@@ -31,7 +31,7 @@ Fabric3==1.14.post1
 filelock==3.0.12
 flake8==3.7.9
 gprof2dot==2017.9.19
-gunicorn==20.0.0
+gunicorn==20.0.3
 idna==2.8
 imageio==2.6.1
 imageio-ffmpeg==0.3.0
