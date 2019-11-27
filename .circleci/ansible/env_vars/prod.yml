@@ -1,0 +1,14 @@
+confess_domain: itiraf.cf
+
+code_repository_url: https://github.com/midhatstam/confess
+app_dir: /home/midhat/confess
+project_name: "Konfess"
+
+app_name: confess
+
+venv_dir: '/home/midhat/envs/{{ app_name }}'
+venv_python: '{{ venv_dir }}/bin/python3'
+
+slack_token: "{{slack_token}}"
+slack_channel: "#confess-deploy"
+slack_username: "Ansible"

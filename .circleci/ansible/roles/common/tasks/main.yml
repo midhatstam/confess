@@ -1,0 +1,5 @@
+- include_tasks: 01_git.yml
+- include_tasks: 02_packages.yml
+- include_tasks: 03_migrations.yml
+- include_tasks: 04_nginx.yml
+- include_tasks: 05_slack.yml
