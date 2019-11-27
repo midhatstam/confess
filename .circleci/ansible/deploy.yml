@@ -1,0 +1,11 @@
+---
+-
+  hosts: web
+  gather_facts: yes
+  remote_user: midhat
+
+  roles:
+    - common
+
+  vars_files:
+    - "{{playbook_dir}}/env_vars/prod.yml"

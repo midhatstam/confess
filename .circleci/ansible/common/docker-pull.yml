@@ -1,6 +1,0 @@
----
-- name: Pull image
-  docker_image:
-    name: "{{confess_docker_name}}"
-    tag: "{{confess_tag}}"
-    source: pull

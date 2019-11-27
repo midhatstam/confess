@@ -1,0 +1,10 @@
+- name: Migrate database
+  django_manage: app_path={{ app_dir }}
+                                 command=migrate
+                                 virtualenv={{ venv_dir }}
+
+- name: Get all static files
+  django_manage: app_path={{ app_dir }}
+                                 command=collectstatic
+                                 virtualenv={{ venv_dir }}
+  become: no
