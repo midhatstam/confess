@@ -6,6 +6,8 @@ project_name: "Konfess"
 
 app_name: confess
 
+env_name: .env
+
 venv_dir: '/home/midhat/envs/{{ app_name }}'
 venv_python: '{{ venv_dir }}/bin/python3'
 
