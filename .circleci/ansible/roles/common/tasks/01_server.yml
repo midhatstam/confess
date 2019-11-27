@@ -1,0 +1,28 @@
+- name: Install required packages
+  apt: name={{item}} state=latest update_cache=yes only_upgrade=yes
+  become: yes
+  with_items:
+    - fail2ban
+    - python3-dev
+    - python-virtualenv
+    - python3-virtualenv
+    - python-dev
+    - gcc
+    - python-selinux
+    - libtiff5-dev
+    - libjpeg-dev
+    - libzip-dev
+    - libfreetype6-dev
+    - liblcms2-dev
+    - libwebp-dev
+    - tcl-dev
+    - tk-dev
+    - policycoreutils-dev
+    - musl-dev
+    - libpq-dev
+    - postgresql-server-dev-all
+    - libffi-dev
+    - make
+    - python-pip
+    - libjpeg-dev
+    - zlib1g-dev

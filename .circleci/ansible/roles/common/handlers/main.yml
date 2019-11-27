@@ -1,0 +1,15 @@
+- name: restart postgres
+  service: name=postgresql state=restarted
+  become: no
+
+- name: restart nginx
+  service: name=nginx state=restarted enabled=yes
+  become: no
+
+- name: restart gunicorn
+  service: name=gunicorn state=restarted
+  become: no
+
+- name: restart supervisor
+  service: name=supervisor state=restarted
+  become: no

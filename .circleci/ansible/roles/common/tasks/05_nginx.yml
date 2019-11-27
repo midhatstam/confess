@@ -1,0 +1,5 @@
+- name: Write nginx conf file
+  template: src={{app_name}} dest=/etc/nginx/sites-available/{{app_name}}
+  become: no
+  notify:
+    - restart nginx
