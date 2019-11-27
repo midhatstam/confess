@@ -2,8 +2,10 @@
   copy:
     src: "/home/midhat/{{env_name}}"
     dest: "{{app_dir}}/{{env_name}}"
+    remote_src: yes
 
 - name: Copy env file to settings app
   copy:
     src: "/home/midhat/{{env_name}}"
     dest: "{{app_dir}}/confess/{{env_name}}"
+    remote_src: yes
