@@ -108,7 +108,7 @@ jobs:
           command: |
             ls -la
             ls -la /home/
-            ansible-playbook -i .circleci/hosts .circleci/ansible/api/deploy.yml
+            ansible-playbook -i .circleci/hosts .circleci/ansible/deploy.yml
 
 workflows:
   version: 2
