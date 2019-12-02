@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 @celery_app.task
 def set_publish_time():
     # date_from = datetime.datetime.now() - datetime.timedelta(days=1)
-    instances = AdminApprovedConfession.objects.filter(publish_date__isnull=True).annotate(
+    instances = AdminApprovedConfession.objects.filter(publish_date__isnull=True, user_approved=False).annotate(
         approved_count=Sum(
             Case(
                 When(confessionuserapprovement__vote=True, then=1),
