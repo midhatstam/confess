@@ -30,7 +30,7 @@ fabric-virtualenv==0.3.0
 Fabric3==1.14.post1
 filelock==3.0.12
 flake8==3.7.9
-gprof2dot==2017.9.19
+gprof2dot==2019.11.30
 gunicorn==20.0.4
 idna==2.8
 imageio==2.6.1
