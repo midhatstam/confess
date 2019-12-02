@@ -14,3 +14,6 @@ venv_python: '{{ venv_dir }}/bin/python3'
 slack_token: "{{slack_token}}"
 slack_channel: "#confess-deploy"
 slack_username: "Ansible"
+
+celery_worker_conf_file: "celery_set_publish_time_worker.conf"
+celery_beat_conf_file: "celery_set_publish_time_beat.conf"
