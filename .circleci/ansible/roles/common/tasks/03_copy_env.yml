@@ -9,3 +9,15 @@
     src: "/home/midhat/{{env_name}}"
     dest: "{{app_dir}}/confess/{{env_name}}"
     remote_src: yes
+
+- name: Copy celery worker conf
+  copy:
+    src: "{{app_dir}}/{{celery_worker_conf_file}}"
+    dest: "/etc/supervisor/conf.d/{{celery_worker_conf_file}}"
+    remote_src: yes
+
+- name: Copy celery beat conf
+  copy:
+    src: "{{app_dir}}/{{celery_beat_conf_file}}"
+    dest: "/etc/supervisor/conf.d/{{celery_beat_conf_file}}"
+    remote_src: yes

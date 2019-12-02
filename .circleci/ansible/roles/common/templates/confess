@@ -1,14 +1,23 @@
 server {
     listen 80;
-    server_name {{ confess_domain }};
+    server_name itiraf.cf;
+    access_log /var/log/nginx/confess-access.log;
+    error_log /var/log/nginx/confess-error.log info;
 
-    location = /favicon.ico { access_log off; log_not_found off; }
-    location /static/ {
-        root {{ app_dir }};
+    keepalive_timeout 5;
+
+    #location = /favicon.ico { access_log off; log_not_found off; }
+
+    location /static {
+        autoindex on;
+        alias /home/midhat/confess/staticfiles/;
     }
 
     location / {
-        include proxy_params;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
         proxy_pass http://unix:/run/gunicorn.sock;
+
     }
 }
