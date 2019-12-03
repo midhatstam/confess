@@ -67,5 +67,5 @@ class CommentDetailsApiMixin(viewsets.ModelViewSet):
             raise ValidationError("This is not valid comment parent!")
         serializer = CommentSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save(related=confess.first(), parent=comment_parent.first())
+        serializer.save(related=confess.first(), parent=comment_parent.first(), is_parent=False)
         return Response(serializer.data)
