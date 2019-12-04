@@ -63,9 +63,11 @@ class CommentDetailsApiMixin(viewsets.ModelViewSet):
         if not confess.exists() or confess.count() != 1:
             raise ValidationError("This is not valid confess!")
         comment_parent = Comment.objects.filter(id=kwargs.pop('comment_id'))
-        if not comment_parent.exists() or comment_parent.count() != 1:
+        if not comment_parent.exists() or comment_parent.count() != 1 or comment_parent.first().related.id != confess.first().id:
             raise ValidationError("This is not valid comment parent!")
-        serializer = CommentSerializer(data=request.data)
+        request_data = request.data.copy()
+        request_data['is_parent'] = False
+        serializer = CommentSerializer(data=request_data)
         serializer.is_valid(raise_exception=True)
-        serializer.save(related=confess.first(), parent=comment_parent.first(), is_parent=False)
+        serializer.save(related=confess.first(), parent=comment_parent.first())
         return Response(serializer.data)

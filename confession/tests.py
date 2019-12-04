@@ -8,7 +8,7 @@ from confession.models import Confession, ConfessionUserApprovement
 
 @override_settings(ALLOWED_HOSTS=["localhost", "127.0.0.1", "[::1]"])
 class CreateConfessionTest(TestCase):
-    def test__create_confession(self):
+    def create_confession(self):
         Confession.objects.create(body='Testing....', item_meta_data_date=timezone.now(), admin_approved=1).save()
         confession = Confession.objects.all().first()
         confession_count = Confession.objects.all().count()
@@ -19,7 +19,7 @@ class CreateConfessionTest(TestCase):
 
 class ConfessionTest(CreateConfessionTest):
     def test__confession_is_posted(self):
-        confession = self.test__create_confession()
+        confession = self.create_confession()
         self.assertEqual(confession.id, 1)
 
 
@@ -29,7 +29,7 @@ class ConfessionUserApprovementTest(CreateConfessionTest):
 
     def test__approvement(self):
         ConfessionUserApprovement.objects.create(
-            confession=self.test__create_confession(),
+            confession=self.create_confession(),
             vote=1,
             token=self.token
         )
