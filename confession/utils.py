@@ -6,6 +6,7 @@ import logging
 from django.conf import settings
 from django.http import HttpResponse
 from InstagramAPI import InstagramAPI as Insta
+from django.utils.timesince import timesince
 
 from core.package import post
 
@@ -62,3 +63,20 @@ def slack_notify(message):
         logger.exception(e)
 
     return response
+
+
+def get_date(date):
+    now = datetime.datetime.now()
+    # date_obj = datetime.datetime.strptime(date, '%d.%m.%Y %H:%M:%S.%f')
+
+    try:
+        difference = now - date.replace(tzinfo=None)
+    except:
+        return date
+
+    if difference <= datetime.timedelta(minutes=1):
+        return "az önce"
+    elif difference >= datetime.timedelta(days=1):
+        return date.strftime("%d %b %Y")
+    else:
+        return "%(time)s önce" % {'time': timesince(date).split(', ')[0]}
