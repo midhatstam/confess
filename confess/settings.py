@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import datetime
 import os
 import environ
+import sentry_sdk
+
+from sentry_sdk.integrations.django import DjangoIntegration
 
 env = environ.Env(
     DEBUG=(bool, False)
@@ -229,3 +232,9 @@ JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=60 * 60),
     'JWT_ALLOW_REFRESH': True
 }
+
+
+sentry_sdk.init(
+    dsn="https://fd1fd765bd0c497fa708a3bbd6b053c6@sentry.io/1797263",
+    integrations=[DjangoIntegration()]
+)
