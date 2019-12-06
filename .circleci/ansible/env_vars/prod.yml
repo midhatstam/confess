@@ -1,6 +1,6 @@
 confess_domain: itiraf.cf
 
-code_repository_url: https://github.com/midhatstam/confess
+code_repository_url: https://github.com/midhatstam/confess.git
 app_dir: /home/midhat/confess
 project_name: "Konfess"
 
