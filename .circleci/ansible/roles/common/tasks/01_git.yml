@@ -1,7 +1,6 @@
 - name: Clone or pull the latest code
-  git:
-    repo: {{ code_repository_url }}
-    dest: {{ app_dir }}
-    update: yes
-    version: master
-    force: yes
+  git: repo={{ code_repository_url }}
+      dest={{ app_dir }}
+      update=yes
+      version=master
+      force=yes
