@@ -32,7 +32,7 @@ class Confession(ItemMetaData):
 	def save(self, *args, **kwargs):
 		if not self.css_class:
 			self.css_class = random.choices(self.class_options)[0][0]
-		if self.publish_date:
+		if self.publish_date and not self.user_approved:
 			self.create_publish_task()
 		super(Confession, self).save(*args, **kwargs)
 	
