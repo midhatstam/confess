@@ -13,7 +13,7 @@ class Rule(models.Model):
     value = models.IntegerField()
 
     def save(self, *args, **kwargs):
-        if self.name is not None and self.name is not '':
+        if self.name is not '':
             self.slug = slugify(self.name)
 
         super(Rule, self).save(*args, **kwargs)
