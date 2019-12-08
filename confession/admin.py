@@ -4,7 +4,7 @@ from confession.models import Confession
 
 
 class ConfessionAdmin(admin.ModelAdmin):
-	exclude = ("css_class",)
+	fields = '__all__'
 
 
 admin.site.register(Confession, ConfessionAdmin)
