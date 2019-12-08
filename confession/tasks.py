@@ -6,6 +6,7 @@ from django.db.models import Sum, When, Case, IntegerField
 
 from confession.models import Confession, AdminApprovedConfession
 from confession.utils import slack_notify, get_random_time
+from rule.models import Rule
 
 logger = logging.getLogger(__name__)
 
@@ -13,6 +14,7 @@ logger = logging.getLogger(__name__)
 @celery_app.task
 def set_publish_time():
     # date_from = datetime.datetime.now() - datetime.timedelta(days=1)
+    approved_limit_rule = Rule.objects.get(slug='approve-confession').value
     instances = AdminApprovedConfession.objects.filter(publish_date__isnull=True, user_approved=False).annotate(
         approved_count=Sum(
             Case(
@@ -22,7 +24,7 @@ def set_publish_time():
                 output_field=IntegerField()
             )
         )
-    ).order_by('-approved_count')
+    ).filter(approved_count__gte=approved_limit_rule).order_by('-approved_count')
 
     logger.debug(f'Filtered confession queryset is: {instances}')
     if instances.exists():
