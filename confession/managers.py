@@ -9,7 +9,7 @@ from voting.models import Vote
 class ConfessionsManager(models.Manager):
 
     def get_queryset(self):
-        return super().get_queryset().defer('css_class').prefetch_related(
+        return super().get_queryset().all().prefetch_related(
             Prefetch('votes', queryset=Vote.objects.filter(vote=1, content_type=1), to_attr='likes'),
             Prefetch('votes', queryset=Vote.objects.filter(vote=0, content_type=1), to_attr='dislikes')
         ).annotate(num_comments=Count('comments'))
@@ -18,7 +18,7 @@ class ConfessionsManager(models.Manager):
 class AllConfessionsManager(models.Manager):
 
     def get_queryset(self):
-        return super().get_queryset().filter(reported=False).defer('css_class').prefetch_related(
+        return super().get_queryset().filter(reported=False).prefetch_related(
             Prefetch('votes', queryset=Vote.objects.filter(vote=1, content_type=1), to_attr='likes'),
             Prefetch('votes', queryset=Vote.objects.filter(vote=0, content_type=1), to_attr='dislikes')
         ).annotate(num_comments=Count('comments'))
