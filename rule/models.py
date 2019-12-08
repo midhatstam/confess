@@ -14,4 +14,4 @@ class Rule(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        super(Rule, self).save(*args, **kwargs)
+        return super(Rule, self).save(*args, **kwargs)
