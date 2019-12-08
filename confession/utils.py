@@ -14,9 +14,13 @@ logger = logging.getLogger(__name__)
 
 
 def get_random_time():
-    tomorrow = datetime.date.today() + datetime.timedelta(days=1)
-    tomorrow_start = datetime.datetime.combine(tomorrow, datetime.time(9, 0)).timestamp()
-    tomorrow_end = datetime.datetime.combine(tomorrow, datetime.time(15, 00)).timestamp()
+    now_hour = datetime.datetime.now().hour
+    if now_hour < 9:
+        execute_date = datetime.date.today()
+    else:
+        execute_date = datetime.date.today() + datetime.timedelta(days=1)
+    tomorrow_start = datetime.datetime.combine(execute_date, datetime.time(9, 0)).timestamp()
+    tomorrow_end = datetime.datetime.combine(execute_date, datetime.time(15, 00)).timestamp()
 
     random_time = random.randint(tomorrow_start, tomorrow_end)
     random_time_human = datetime.datetime.fromtimestamp(random_time)
