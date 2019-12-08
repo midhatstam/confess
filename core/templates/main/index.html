@@ -153,13 +153,13 @@
 							{% for confess in results %}
 								<div class="card shadow border-0 card-lift--hover">
 									<div class="card-body details">
-										<h6 class="text-{{ confess.css_class }} text-uppercase float-left">
+										<h6 class="text-primary text-uppercase float-left">
 											#<span class="id-field">{{ confess.id }}</span></h6>
-										<h6 class="text-{{ confess.css_class }} float-right">{% get_date confess.item_meta_data_date %}</h6>
+										<h6 class="text-primary float-right">{% get_date confess.item_meta_data_date %}</h6>
 										<p class="description mt-5">{{ confess.body }}</p>
 										<div class="confess-actions">
 											<div class="confess-actions-panel">
-												<button class="btn btn-{{ confess.css_class }} mt-4 confess-buttons elem-exc like">
+												<button class="btn btn-primary mt-4 confess-buttons elem-exc like">
 													<span class="btn-inner--icon elem-exc">
 														<i class="fa fa-thumbs-up elem-exc" aria-hidden="true"></i>
 													</span>
@@ -167,7 +167,7 @@
 												</button>
 
 												<button style="cursor:pointer; display: block; flex-grow:1;"
-														class="btn btn-{{ confess.css_class }} mt-4 confess-buttons elem-exc dislike">
+														class="btn btn-primary mt-4 confess-buttons elem-exc dislike">
 													<span class="btn-inner--icon elem-exc">
 														<i class="fa fa-thumbs-down elem-exc" aria-hidden="true"></i>
 													</span>
@@ -175,14 +175,14 @@
 												</button>
 
 												<button style="cursor:pointer; display: block; flex-grow:1;"
-														class="btn btn-{{ confess.css_class }} mt-4">
+														class="btn btn-primary mt-4">
 													<span class="btn-inner--icon">
 														<i class="fa fa-commenting-o" aria-hidden="true"></i>
 													</span>
 													<span class="btn-inner--text">{{ confess.num_comments }}</span>
 												</button>
 												<button style="cursor:pointer; display: block; flex-grow:1;"
-														class="btn btn-{{ confess.css_class }} mt-4">
+														class="btn btn-primary mt-4">
 													<span class="btn-inner--text">Read more</span>
 												</button>
 											</div>
