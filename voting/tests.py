@@ -29,7 +29,7 @@ class VoteConfession(CreateConfessionTest):
             self.voting_url,
             {"vote": "true", "model": "confession", "id": self.confession.id},
         )
-        req.COOKIES = SimpleCookie({'session_token': self.token})
+        req.COOKIES['session_token'] = self.token
 
         resp = voting_views.VoteMixin.as_view({'post': 'up'})(req)
 
@@ -42,7 +42,7 @@ class VoteConfession(CreateConfessionTest):
             self.voting_url,
             {"vote": "false", "model": "comment", "id": self.comment.id}
         )
-        req.COOKIES = SimpleCookie({'session_token': self.token})
+        req.COOKIES['session_token'] = self.token
         resp = voting_views.VoteMixin.as_view({'post': 'up'})(req)
 
         self.assertEqual(resp.data['success'], 'true')
