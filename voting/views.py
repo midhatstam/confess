@@ -7,6 +7,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from confession.utils import verify_token_version
 from voting.serializers import VoteSerializer
 from voting.models import Vote
 
@@ -22,7 +23,8 @@ class VoteMixin(viewsets.ModelViewSet):
 	
 	@action(methods=['POST', 'GET'], detail=False)
 	def up(self, request):
-		token = request.COOKIES.get('session_token')
+		token = request.COOKIES.get('session_token').value
+		verify_token_version(token)
 		vote_params = request.data.get('vote', None)
 		vote_dict = {
 			"true": True,
