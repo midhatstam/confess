@@ -40,7 +40,7 @@ InstagramAPI==1.0.2
 invoke==1.3.0
 isort==4.3.21
 Jinja2==2.10.3
-kombu==4.6.6
+kombu==4.6.7
 lazy-object-proxy==1.4.3
 MarkupSafe==1.1.1
 mccabe==0.6.1
