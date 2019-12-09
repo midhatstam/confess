@@ -56,7 +56,7 @@ class ConfessionUserApprovementTest(CreateConfessionTest):
             self.send_approvement_url,
             {"confession": self.confession.id, "vote": 1},
         )
-        req.COOKIES = SimpleCookie({'session_token': self.token})
+        req.COOKIES['session_token'] = self.token
 
         resp = confession_views.ConfessionUserApprovementView.as_view({'post': 'create'})(req)
 
@@ -74,11 +74,11 @@ class ConfessionUserApprovementTest(CreateConfessionTest):
                 self.send_approvement_url,
                 {"confession": self.confession.id, "vote": 1},
             )
-            req.COOKIES = SimpleCookie({'session_token': '1a6ae4ce-1a58-11ea-978f-2e728ce88125'})
+            req.COOKIES['session_token'] = '1a6ae4ce-1a58-11ea-978f-2e728ce88125'
 
             resp = confession_views.ConfessionUserApprovementView.as_view({'post': 'create'})(req)
 
-            version = uuid.UUID(req.COOKIES['session_token'].value).version
+            version = uuid.UUID(req.COOKIES['session_token']).version
 
             self.assertEqual(resp, 2)
             self.assertEqual(version, 1)
