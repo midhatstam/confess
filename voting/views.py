@@ -23,7 +23,7 @@ class VoteMixin(viewsets.ModelViewSet):
 	
 	@action(methods=['POST', 'GET'], detail=False)
 	def up(self, request):
-		token = request.COOKIES.get('session_token').value
+		token = str(request.COOKIES.get('session_token'))
 		verify_token_version(token)
 		vote_params = request.data.get('vote', None)
 		vote_dict = {
