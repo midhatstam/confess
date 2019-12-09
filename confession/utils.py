@@ -2,6 +2,7 @@ import datetime
 import random
 import json
 import logging
+import uuid
 
 from django.conf import settings
 from django.http import HttpResponse
@@ -84,3 +85,9 @@ def get_date(date):
         return date.strftime("%d %b %Y")
     else:
         return "%(time)s önce" % {'time': timesince(date).split(', ')[0]}
+
+
+def verify_token_version(token):
+    if uuid.UUID(token).version is not 4:
+        raise ValueError
+    return True

@@ -1,3 +1,5 @@
+import uuid
+
 from django.db.models import Count
 
 from rest_framework import viewsets, status, pagination, generics
@@ -7,6 +9,7 @@ from confession.models import ApprovedConfession, ConfessionForApprove, Confessi
 from confession.serializers import ConfessionSerializer, ConfessionUserApprovementSerializer
 
 from comment.models import Comment
+from confession.utils import verify_token_version
 
 
 class CustomApiPageNumber(pagination.PageNumberPagination):
@@ -83,6 +86,7 @@ class ConfessionForApproveView(viewsets.ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         token = request.COOKIES.get('session_token')
+        verify_token_version(token.value)
         approved_instances_id = ConfessionUserApprovement.objects.filter(token=token).values("confession_id")
         instance = self.get_random_queryset(approved_instances_id)
         serializer = self.get_serializer(instance)
@@ -93,8 +97,11 @@ class ConfessionUserApprovementView(viewsets.ModelViewSet):
     serializer_class = ConfessionUserApprovementSerializer
 
     def create(self, validated_data, **kwargs):
-        serializer = self.get_serializer(data=self.request.data)
-        confession_id = self.request.data.pop('confession')
+        request_data = self.request.data.copy()
+        request_data['token'] = self.request.COOKIES.get('session_token').value
+        verify_token_version(request_data['token'])
+        serializer = self.get_serializer(data=request_data)
+        confession_id = request_data.get('confession')
         confession_instance = ConfessionForApprove.objects.get(id=confession_id)
         serializer.is_valid(raise_exception=True)
         serializer.save(confession=confession_instance)
