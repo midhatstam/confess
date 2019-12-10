@@ -71,6 +71,8 @@ def slack_notify(message):
 
 
 def get_date(date):
+    from django.utils import translation
+    translation.activate('tr')
     now = datetime.datetime.now()
     # date_obj = datetime.datetime.strptime(date, '%d.%m.%Y %H:%M:%S.%f')
 
