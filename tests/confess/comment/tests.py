@@ -4,7 +4,7 @@ from django.urls import reverse
 from comment import views as comment_views
 from comment.models import Comment
 
-from confession.tests import CreateConfessionTest
+from tests.confess.confession.tests import CreateConfessionTest
 
 
 class ReversedUrls:

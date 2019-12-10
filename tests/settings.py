@@ -1,5 +1,3 @@
-import os
-
 from confess.settings import *
 
 SECRET_KEY = "ef+-3suc6+7wh%-n1hr71v83-5wvu7)dl8au#w9fe@4jd-af3#"
@@ -35,3 +33,6 @@ LOGGING = {
         },
     }
 }
+
+NOSE_ARGS = ["--with-coverage", "--cover-package=admin_panel,comment,confession,reports,rule,voting", "--with-xunit", "--cover-erase"]
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
