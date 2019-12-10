@@ -1,11 +1,10 @@
 import uuid
-from http.cookies import SimpleCookie
 
 from django.urls import reverse
 from rest_framework.test import APIRequestFactory
 
-from comment.tests import CommentTest
-from confession.tests import CreateConfessionTest
+from tests.confess.comment.tests import CommentTest
+from tests.confess.confession.tests import CreateConfessionTest
 from voting import views as voting_views
 
 

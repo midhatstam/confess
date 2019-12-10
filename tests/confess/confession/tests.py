@@ -1,6 +1,5 @@
 import uuid
 
-from django.http import SimpleCookie
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
