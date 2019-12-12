@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from confession.utils import get_date
+from confession.utils import DateTimeService
 from core.models import ItemMetaData
 
 
@@ -20,4 +20,4 @@ class ItemMetaDataSerializer(serializers.ModelSerializer):
 		except AttributeError:
 			publish_date = None
 		if publish_date is not None:
-			return get_date(publish_date)
+			return DateTimeService.get_date(publish_date)
