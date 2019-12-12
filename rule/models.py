@@ -6,11 +6,11 @@ class Rule(models.Model):
     class Meta:
         db_table = "rule"
 
-    name = models.CharField(max_length=250, blank=False, null=False)
+    name = models.CharField(max_length=250)
     slug = models.SlugField(unique=True, blank=True, null=True)
-    app = models.CharField(max_length=100, blank=False, null=False)
-    model = models.CharField(max_length=100, blank=False, null=False)
-    value = models.IntegerField()
+    app = models.CharField(max_length=100, blank=True, null=True)
+    model = models.CharField(max_length=100, blank=True, null=True)
+    value = models.CharField(max_length=100)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
