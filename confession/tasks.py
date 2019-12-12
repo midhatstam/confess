@@ -5,7 +5,7 @@ from confess import celery_app
 from django.db.models import Sum, When, Case, IntegerField
 
 from confession.models import Confession, AdminApprovedConfession
-from confession.utils import slack_notify, get_random_time
+from confession.utils import slack_notify, DateTimeService
 from rule.models import Rule
 
 logger = logging.getLogger(__name__)
@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 @celery_app.task
 def set_publish_time():
     # date_from = datetime.datetime.now() - datetime.timedelta(days=1)
-    approved_limit_rule = Rule.objects.get(slug='approve-confession').value
+    approved_limit_rule = int(Rule.objects.get(slug='approve-confession').value)
     instances = AdminApprovedConfession.objects.filter(publish_date__isnull=True, user_approved=False).annotate(
         approved_count=Sum(
             Case(
@@ -29,7 +29,7 @@ def set_publish_time():
     logger.debug(f'Filtered confession queryset is: {instances}')
     if instances.exists():
         for confession in instances:
-            publish_time = get_random_time()
+            publish_time = DateTimeService.get_random_time()
             try:
                 confession.publish_date = publish_time
                 confession.save()
