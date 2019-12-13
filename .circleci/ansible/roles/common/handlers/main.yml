@@ -1,15 +1,19 @@
-- name: restart postgres
-  service: name=postgresql state=restarted
-  become: no
+#- name: restart postgres
+#  service: name=postgresql state=restarted
+#  become: true
+#  become_method: sudo
 
 - name: restart nginx
   service: name=nginx state=restarted enabled=yes
-  become: no
+  become: true
+  become_method: sudo
 
 - name: restart gunicorn
   service: name=gunicorn state=restarted
-  become: no
+  become: true
+  become_method: sudo
 
 - name: restart supervisor
   service: name=supervisor state=restarted
-  become: no
+  become: true
+  become_method: sudo
