@@ -9,3 +9,6 @@
 
   vars_files:
     - "{{playbook_dir}}/env_vars/prod.yml"
+
+  post_tasks:
+    - include: "{{playbook_dir}}/roles/common/handlers/main.yml"
