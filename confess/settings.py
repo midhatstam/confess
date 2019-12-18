@@ -191,21 +191,42 @@ LOGGING = {
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-            'formatter': 'default'
+            'formatter': 'colored_console'
         },
     },
     'formatters': {
         'default': {
-            'format': '[%(asctime)s %(levelname)s/%(processName)s/%(threadName)s] [%(name)s(%(funcName)s)(%(lineno)d)] %(message)s',
+            'format': '[%(asctime)s,%(msecs)03d %(levelname)s %(processName)s/%(threadName)s] [%(name)s:%(funcName)s:%(lineno)d] %(message)s',
             'datefmt': "%Y-%m-%d %H:%M:%S"
+        },
+        'colored_console': {
+            '()': 'coloredlogs.ColoredFormatter',
+            'format': '[%(asctime)s,%(msecs)03d %(levelname)s %(processName)s/%(threadName)s] [%(name)s:%(funcName)s:%(lineno)d] %(message)s',
+            'datefmt': "%Y-%b-%d %H:%M:%S",
+            'field_styles': {
+                'asctime': {'color': 'green'},
+                'hostname': {'color': 'magenta'},
+                'levelname': {'color': 'red', 'bold': True},
+                'name': {'color': 'blue'},
+                'programname': {'color': 'cyan'},
+                'processName': {'color': 'magenta'}
+            }
         }
     },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        },
+    },
     'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': 'INFO'
+        },
         'confession': {
             'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': False,
-            'filename': '/var/log/confession/output.log'
         },
         'celery': {
             'handlers': ['console'],
@@ -232,7 +253,6 @@ JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=60 * 60),
     'JWT_ALLOW_REFRESH': True
 }
-
 
 sentry_sdk.init(
     dsn="https://fd1fd765bd0c497fa708a3bbd6b053c6@sentry.io/1797263",

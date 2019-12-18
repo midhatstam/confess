@@ -8,6 +8,7 @@ certifi==2019.11.28
 cffi==1.13.2
 chardet==3.0.4
 colorama==0.4.3
+coloredlogs==10.0
 configparser==4.0.2
 coverage==4.5.4
 crayons==0.3.0
@@ -34,6 +35,7 @@ filelock==3.0.12
 flake8==3.7.9
 gprof2dot==2019.11.30
 gunicorn==20.0.4
+humanfriendly==4.18
 idna==2.8
 imageio==2.6.1
 imageio-ffmpeg==0.3.0
