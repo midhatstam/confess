@@ -3,11 +3,12 @@ from collections import Counter
 from django.apps import apps
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count
+from django.utils.decorators import method_decorator
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from confession.utils import verify_token_version
+from confession.utils import verify_token_version, session_token
 from voting.serializers import VoteSerializer
 from voting.models import Vote
 
@@ -15,12 +16,13 @@ from voting.models import Vote
 class VoteMixin(viewsets.ModelViewSet):
 	serializer_class = VoteSerializer
 	queryset = Vote.objects.all()
-	
+
 	def get_serializer_class(self):
 		if self.action in ['retrieve', 'list', 'update', 'create']:
 			return self.serializer_class
 		return self.serializer_class
-	
+
+	@method_decorator(session_token)
 	@action(methods=['POST', 'GET'], detail=False)
 	def up(self, request):
 		token = str(request.COOKIES.get('session_token'))

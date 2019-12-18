@@ -1,9 +1,11 @@
 from django.db.models import Prefetch, Count
+from django.utils.decorators import method_decorator
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
 
+from confession.utils import session_token
 from confession.views import CustomApiPageNumber
 
 from confession.models import Confession
@@ -19,6 +21,7 @@ class CommentApiMixin(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     lookup_field = 'id'
 
+    @method_decorator(session_token)
     def list(self, request, *args, **kwargs):
         queryset = Comment.objects.filter(related_id=kwargs['id'], is_parent=True, reported=False).prefetch_related(
             Prefetch('votes', queryset=Vote.objects.filter(vote=1, content_type=5), to_attr='likes'),
@@ -27,6 +30,7 @@ class CommentApiMixin(viewsets.ModelViewSet):
         serializer = CommentSerializer(queryset, many=True)
         return Response(serializer.data)
 
+    @method_decorator(session_token)
     @action(methods=['POST', 'GET'], detail=False)
     def create(self, request, *args, **kwargs):
         confess = Confession.objects.filter(id=kwargs.pop('id'))
@@ -44,6 +48,7 @@ class CommentDetailsApiMixin(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     lookup_field = 'comment_id'
 
+    @method_decorator(session_token)
     def list(self, request, *args, **kwargs):
         queryset = Comment.objects.filter(
             related_id=kwargs['id'],
@@ -57,6 +62,7 @@ class CommentDetailsApiMixin(viewsets.ModelViewSet):
         serializer = CommentSerializer(queryset, many=True)
         return Response(serializer.data)
 
+    @method_decorator(session_token)
     @action(methods=['POST', 'GET'], detail=False)
     def create(self, request, *args, **kwargs):
         confess = Confession.objects.filter(id=kwargs.pop('id'))
