@@ -1,4 +1,5 @@
 import datetime
+import functools
 import random
 import json
 import logging
@@ -10,6 +11,7 @@ from django.http import HttpResponse
 from InstagramAPI import InstagramAPI as Insta
 from django.utils.timesince import timesince
 
+from core.exceptions import SessionError
 from core.package import post
 from rule.models import Rule
 
@@ -131,3 +133,17 @@ def verify_token_version(token):
     if uuid.UUID(token).version is not 4:
         raise ValueError
     return True
+
+
+def session_token(function):
+    @functools.wraps(function)
+    def decorator(request, *args, **kwargs):
+        try:
+            token = str(request.COOKIES.get('session_token'))
+            verify_token_version(token)
+        except ValueError as exc:
+            logger.debug('Failed to parse cookie token')
+            logger.exception(exc)
+            raise SessionError
+        return function(request, *args, **kwargs)
+    return decorator
