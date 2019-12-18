@@ -1,5 +1,6 @@
 import datetime
 import functools
+import locale
 import random
 import json
 import logging
@@ -69,8 +70,7 @@ class DateTimeService:
 
     @classmethod
     def get_date(cls, date):
-        from django.utils import translation
-        translation.activate('tr')
+        locale.setlocale(locale.LC_TIME, 'tr_TR.UTF-8')
         now = datetime.datetime.now()
         # date_obj = datetime.datetime.strptime(date, '%d.%m.%Y %H:%M:%S.%f')
 
