@@ -1,3 +1,6 @@
+from rest_framework.exceptions import ParseError
+
+
 class BaseError(Exception):
     code = -1
     description = None
@@ -50,3 +53,7 @@ class ServiceUnavailableError(HttpError):
 class GatewayTimeoutError(HttpError):
     code = 20504
     http_code = 504
+
+
+class SessionError(ParseError):
+    default_detail = 'Cookies failed'
