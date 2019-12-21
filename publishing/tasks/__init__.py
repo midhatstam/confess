@@ -1,17 +1,18 @@
-from celery.utils.log import get_task_logger
+import logging
 from celery import Task
 
 
-logger = get_task_logger(__name__)
+logger = logging.getLogger(__name__)
 
 __all__ = ['BaseTask', 'SetPublishTimeTask', 'PublishConfessionTask']
 
 
 class BaseTask(Task):
     abstract = True
+    # ----------
     name = None
     callback = None
-    history_enabled = None
+    history_enabled = True
 
     def execute(self, *args, **kwargs):
         raise NotImplementedError
@@ -33,11 +34,11 @@ class BaseTask(Task):
 
         logger.debug(f'Task: {self.name}, Context: {local_params}, Result: {result}')
 
-
         return result
 
     def on_failure(self, exc, task_id, args, kwargs, einfo):
         logger.exception(exc)
+        # raise exc  # NOTE: django-celery-results is not working properly in case of 'raise'
 
 
 from .set_publish_time import SetPublishTimeTask
