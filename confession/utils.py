@@ -70,9 +70,11 @@ class DateTimeService:
 
     @classmethod
     def get_date(cls, date):
-        locale.setlocale(locale.LC_TIME, 'tr_TR.UTF-8')
+        try:
+            locale.setlocale(locale.LC_TIME, 'tr_TR.UTF-8')
+        except locale.Error:
+            locale.setlocale(locale.LC_TIME, '')
         now = datetime.datetime.now()
-        # date_obj = datetime.datetime.strptime(date, '%d.%m.%Y %H:%M:%S.%f')
 
         try:
             difference = now - date.replace(tzinfo=None)
