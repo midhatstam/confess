@@ -9,10 +9,9 @@ from rule.models import Rule
 logger = logging.getLogger(__name__)
 
 
-class SetPublishTime:
-
+class SetPublishTimeService:
     @classmethod
-    def get_instances(cls):
+    def check_instance(cls):
         approved_limit_rule = int(Rule.objects.get(slug='approve-confession').value)
         instances = AdminApprovedConfession.objects.filter(publish_date__isnull=True, user_approved=False).annotate(
             approved_count=Sum(
@@ -26,9 +25,11 @@ class SetPublishTime:
         ).filter(approved_count__gte=approved_limit_rule).order_by('-approved_count')
 
         logger.debug(f'Filtered confession queryset is: {instances}')
+
         return instances
 
-    def update(self, instances, *args, **kwargs):
+    @classmethod
+    def update(cls, instances, *args, **kwargs):
         if instances.exists():
             for confession in instances:
                 publish_time = DateTimeService.get_random_time()

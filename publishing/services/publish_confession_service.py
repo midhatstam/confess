@@ -5,7 +5,7 @@ from confession.models import Confession
 logger = logging.getLogger(__name__)
 
 
-class PublishConfession:
+class PublishConfessionService:
 
     @classmethod
     def publish(cls, instance_id):

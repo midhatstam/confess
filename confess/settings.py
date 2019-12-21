@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'reports',
     'admin_panel',
     'rule',
+    'publishing',
     'django_celery_results',
     'django_celery_beat',
     'rest_framework',
@@ -178,6 +179,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='amqp://localhost:5672')
 CELERY_TIMEZONE = 'Europe/Istanbul'
 
