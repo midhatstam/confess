@@ -5,6 +5,8 @@ import random
 import json
 import logging
 import uuid
+import unicodedata
+
 from collections import namedtuple
 
 from django.conf import settings
@@ -25,33 +27,41 @@ class DateTimeService:
         try:
             execution_range_start_time = Rule.objects.get(slug='exec-start-time')
         except Rule.DoesNotExist as err:
-            return err
+            raise err
 
-        return datetime.datetime.strptime(execution_range_start_time, '%H:%M').time()
+        return datetime.datetime.strptime(execution_range_start_time.value, '%H:%M').time()
 
     @classmethod
     def get_end_time(cls):
         try:
             execution_range_end_time = Rule.objects.get(slug='exec-end-time')
         except Rule.DoesNotExist as err:
-            return err
+            raise err
 
-        return datetime.datetime.strptime(execution_range_end_time, '%H:%M').time()
+        return datetime.datetime.strptime(execution_range_end_time.value, '%H:%M').time()
 
     @classmethod
     def get_execution_times(cls):
         time_tuple = namedtuple('Time', 'start, end')
         try:
-            return time_tuple(start=cls.get_start_time(), end=cls.get_end_time())
-        except Exception as err:
+            start_time = cls.get_start_time()
+        except Rule.DoesNotExist as err:
             logger.warning(
-                f'Could not create one of execution time. Possibly "exec-start-time" or "exec-end-time" not found in db!')
-            logger.exception(err)
+                f'Could not create start execution time. "exec-start-time" not found in db!')
 
             start_time = datetime.datetime.strptime('09:00', '%H:%M').time()
+            logger.warning(f'Execution time using default values as: start=09:00.')
+
+        try:
+            end_time = cls.get_end_time()
+        except Rule.DoesNotExist as err:
+            logger.warning(
+                f'Could not create end execution time. "exec-end-time" not found in db!')
+
             end_time = datetime.datetime.strptime('15:00', '%H:%M').time()
-            logger.warning(f'Execution time using default values as: start=09:00 and end=15:00')
-            return time_tuple(start=start_time, end=end_time)
+            logger.warning(f'Execution time using default values as: end=15:00.')
+
+        return time_tuple(start=start_time, end=end_time)
 
     @classmethod
     def get_random_time(cls):
@@ -86,7 +96,9 @@ class DateTimeService:
         elif difference >= datetime.timedelta(days=1):
             return date.strftime("%d %b %Y")
         else:
-            return "%(time)s önce" % {'time': timesince(date).split(', ')[0]}
+            time = "%(time)s önce" % {'time': timesince(date).split(', ')[0]}
+            normalized_time = unicodedata.normalize("NFKD", time)
+            return normalized_time
 
 
 def instagram(request):
