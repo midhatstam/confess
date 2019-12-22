@@ -38,7 +38,7 @@ class Confession(ItemMetaData):
 			clocked=clocked,
 			name=f'Publish confession with id:{self.pk}',
 			# task='confession.tasks.publish_confession',
-			task='tasks.publish_confession.PublishConfessionTask',
+			task='publishing.tasks.publish_confession.PublishConfessionTask',
 			kwargs={'instance_id': self.pk},
 			one_off=True
 		)
