@@ -256,7 +256,8 @@ JWT_AUTH = {
     'JWT_ALLOW_REFRESH': True
 }
 
-sentry_sdk.init(
-    dsn="https://fd1fd765bd0c497fa708a3bbd6b053c6@sentry.io/1797263",
-    integrations=[DjangoIntegration()]
-)
+if not DEBUG:
+    sentry_sdk.init(
+        dsn="https://fd1fd765bd0c497fa708a3bbd6b053c6@sentry.io/1797263",
+        integrations=[DjangoIntegration()]
+    )
