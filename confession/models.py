@@ -39,7 +39,7 @@ class Confession(ItemMetaData):
 			name=f'Publish confession with id:{self.pk}',
 			# task='confession.tasks.publish_confession',
 			task='publishing.tasks.publish_confession.PublishConfessionTask',
-			kwargs={'instance_id': self.pk},
+			kwargs={"instance_id": self.pk},
 			one_off=True
 		)
 		publish_task.save()
