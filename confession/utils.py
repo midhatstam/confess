@@ -9,6 +9,7 @@ import unicodedata
 
 from collections import namedtuple
 
+import requests
 from django.conf import settings
 from django.http import HttpResponse
 from InstagramAPI import InstagramAPI as Insta
@@ -135,7 +136,7 @@ def slack_notify(message):
             data=json.dumps(data),
             headers={'Content-Type': 'application/json'}
         )
-    except Exception as e:
+    except requests.exceptions.HTTPError as e:
         response = None
         logger.debug(f'Cound not send slack message')
         logger.exception(e)

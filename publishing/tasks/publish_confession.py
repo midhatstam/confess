@@ -3,9 +3,15 @@ from publishing.services.publish_confession_service import PublishConfessionServ
 from publishing.tasks import BaseTask
 
 
+class PublishConfessionCallback:
+
+    def __call__(self, *args, **kwargs):
+        PublishConfessionService.notify(*args, **kwargs)
+
+
 class PublishConfessionTask(BaseTask):
     name = "publish_confession_task"
-    callback = None
+    callback = PublishConfessionCallback
 
     def execute(self, **kwargs):
         instance_id = kwargs['instance_id']

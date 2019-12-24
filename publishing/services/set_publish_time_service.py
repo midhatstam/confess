@@ -33,15 +33,11 @@ class SetPublishTimeService:
         if instances.exists():
             for confession in instances:
                 publish_time = DateTimeService.get_random_time()
-                try:
-                    confession.publish_date = publish_time
-                    confession.save()
-                    message = f'Confession with id: {confession.id} and approved votes: {confession.approved_count} updated with publish_time of {publish_time}'
-                    slack_notify(message=message)
-                except Exception as e:
-                    message = f'Confession with id: {confession.id} could not be updated with publish_time of {publish_time} with error: {e}'
-                    slack_notify(message=message)
-                    continue
+                confession.publish_date = publish_time
+                confession.save()
+                message = f'Confession with id: {confession.id} and approved votes: {confession.approved_count} updated with publish_time of {publish_time}'
+                slack_notify(message=message)
+                continue
             return f'Task executed with confessions: {instances}'
         else:
             message = 'There is no confession to publish'

@@ -29,15 +29,7 @@ class BaseTask(Task):
         logger.info(f"{self.name} with params '{local_params}' is finished")
 
         clz = result.__class__
-        try:
-            result = result.as_dict()
-        except AttributeError:
-            try:
-                result = result.__dict__
-            except AttributeError:
-                result = result.values()
-            else:
-                result = result
+
         logger.debug(f"task result class converted to the dict {clz}")
 
         logger.debug(f'Task: {self.name}, Context: {local_params}, Result: {result}')
