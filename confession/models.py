@@ -37,8 +37,7 @@ class Confession(ItemMetaData):
 		publish_task = PeriodicTask(
 			clocked=clocked,
 			name=f'Publish confession with id:{self.pk}',
-			# task='confession.tasks.publish_confession',
-			task='publishing.tasks.publish_confession.PublishConfessionTask',
+			task='publish_confession_task',
 			kwargs={"instance_id": self.pk},
 			one_off=True
 		)
