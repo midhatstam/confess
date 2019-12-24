@@ -36,6 +36,8 @@ class BaseTask(Task):
                 result = result.__dict__
             except AttributeError:
                 result = result.values()
+            else:
+                result = result
         logger.debug(f"task result class converted to the dict {clz}")
 
         logger.debug(f'Task: {self.name}, Context: {local_params}, Result: {result}')
