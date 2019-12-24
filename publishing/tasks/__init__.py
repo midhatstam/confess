@@ -4,7 +4,7 @@ from celery import Task
 
 logger = logging.getLogger(__name__)
 
-__all__ = ['BaseTask', 'SetPublishTimeTask', 'PublishConfessionTask']
+__all__ = ['BaseTask', 'SetPublishTimeTask', 'PublishConfessionTask', 'DeleteTask']
 
 
 class BaseTask(Task):
@@ -43,3 +43,4 @@ class BaseTask(Task):
 
 from .set_publish_time import SetPublishTimeTask
 from .publish_confession import PublishConfessionTask
+from .delete_task import DeleteTask
