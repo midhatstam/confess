@@ -46,7 +46,7 @@ class DateTimeService:
         time_tuple = namedtuple('Time', 'start, end')
         try:
             start_time = cls.get_start_time()
-        except Rule.DoesNotExist as err:
+        except Rule.DoesNotExist:
             logger.warning(
                 f'Could not create start execution time. "exec-start-time" not found in db!')
 
@@ -55,7 +55,7 @@ class DateTimeService:
 
         try:
             end_time = cls.get_end_time()
-        except Rule.DoesNotExist as err:
+        except Rule.DoesNotExist:
             logger.warning(
                 f'Could not create end execution time. "exec-end-time" not found in db!')
 
