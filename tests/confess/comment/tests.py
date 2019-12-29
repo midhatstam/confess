@@ -1,3 +1,6 @@
+import uuid
+
+from rest_framework.exceptions import ValidationError
 from rest_framework.test import APIRequestFactory, APITestCase
 from django.urls import reverse
 
@@ -41,6 +44,7 @@ class CommentTest(CreateConfessionTest, APITestCase):
             self.comment_url,
             {'username': 'Alex', 'body': 'Comment', 'is_parent': self.is_parent},
         )
+        req.COOKIES.setdefault('session_token', str(uuid.uuid4()))
 
         resp = comment_views.CommentApiMixin.as_view({'post': 'create'})(req, id=self.related.id)
 
@@ -61,6 +65,7 @@ class CommentTest(CreateConfessionTest, APITestCase):
         req = self.factory.get(
             self.comment_url
         )
+        req.COOKIES.setdefault('session_token', str(uuid.uuid4()))
 
         resp = comment_views.CommentApiMixin.as_view({'get': 'list'})(req, id=self.related.id)
 
@@ -110,6 +115,8 @@ class CommentReply(CreateConfessionTest, APITestCase):
             self.reply_url,
             {'username': 'Bob', 'body': 'Hi Alex'}
         )
+        req.COOKIES.setdefault('session_token', str(uuid.uuid4()))
+
         resp = comment_views.CommentDetailsApiMixin.as_view({
             'post': 'create'
         })(
@@ -137,8 +144,10 @@ class CommentReply(CreateConfessionTest, APITestCase):
         req = self.factory.get(
             self.reply_url
         )
+        req.COOKIES.setdefault('session_token', str(uuid.uuid4()))
 
-        resp = comment_views.CommentDetailsApiMixin.as_view({'get': 'list'})(req, id=self.related.id, comment_id=self.comment.id)
+        resp = comment_views.CommentDetailsApiMixin.as_view({'get': 'list'})(req, id=self.related.id,
+                                                                             comment_id=self.comment.id)
 
         comment_count = Comment.objects.all().count()
 
@@ -151,3 +160,18 @@ class CommentReply(CreateConfessionTest, APITestCase):
         self.assertTrue(
             comment_count, 2
         )
+
+    def test__list_replies_wrong_releated(self):
+        self.comment = self.create_comment()
+        self.reply = self.create_reply()
+
+        req = self.factory.get(
+            self.reply_url
+        )
+        req.COOKIES.setdefault('session_token', str(uuid.uuid4()))
+
+        resp = comment_views.CommentDetailsApiMixin.as_view({'get': 'list'})(req, id=(self.related.id + 10),
+                                                                             comment_id=self.comment.id)
+
+        self.assertEqual(200, resp.status_code)
+        self.assertRaises(ValidationError)

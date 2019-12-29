@@ -1,12 +1,15 @@
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
+from confession.models import Confession
 from core.serializers import ItemMetaDataSerializer
 from comment.models import Comment
 from reports.models import ReportComment
 
 
 class CommentSerializer(ItemMetaDataSerializer):
+	related = serializers.PrimaryKeyRelatedField(queryset=Confession.objects, required=True)
+	parent = serializers.PrimaryKeyRelatedField(queryset=Comment.objects, required=False)
 	reply_count = SerializerMethodField(required=False)
 	likes_count = SerializerMethodField(required=False)
 	dislikes_count = SerializerMethodField(required=False)

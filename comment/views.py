@@ -3,15 +3,12 @@ from django.utils.decorators import method_decorator
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import viewsets
-from rest_framework.exceptions import ValidationError
 
 from confession.utils import session_token
 from confession.views import CustomApiPageNumber
 
-from confession.models import Confession
 from comment.models import Comment
 from comment.serializers import CommentSerializer
-from reports.models import ReportComment
 from voting.models import Vote
 
 
@@ -33,12 +30,9 @@ class CommentApiMixin(viewsets.ModelViewSet):
     @method_decorator(session_token)
     @action(methods=['POST', 'GET'], detail=False)
     def create(self, request, *args, **kwargs):
-        confess = Confession.objects.filter(id=kwargs.pop('id'))
-        if not confess.exists() or confess.count() != 1:
-            raise ValidationError("This is not valid confess!")
         serializer = CommentSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save(related=confess.first(), is_parent=1)
+        serializer.save(is_parent=1)
         return Response(serializer.data)
 
 
@@ -65,15 +59,7 @@ class CommentDetailsApiMixin(viewsets.ModelViewSet):
     @method_decorator(session_token)
     @action(methods=['POST', 'GET'], detail=False)
     def create(self, request, *args, **kwargs):
-        confess = Confession.objects.filter(id=kwargs.pop('id'))
-        if not confess.exists() or confess.count() != 1:
-            raise ValidationError("This is not valid confess!")
-        comment_parent = Comment.objects.filter(id=kwargs.pop('comment_id'))
-        if not comment_parent.exists() or comment_parent.count() != 1 or comment_parent.first().related.id != confess.first().id:
-            raise ValidationError("This is not valid comment parent!")
-        request_data = request.data.copy()
-        request_data['is_parent'] = False
-        serializer = CommentSerializer(data=request_data)
+        serializer = CommentSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save(related=confess.first(), parent=comment_parent.first())
+        serializer.save()
         return Response(serializer.data)
