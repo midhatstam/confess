@@ -48,4 +48,4 @@ class CommentSerializer(ItemMetaDataSerializer):
 class CommentSerializerSingle(CommentSerializer):
 	class Meta:
 		model = Comment
-		exclude = ('related', )
+		fields = '__all__'
