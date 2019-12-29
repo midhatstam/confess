@@ -26,3 +26,12 @@ class Comment(ItemMetaData):
         if self.parent_id is not None:
             return False
         return True
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        if self.parent is not None:
+            self.is_parent = False
+        else:
+            self.is_parent = True
+
+        super(Comment, self).save()
