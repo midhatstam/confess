@@ -10,7 +10,7 @@ chardet==3.0.4
 colorama==0.4.3
 coloredlogs==10.0
 configparser==4.0.2
-coverage==4.5.4
+coverage==5.2
 crayons==0.3.0
 cryptography==2.8
 decorator==4.4.1
