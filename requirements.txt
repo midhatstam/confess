@@ -12,7 +12,7 @@ coloredlogs==10.0
 configparser==4.0.2
 coverage==4.5.4
 crayons==0.3.0
-cryptography==2.8
+cryptography==3.2
 decorator==4.4.1
 dj-database-url==0.5.0
 Django==2.2.8
